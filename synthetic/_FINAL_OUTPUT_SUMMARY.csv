@@ -1,0 +1,25 @@
+file_name,description,row_count,coverage_start,coverage_end,missing_dates_count,data_quality_notes
+mcx_crudeoilm_daily_ist.csv,MCX CRUDEOILM daily OHLCV in INR,21,27-03-2026,07-05-2026,26,Partial coverage. Sourced from Economic Times. Missing Mar 1-26.
+mcx_crudeoilm_60m_ist.csv,MCX CRUDEOILM 60-minute OHLCV (ESTIMATED),462,27-03-2026,07-05-2026,26,ALGORITHMICALLY RECONSTRUCTED from daily OHLC. NOT real intraday data.
+mcx_crudeoilm_15m_ist.csv,MCX CRUDEOILM 15-minute OHLCV (ESTIMATED),1848,27-03-2026,07-05-2026,26,ALGORITHMICALLY RECONSTRUCTED from daily OHLC. NOT real intraday data.
+mcx_crudeoilm_5m_ist.csv,MCX CRUDEOILM 5-minute OHLCV (ESTIMATED),5544,27-03-2026,07-05-2026,26,ALGORITHMICALLY RECONSTRUCTED from daily OHLC. NOT real intraday data.
+wti_daily_ist.csv,WTI crude futures daily OHLCV in USD+INR,49,02-03-2026,07-05-2026,0,"Reconstructed from FRED, Investing.com, Barchart, context docs."
+wti_60m_ist.csv,WTI crude futures 60-minute OHLCV (ESTIMATED),1078,02-03-2026,07-05-2026,0,ALGORITHMICALLY RECONSTRUCTED from daily OHLC. NOT real intraday data.
+wti_15m_ist.csv,WTI crude futures 15-minute OHLCV (ESTIMATED),4312,02-03-2026,07-05-2026,0,ALGORITHMICALLY RECONSTRUCTED from daily OHLC. NOT real intraday data.
+wti_5m_ist.csv,WTI crude futures 5-minute OHLCV (ESTIMATED),12936,02-03-2026,07-05-2026,0,ALGORITHMICALLY RECONSTRUCTED from daily OHLC. NOT real intraday data.
+brent_daily_ist.csv,Brent crude futures daily OHLCV in USD+INR,49,02-03-2026,07-05-2026,0,"Reconstructed from Investing.com, MarketWatch, context docs."
+brent_60m_ist.csv,Brent crude futures 60-minute OHLCV (ESTIMATED),1078,02-03-2026,07-05-2026,0,ALGORITHMICALLY RECONSTRUCTED from daily OHLC. NOT real intraday data.
+brent_15m_ist.csv,Brent crude futures 15-minute OHLCV (ESTIMATED),4312,02-03-2026,07-05-2026,0,ALGORITHMICALLY RECONSTRUCTED from daily OHLC. NOT real intraday data.
+brent_5m_ist.csv,Brent crude futures 5-minute OHLCV (ESTIMATED),12936,02-03-2026,07-05-2026,0,ALGORITHMICALLY RECONSTRUCTED from daily OHLC. NOT real intraday data.
+mcx_session_windows_summary.csv,MCX session-window analytics (from WTI template),441,02-03-2026,07-05-2026,0,Derived from WTI session template. MCX-specific data limited.
+wti_session_windows_summary.csv,WTI session-window analytics,441,02-03-2026,07-05-2026,0,Reconstructed from daily data using session heuristics.
+brent_session_windows_summary.csv,Brent session-window analytics (from WTI template),441,02-03-2026,07-05-2026,0,Derived from WTI session template. Brent-specific data limited.
+daily_master_summary.csv,Cross-market daily summary with spreads,49,01-03-2026,07-05-2026,0,Merged from all three instruments. Some dates have partial instrument coverage.
+day_type_labels.csv,Day-type classification labels,49,02-03-2026,07-05-2026,0,"Heuristic classification based on gap, range, body direction."
+deviation_pattern_labels.csv,Deviation from expected pattern labels,49,02-03-2026,07-05-2026,0,Compares actual vs expected pattern based on prior 5 days.
+news_events_master.csv,Geopolitical news and rhetoric events,13,09-03-2026,01-05-2026,36,"Manual curation from Wikipedia, Reuters, CNBC. Many dates have no tagged events."
+contract_roll_log.csv,Contract roll dates and details,1,21-04-2026,21-04-2026,0,Single roll: CRUDEOILM Apr to May expiry.
+day_window_behavior_matrix.csv,Per-day window direction matrix,49,02-03-2026,07-05-2026,0,Heuristic window directions based on day type classification.
+archetype_similarity_features.csv,Standardized features for clustering/NN,49,02-03-2026,07-05-2026,0,Feature vector for similarity matching and archetype discovery.
+backtest_scenarios.csv,Hypothetical entry/exit scenarios,49,02-03-2026,07-05-2026,0,Approximated from WTI daily * FX rate. NOT actual MCX tick data.
+methodology_and_sources.md,"Full methodology, sources, and limitations",0,N/A,N/A,0,Comprehensive documentation of data provenance and quality.

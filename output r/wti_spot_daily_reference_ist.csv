@@ -1,0 +1,6 @@
+trade_date_ist,close_native,symbol,source_name,source_url,source_detail,source_priority,quality_flag
+2026-05-26,97.63,WTISPOT,FRED,https://fred.stlouisfed.org/series/DCOILWTICO,DCOILWTICO,1,
+2026-05-27,92.35,WTISPOT,FRED,https://fred.stlouisfed.org/series/DCOILWTICO,DCOILWTICO,1,
+2026-05-28,92.65,WTISPOT,FRED,https://fred.stlouisfed.org/series/DCOILWTICO,DCOILWTICO,1,
+2026-05-29,91.16,WTISPOT,FRED,https://fred.stlouisfed.org/series/DCOILWTICO,DCOILWTICO,1,
+2026-06-01,95.96,WTISPOT,FRED,https://fred.stlouisfed.org/series/DCOILWTICO,DCOILWTICO,1,

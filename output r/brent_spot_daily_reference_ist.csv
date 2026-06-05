@@ -1,0 +1,6 @@
+trade_date_ist,close_native,symbol,source_name,source_url,source_detail,source_priority,quality_flag
+2026-05-26,102.75,BRENTSPOT,FRED,https://fred.stlouisfed.org/series/DCOILBRENTEU,DCOILBRENTEU,1,
+2026-05-27,97.11,BRENTSPOT,FRED,https://fred.stlouisfed.org/series/DCOILBRENTEU,DCOILBRENTEU,1,
+2026-05-28,95.47,BRENTSPOT,FRED,https://fred.stlouisfed.org/series/DCOILBRENTEU,DCOILBRENTEU,1,
+2026-05-29,92.88,BRENTSPOT,FRED,https://fred.stlouisfed.org/series/DCOILBRENTEU,DCOILBRENTEU,1,
+2026-06-01,98.29,BRENTSPOT,FRED,https://fred.stlouisfed.org/series/DCOILBRENTEU,DCOILBRENTEU,1,

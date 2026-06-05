@@ -1,0 +1,2 @@
+symbol,old_contract_symbol,new_contract_symbol,roll_date_ist,roll_reason,old_contract_last_trade_date,days_to_expiry_at_roll,price_difference_at_roll_native,price_difference_at_roll_inr,did_roll_create_artificial_gap_flag,roll_notes
+CRUDEOILM,CRUDEOILM APR 2026,CRUDEOILM MAY 2026,21-04-2026,APR_EXPIRY_WITHIN_7_DAYS,20-04-2026,7,29,29,TRUE,MCX Crude Oil Mini rolled from Apr to May expiry. Apr contract expired 2026-04-20. Roll executed on first trading day of May contract (2026-04-21) to maintain liquidity. Price difference reflects contango/backwardation between contracts.
