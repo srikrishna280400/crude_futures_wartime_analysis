@@ -1,0 +1,63 @@
+{
+  "metrics": {
+    "total_return_pct": -11.068118495989824,
+    "annual_return_pct": -23.752671083838166,
+    "total_trades": 297,
+    "win_rate": 63.63636363636363,
+    "avg_win_pct": 1.022436416229437,
+    "avg_loss_pct": -0.8568216958330006,
+    "profit_factor": 2.0882567949706217,
+    "expectancy_pct": 0.33906983002491425,
+    "sharpe": 4.2515277167630625,
+    "sortino": 7.440104056907734,
+    "calmar": -1.0,
+    "max_drawdown_pct": -11.068118495989824,
+    "max_drawdown_duration": 0,
+    "avg_hold_windows": 1.0,
+    "best_trade_pct": 3.61603115190832,
+    "worst_trade_pct": -2.945360065003274,
+    "mc_expectancy_ci": [
+      0.1975193385021961,
+      0.4783115193511864
+    ],
+    "mc_sharpe_ci": [
+      2.529118631713635,
+      5.9906309487339975
+    ]
+  },
+  "config": {
+    "initial_equity": 100000,
+    "commission_per_lot": 20.0,
+    "slippage_bps": 2.0,
+    "target_annual_vol": 0.15,
+    "max_drawdown_pct": 0.1,
+    "kelly_cap": 0.25,
+    "tier_multipliers": {
+      "Q1_0_25": {
+        "stop": 0.5,
+        "target": 1.0
+      },
+      "Q2_25_50": {
+        "stop": 0.75,
+        "target": 1.5
+      },
+      "Q3_50_75": {
+        "stop": 1.0,
+        "target": 2.0
+      },
+      "Q4_75_90": {
+        "stop": 1.5,
+        "target": 3.0
+      },
+      "Q5_90_100": {
+        "stop": 2.0,
+        "target": 4.0
+      }
+    }
+  },
+  "n_signals_tested": 41,
+  "date_range": [
+    "2026-03-12 00:00:00",
+    "2026-08-13 00:00:00"
+  ]
+}

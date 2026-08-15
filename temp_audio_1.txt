@@ -1,0 +1,1516 @@
+I'm Kay Jensen, the head of revenue at Anthropic,
+and I am so excited to welcome you
+to the future of finance, powered by Claude.
+I want to invoke a scene that's probably familiar
+to many of you in the audience today.
+Your three coffees deep, it's 3 a.m.
+You're furiously checking that last model.
+You have 100 tabs open, you have a 5 a.m. prep call
+ready for a 6 a.m. client call.
+Today, that's all about to change.
+We are so excited to announce Claude for financial analysis.
+This is the industry's first unified intelligence layer
+that transforms how financial professionals
+will work with AI.
+Now you will have a virtual first class,
+virtual collaborator powered by AI
+that will help you to get your work done better
+and faster.
+What this is is a tailored version of Claude for Enterprise.
+It's specifically built for financial analysts
+and it's equipped with the nuance, accuracy,
+and reasoning that you need to handle
+the complexity of your work.
+Since 2021, Anthropic has been building AI systems
+that are helpful, harmless, and honest.
+At our foundation is safety and trust,
+which is exactly what financial services companies need.
+When you're managing billions in assets,
+good enough just isn't good enough.
+AI is transforming every industry
+and nowhere is this more prominent
+than in financial services.
+The complexity of modern markets,
+the velocity of information,
+the sheer volume of data that you need to process,
+it has reached a point where human intelligence alone,
+no matter how great just isn't good enough.
+From speaking with many of you, our customers,
+we're hearing that the world is bifurcating.
+There will be two types of investment firms,
+those using AI institutionally
+and those who are losing their top talent
+to competitors who are.
+Over the past year, we have been partnering with leaders
+who are breaking new ground across every segment
+of the financial industry.
+The teams at Bridgewater have been using Claude since 2023.
+This is to power their investment analyst assistance,
+which solves complex models.
+Their CTO tells us that Claude is really powering
+their efforts to push the boundaries of what's possible.
+Down in Australia, Commonwealth Bank
+is making a massive bet on AI.
+Their CTO, Rodrigo, sees our partnership
+as the foundation of their global AI strategy.
+And here in New York at AIG,
+Peter tells us that they have completely
+reimagined underwriting with Claude.
+What used to take weeks is now taking days.
+Timelines compressed more than five X.
+And accuracy has gone up from 75% to 90%.
+Underwriters can now serve their customers better and faster.
+Now, the solutions we're sharing today,
+we didn't create alone.
+They're the result of deep collaboration
+with the entire financial ecosystem.
+At our foundation, we have our cloud providers,
+AWS and GCP,
+provide secure, scalable infrastructure
+that financial institutions demand.
+I am thrilled to share that today,
+Claude for Enterprise, including
+Claude for Financial Services,
+is now available on AWS Marketplace.
+And it's coming soon to the Google Cloud Marketplace as well.
+We hear all the time that AI is only as good
+as the context it has.
+We're excited to partner with platforms like Fox,
+Databricks, Palantir, and Snowflake
+to bring your company's data into Claude
+so that you have the context you need to get work done
+that's actually relevant to your day to day.
+And today, we are especially excited
+to announce new integration
+to critical external market data sources
+for informing your most important financial decisions.
+We're partnering with the companies you already trust.
+FactSet delivers comprehensive fundamentals
+and consensus estimates.
+S&P Global enables access to CAPIQ financials,
+market data, and transcripts.
+Dalupa provides AI verified fundamentals
+with source citations.
+In between Morningstar and Pitchbook,
+you have both public investment research
+and private market intelligence at your fingertips.
+Our consulting service providers
+are also turning this technology
+into real business transformation.
+Deloitte and KPMG are modernizing entire organizations
+and deploying AI agents at scale.
+PWC and Turing are solving critical regulatory challenges,
+navigating constantly evolving compliance requirements.
+And Slalom and Tribe AI are modernizing core operations
+from migrating legacy cobalt infra
+to accelerating due diligence
+with intelligent document processing.
+Collectively, we are building the AI ecosystem
+that will define the future of financial services.
+As our head of revenue,
+my team and I spend all of our time
+talking to customers and partners.
+We heard from you how important it was
+to bring all of this context,
+both internal and external, into cloud
+to help you make use of this technology.
+We cared deeply about defining the future of AI
+and human collaboration,
+and thank you for your feedback.
+We are thrilled to bring this solution to you today.
+Now I'm really excited to welcome up to the stage
+two of our partners,
+who helped to exemplify the power
+of our ecosystem in action.
+Peter Likurzi is the Chief Strategy Officer
+at Kensho Technologies,
+S&P Global's AI Innovation Hub.
+He's been defining how AI transforms financial data
+into actionable intelligence.
+And Vikram Bhatt is Vice Chair
+in Financial Services Industry Leader at Deloitte,
+where he has been helping global financial institutions
+navigate digital transformation.
+Please welcome them up to the stage.
+Thank you.
+Thank you.
+Thank you.
+Did you picked that song?
+Yes.
+I love it, yeah.
+Yeah, it's actually in my rider.
+Love it.
+Thank you so much for being here.
+You have both been instrumental
+shaping the frontier of AI adoption at your company.
+From your unique vantage point, Peter,
+with data and intelligence, Vikram,
+with implementation and transformation,
+what's the one breakthrough that you've seen
+that has really created an aha moment at your company?
+So yeah, I think, I mean, for me, it's really adoption.
+I mean, I've spent the better part of the last decade
+trying to get financial services companies
+to adopt AI, and we've had some really great successes
+with traditional machine learning.
+I would say in the world of generative AI,
+that conversation is very, very different.
+How can you serve us as quickly as possible,
+the data that is in a format that is optimized
+for these large language model use cases for generative AI,
+and how can I make sure that the data
+that you're providing is trusted,
+that it's accurate, that it's kind of foundationally
+a part of the work list that we've always relied on.
+And so I think for us, the big kind of surprising thing
+about generative AI has just been the speed of adoption,
+the rate of adoption.
+It has been very influential on our roadmap,
+the product that we've kind of foregrounded.
+For us, our LLM-ready API,
+which is the data behind what we've done with MCP,
+has been, we've seen enormous traction with that.
+Our clients wanna make sure that when they're interfacing
+with this technology that they can rely on trusted data,
+and data in workflows that are already existing,
+that they can then automate and optimize
+with large language models.
+And so that's really been a huge surprise.
+It's going into these client conversations
+not saying, okay, but here's what AI can do.
+Here's the kind of magic that you can unlock.
+They already know that part.
+It's now how can we truly make our company
+or institution or group an AI-forward group
+and also make sure that we can trust the outputs.
+And for that, you need trusted data.
+So that's kind of been the big thing that we've noticed.
+Vik, what about you?
+As you think about bringing this technology,
+what are those aha moments that get people really adopted?
+We have really an AI-first strategy
+in everything we do.
+Some of it is internal in every service that we have.
+We are starting to embed AI kind of front to back.
+On the client side, what we're seeing is
+there was an initial focus on productivity
+as a key theme of value through AI.
+But what is really happening
+is that is expanding to can we develop new products
+based on AI?
+Can we reimagine distribution?
+Can we reimagine front to back processes?
+It is really changing the conversation
+from a pure productivity as a value driver
+to revenue generation.
+Can we do better risk and control?
+Can we drive more employee and client experiences?
+So as the appetite and the aperture of value
+has really expanded,
+it has really brought AI into everything that does
+and every piece of the client organization.
+I love that.
+And we'll start with you this time,
+but what do you think you need to do differently
+as an organization to make sure
+that you're really capturing that full value,
+not just adopting the technology?
+Yeah, so I'm probably gonna give
+an incorrect non-political answer.
+In financial services, we are a highly regulated industry.
+Everybody knows that.
+So the real challenge is in this battle of,
+I'll say, innovation and risk management.
+How do you coexist in a manner
+that there's not 20 checkers for one doer
+and the equation is actually flipped?
+That you actually have more people
+driving innovation across your organization
+and you work in coexistence with your audit teams,
+with your model risk teams,
+all the other players that are necessary
+in order to get adoption successful.
+The other example is that AI first strategy
+that I mentioned.
+I think more and more clients are actually saying,
+AI is not just about driving 30 to 50% productivity
+in the CIO organization or anywhere else.
+It is really about changing the way we do business
+and to do that they are,
+how do you actually bring the humans?
+We have this philosophy of humans and machines
+coexisting in the age of AI
+and how do you drive the human change
+at speed and scale
+together with the pace of change that's coming through AI.
+How do you think you do that?
+How do you get them to coexist and adopt at the same time?
+I think it is not one answer.
+There's a number of different levers
+that one can pull in order to drive that.
+For example, some organizations have done executive academies.
+For the top 300 executives really drive training.
+Some are doing hackathons
+to really think about certain processes
+or value streams that they can completely reimagine.
+There is complete AI academies and trainings
+that are being pushed forward for developers
+but also for general users.
+It's not one lever I think in the end
+that's going to drive the speed of human adoption of AI.
+It's a number of things that need to be done together.
+Peter, what about you?
+What do you think people need to do differently
+and institutions need to do differently?
+Well, I think that honestly it comes down to,
+and I think Vikram touched on it,
+it's kind of a culture thing
+and I think that a lot of that culture
+does have to be top-down.
+You have to have your leadership teams really buy in
+to this concept of AI first.
+I totally agree with that.
+I think, but part of that top-down
+is to also embrace the fact
+that in many of these organizations,
+innovation's coming from the bottom up.
+People who are in the trenches doing day-to-day work
+are surfacing amazing ideas,
+not just for productivity,
+which I think is oftentimes the focus,
+but for huge expansions of revenue opportunity.
+I think that's absolutely correct.
+I think that it's kind of changing
+a mindset around innovation
+and I do think a big part of that
+is understanding, especially in our space,
+there are gonna be workflows
+where being maybe a little bit less risk-averse
+is really important
+and being able to create that room for experimentation
+is gonna be really important.
+Certainly for us at Kencho,
+we've been able to have that room
+and the way that it works for us
+is that we kind of operate somewhat independently
+and as a result,
+we kind of have a little bit more room to experiment,
+but then, crucially,
+it's also understanding where those boundaries are
+and where that risk is unacceptable
+and that's I think where, for us,
+we've also seen an enormous benefit
+in having S&Ps trusted data
+as our kind of foundational core competency.
+For, we've been on this journey
+creating this grounding agent
+where, for us, it's ensuring
+that when a large language model
+is interfacing with our data,
+that we're taking responsibility
+for automating where in our entire data universe
+we're gonna pull and query those datasets
+and then surfacing that data with citations
+and so it's both enabling experimentation
+but then also making sure that your responses
+and whatever the output is
+is truly grounded in verifiable fact.
+So I think there's a balance there
+and creating that trust
+is something that's really important to us.
+I love that, that push to innovate,
+that desire to really harness all the energy
+that you have from your organization
+but to do it responsibly.
+That's really at the core of a lot of what we do.
+Thank you both so much for coming up
+and thank you for the partnership.
+Absolutely, pleasure.
+Thanks.
+And now I'm thrilled to welcome up to this stage
+my colleague, Nick Lin,
+who leads our product for Cloud for Financial Services.
+Thank you all.
+Thank you.
+Thank you.
+Thank you.
+Thank you.
+Thank you.
+Thank you.
+All right, thank you, Kate.
+My name is Nick Lin
+and I lead product for Cloud for Financial Services.
+I am also a recovering investment banker
+and private equity investor.
+So I was the analyst,
+Kay mentioned frantically trying to debug the model
+at 3 a.m. while building the pitch deck,
+running on NoSleep.
+That's why I am especially excited
+to share what we've been working on.
+As Kate mentioned,
+we're announcing the Cloud Financial Analysis solution.
+Anthropics first offering built specifically for finance.
+Our solution is built on three main pillars
+of what comprises of an agent.
+First, the models.
+Now, something I always think about
+is that the models we interact with today
+are the worst they will ever be.
+Even so,
+Cloud today is not just state of the art for code.
+Cloud has been specifically trained
+for finance domain knowledge
+and excels at tasks like data analysis at scale,
+financial reasoning,
+and even Excel manipulation.
+Now, the research product flywheel
+is a critical part of an anthropic strategy.
+We firmly believe in working with customers like yourselves
+to really understand where the models are working,
+where the gaps are,
+and to borrow a term we use internally,
+Hillclimb,
+to improve the next generation of our model capabilities.
+The Finance Agent benchmark,
+published by our friends at vows.ai,
+has picked up a lot of traction in the industry
+and is well representative
+of many financial reasoning tasks.
+You can see Cloud Opus and Sonnet far outperform competitors.
+Similarly,
+Cloud is also very capable of actually doing the work.
+One of our partners, Fundamental Labs,
+has built an Excel agent called Shortcut on Opus.
+This agent was able to pass five out of seven levels
+of the financial modeling World Cup competition
+and scored over 83% accuracy
+on complex Excel and financial reasoning tasks.
+Again, far outperforming competitors.
+The next pillar of our solution
+is agent capabilities built on top of these models.
+Now, model intelligence needs to be translated
+into something that's actually useful for humans.
+Cloud's agent capabilities are flexible and composable
+and really aim at solving the core problems
+you all work in every single day,
+including building multimodal reports
+like pitch stacks, investment memos,
+analyzing and visualizing data
+like benchmark analyses or stock price
+and volume charts,
+and natively reading and writing Excel
+and PowerPoint documents.
+I'm excited to announce that for the very first time,
+these expanded output capabilities
+are now in research preview,
+exclusively for select customers
+of our financial analysis solution.
+We've also expanded usage limits
+to really support the deep work
+analysts work in every single day,
+and we've integrated cloud code
+to support use cases
+like analyzing much larger datasets,
+Monte Carlo simulations,
+and risk analyses.
+Finally, the model intelligence
+and agent functionalities
+are delivered through our very flexible platform.
+Our solution is the first agent
+with unified intelligence
+across all the core finance data sources
+you all work in.
+As Kate and Peter shared,
+we're excited to partner with industry leaders
+like yourselves to build those critical integrations
+into the agents,
+with many more to come in the future.
+Importantly,
+we're delivering white glove
+finding a specific implementation
+and onboarding
+to really assist you all
+with deployment,
+education,
+and change management.
+Now, this is of course built
+with enterprise grade,
+security,
+and trust.
+We're SOC2,
+Type 2 certified,
+and by default,
+we do not train any of our models
+on your data.
+Now,
+our solution is really targeted
+at solving the problems you all know well.
+In investing,
+insights are alpha.
+The ability to soar through the noise,
+build a thesis,
+get to an investment decision quickly
+is paramount.
+As we've heard from many of our customers,
+this is of course true
+for the cell side and the bicep.
+To summarize the pain,
+analysts work in a daily
+use of documents every single day
+and spend hours researching
+into data sources that are difficult
+to verify.
+They painfully prepare analyses
+and take through models,
+cell by cell.
+And they manually prepare
+investment MMOs and pitch decks,
+often pulling all-nighters
+on a tight schedule.
+With Claude,
+we can start to address
+all of these pain points.
+Now,
+let's show you what that looks like
+in action.
+Me, Sarah,
+a hedge fund analyst
+at Acme Capital.
+It's 2 p.m.
+Her portfolio manager
+bursts into her office
+with an urgent question,
+which I think many of you know well.
+Our target company
+is a company
+called
+Our Target Company
+Velocity Athletic
+reported terrible earnings yesterday.
+Revenue is down 12%,
+but somehow
+the stock price is up 17%,
+trading at $71
+per share.
+Her p.m. needs to know
+is this rally justified
+by their new strategy
+or should they sell into
+the spike?
+He needs an answer before the market closes.
+Now,
+let me show you how Claude transforms
+this typical 4-5 hour scramble
+into analysis
+under 30 minutes.
+First,
+Sarah connects her tools.
+Look at what is available
+in one workspace.
+All the tools she works in.
+S&P Global, Morningstar,
+Faxette,
+Delupa,
+and even her firm's internal box documents.
+No more juggling 14 different browser tabs.
+Everything she needs is right here
+with unified access.
+Sarah starts a comprehensive query
+asking Claude to pull
+from multiple data sources simultaneously.
+Watch what happens.
+Claude orchestrates across platforms,
+S&P Global for transcripts,
+Morningstar for reports,
+box for internal analysis,
+Delupa pulling 8 quarters of financials.
+And here's the key.
+Sarah gets synthesized intelligence,
+not just raw data dumps.
+Output,
+full earnings transcript analysis
+with red flags from Q&A,
+the CFO disclosing
+a 400 basis point margin hit from the tariffs.
+Competitors look like they're doing better.
+Pace running has been in Vietnam since 2019.
+And most importantly,
+you can see full financials
+linked to the original data source.
+Like we're saying here with Delupa.
+So Sarah can verify the results
+instantaneously.
+To go deeper, Sarah asks Claude
+to create visualizations
+and specific analyses like
+an annotated stock price chart,
+comps and benchmarking analyses,
+and even discounted cash flow model.
+As you can see, Claude is now
+pulling key corporate events
+like CBC, Edgar and the Web,
+price data from S&P Global,
+historical financials from Delupa,
+consensus estimates from FactSet,
+and creates several visual artifacts.
+First, an event annotated stock price chart,
+showing the 17% spike
+with all key events marked.
+Emergency board meeting,
+CFO stock sale, earning surprise.
+Next, a comprehensive comps table.
+Velocity is trading at 21 times EBITDA,
+against peers at 16 times,
+despite having worse fundamentals.
+And here is where it gets powerful.
+Claude has built a fully auditable,
+discounted cash flow model.
+With a functional case selector,
+projections tied to assumptions,
+and even a perfect whack calculation
+without needing to be prompted.
+Now, this DCF model projects a base price of $54,
+suggesting that perhaps $71 is overly optimistic.
+Finally, Sarah actually needs to prepare
+a deliverable for her PM.
+She asks Claude to create an investment memo
+using her firm's templates from Box.
+Claude searches Box for any relevant internal information,
+including a memo template
+and any past event-driven trades as reference.
+In seconds, she has a professional memo,
+with an exec sum recommendation to fade the rally,
+clear rationale with supporting data
+for market performance and comps,
+and specific action items and risk analyses,
+all properly cited.
+The bottom line, the market is overpricing
+a complex operational challenge,
+so take profits now, buy it back later, cheaper.
+Now, let's recap what just happened here.
+Sarah delivered institutional quality analyses
+in under 30 minutes,
+a typical process that takes three to five hours,
+across multiple platforms.
+She didn't just save time.
+She uncovered insights she might have missed,
+like the CFO sale,
+or the competitor's existing advantage.
+Now, we believe this is the future of financial analysis,
+where AI fully augments an analyst's capabilities,
+where the best insights across all of the platforms
+come together in one intelligent workspace.
+Now, one example of these capabilities coming to life
+is from the Norwegian sovereign wealth fund,
+otherwise known as EMBIN,
+the largest sovereign wealth fund in the world.
+To share a quote from their CEO, Nikolai,
+Claude has fundamentally transformed the way we work at EMBIN.
+They've achieved 20% productivity gains.
+That is 213,000 hours back a year.
+To focus on what really matters,
+that is better decisions and returns for the Norwegian people.
+As Nikolai put it, Claude has become indispensable.
+Now, building these solutions
+requires deep partnership with all of you.
+Everyone in attendance today
+will receive a one month free trial to the solution.
+I am personally very excited to spend much more time with all of you
+to dive deeper into the problems we can solve together
+and to shape the future of financial services
+with both our products and model capabilities.
+And with that, I'll pass it to my colleague Jonathan Pelosi,
+our head of financial services
+and our distinguished panel of industry leaders
+to share their own journeys with Claude.
+Thank you, Nik.
+And to the DJ.
+Well, I didn't choose that song. I love it.
+We put these down.
+And thank you to everybody for joining us.
+Hopefully, you get a sense of why we're so optimistic
+about being able to support every one of you
+and every one of you dialed in
+on all of your tasks as it relates to financial analysis.
+But don't just take my word for it.
+I've got a lot of questions.
+I can speak to what they're doing with this type of technology
+and how they're doing it.
+And as Nick alluded to,
+in my role overseeing all financial services for Anthropic,
+that effectively means we support the biggest banks
+and insurance companies, hedge funds and asset managers
+in taking this technology
+and practically applying it to your firm
+in a way where you can use it to drive real estate
+and your firm in a way where you can use it
+to drive real value and real transformation.
+And I say practically because all too often
+we'll read about the theoretical headlines
+of what this stuff can do.
+And you're like, oh, it'll transform the way we work
+and it'll improve productivity by 50%.
+By the time my team and I sit with you,
+we often pull back the layers and say,
+well, how do you actually make that happen?
+How do you actually tailor this to your organization?
+How do you actually work on change management?
+Getting these individuals comfortable with using this technology.
+Those are the types of things we obsess over
+and the types of things we're excited to chat further about.
+So with that said, I'm going to call up my esteem panel.
+You can come on down and give them a chance to introduce themselves.
+Head on up, gang.
+And I'll be over here.
+Thank you, team.
+We're going to do quick intros
+because I don't think the title is necessarily
+due justice to all of the AI work they do.
+And we're going to start with my good friend Michael here.
+Take it away.
+Thanks, JP.
+My name is Michael.
+I co-head the COO group at D.E. Shaw.
+That means is my team and I work on big,
+firm-wide transformation initiatives
+that we're working on.
+Big, firm-wide transformation initiatives
+and there is no bigger, firm-wide challenge and opportunity
+that we're spending time on right now than AI.
+Thank you, Michael. Lloyd.
+Thanks, JP. Lloyd Hilton.
+I am an AI lead at HD Capital.
+So for those of you who don't know us,
+we are a major PE firm, one of the top ten largest globally.
+And we're a sector specialist.
+So we have about 50 portfolio companies
+in the B2B SaaS and services space.
+And we've been driving a major transformation effort
+with those portfolio companies for the last two and a half years
+now partnering with the Anthropic team.
+Don.
+Morning, everyone. Thanks for having us, JP.
+My name is Don Vu.
+I'm the Chief Data Analytics Officer at New York Life.
+For those that aren't familiar with New York Life,
+we're Fortune 69 over a trillion dollars of insurance and force.
+And we're one of the largest insurance companies in the world.
+I'm responsible for our overarching AI and data strategy
+and its execution.
+Thank you, Don. And Freud, last one, at least.
+Yes, my name is Freud.
+I'm part of the Norwegian sovereign wealth fund.
+We are a two trillion dollar sovereign wealth fund
+and 70% equities, 30% fixed income and bonds.
+And we are only 700 employees worldwide.
+So we have a single owner, the Ministry of Finance,
+who represents the Norwegian people.
+And I'm part of the team here in North America
+that manages the bulk of the equity assets.
+Thank you, Freud.
+Freud and I were chatting earlier, and I think the stat...
+I think it has to be true that per employee,
+no organization manages more money on Earth than MBM.
+So it's an impressive stat indeed.
+And for those in the audience,
+we'll have a chance for you to ask questions as well
+after I ask a couple of the panelists.
+So keep that in mind.
+We're really looking forward to hearing from you as well.
+But let's start.
+The AI investment thesis.
+Naturally, you're big organizations, complicated firms.
+At what point did this decision to go all in
+and do this at like a firm-wide level take place
+and who drove that?
+And for this, we'll start with Freud.
+I'm curious to hear from you.
+Yeah, sure.
+So our AI strategy is really to be a leading user of AI
+in investment management.
+And that just means embedding AI
+into everything I do, I think, in a responsible way.
+So that means creating efficiency gains,
+reducing costs, enhancing returns,
+and really improving risk management.
+So I think what's changed is that we have a coordinated strategy
+with really dedicated organizational support
+and a dedicated AI team that helps out in the organization.
+And this is really driven from the top right.
+So we have this AI maniac at the top of the fund,
+Nikolai Tangin, and he is just all in
+on the change that we see in society, right?
+So his leadership, his enthusiasm about AI
+is really, really setting the scene internally in the fund
+and driving the cultural adaptation that this is.
+I think that's just absolutely crucial.
+Thank you, Freud.
+And not surprisingly, this kind of top-down buy-in is critical
+if you're trying to drive adoption
+and really meaningful change across the organ.
+I think the Freud-born Nikolai has done an amazing job of that.
+Lloyd, how about you, as it relates to your firm,
+both internally and with your portfolio companies?
+Yeah, so I mean, I think the top-down buy-in really resonates
+for us as well.
+So although we are investors, a lot of our leadership team
+are sort of technologists and engineers.
+So very early on, I think we sort of recognized
+that this was a platform shift.
+A lot of HG's success has been predicated
+based on helping our portfolio companies
+navigate the sort of on-prem to SaaS platform shift.
+We've also been investing in AI for a while,
+so we have a central data team.
+We actually had access to GPT-3 back in 2021.
+So we've been experimenting with this for a while,
+and I guess when the early LLMs were sort of launched
+around 2022, 2023,
+we realized this was a pretty major opportunity.
+I think for us, though,
+people find conviction at their own pace,
+and what really helped was we ran an event in Silicon Valley,
+so we worked with the anthropic team.
+We actually had Mike Krieger, the CPO,
+come to speak at that event,
+and we fully immersed our execs in this AI topic
+and got people really hands-on.
+So for us, that was a real catalyst.
+And I guess over the last two years,
+the thing that really surprised us is just how quickly this has moved.
+So we started probably thinking about,
+oh, no, we can get 10% to 20% productivity gains
+through integrating AI into our existing processes.
+What we're now really focused on
+is fully transforming our portfolio companies with AI,
+and we think that there's going to be a huge amount of value
+upside for us and for our portfolio companies
+through doing that, so that's really where the focus is now.
+And we've kind of replicated that same approach,
+so we got that top-down buy-in centrally for HD.
+We're now making sure that we create that same catalyst
+and that same spark for our portfolio companies,
+and we're finding that sort of now permeating pretty nicely
+through the HD portfolio to drive that transformational change.
+Fantastic. Thank you, Lloyd.
+And for the folks in the audience,
+I can imagine this is something on your mind
+for those dialing in.
+All too often, we hear,
+should I build this internally
+or should I buy something out of the box?
+With APIs now, it's increasingly easy to build
+really bespoke AI-powered solutions,
+and at the same time, there's a lot of great solutions
+out of the box.
+Nicollin just walked through one with you today.
+So with that said, we'll start with you, Don.
+How do you think about this notion of build versus buy
+and basically deciding which path to go?
+Do you go both, walk us through that thought process?
+Yeah, no, I think it's a great question.
+I think when we first started this generative AI wave,
+a lot of organizations, especially financial services companies,
+went through a decision, like should we leverage APIs
+and build our own custom wrappers
+or should we partner with a company like Anthropic
+and leverage these enterprise solutions?
+There's obviously trade-offs with those.
+I think for us, we were actually very intentional
+that continue to innovate on the UI layer
+and all these different sort of capabilities like Canvas
+and things of that nature, connectors, et cetera, et cetera.
+It was going to be really challenging, right?
+I think companies like Anthropic
+are just moving at such incredible velocity
+with respect to innovation.
+We wanted to ensure that our internal developers and engineers
+were focused on our most proprietary
+and specific organizational solutions.
+So for us, it made a lot of sense to more so partner
+versus try to build our own custom ones.
+And let's leave the custom integrations and solutions
+for those things that are really important for us competitively.
+Thanks, Don and Michael.
+How do you guys think about that, Adisha?
+So for those in the hedge fund industry at least,
+I think we're pretty well known for having a big focus
+on building things.
+We hire amazing technologists
+and we give them the opportunity to build great things.
+And so the instinct when something comes along for us
+is to build the best version of it ourselves.
+But resources aren't infinite
+and with great people comes big opportunity costs.
+And so we always think hard about build versus buy.
+What I think is different this time
+and I think Don alluded to it
+is the speed at which the technology is changing
+and with that speed comes a different balance
+between build and buy.
+To be able to build and deploy at that speed and scale
+that some of what's being offered in the commercial market
+can provide is often somewhere between
+difficult and impossible internally.
+So that shifts our calculus.
+We're still doing both
+and we're being extraordinarily deliberate
+in where we choose to build
+and where we choose to buy.
+Fantastic. And yeah, we hear that.
+So often as well when they'll develop,
+partner will develop an internal AI chat
+and they'll share a feature that they're particularly proud of
+and by the time we meet with them
+you're almost afraid to let them know
+it's like that's already a thing of the past
+and look at this, this and this
+that's already been developed.
+So I couldn't agree more.
+Recognizing you're all big firms and leaders
+in your respective spaces
+another huge challenge we hear about
+is this change management
+and driving this kind of transformation at scale.
+It's one thing that this technology can do cool stuff.
+How do you actually get people using it?
+So when you think of like transformation
+besides that you're operating at
+and Don I'll start with you obviously
+how do you think about
+practically driving adoption
+with technology like this
+when you've got so many different departments and employees
+to think about? Yeah, no, for us
+our AI strategy has been pretty everything
+everywhere all at once.
+So we actually treat our AI strategy
+as a portfolio of initiatives.
+So I think we started with a lot of folks
+on targeted use cases specific to workflows
+or certain business domains.
+We had measurable value in production and that was great.
+We certainly realized that
+we wanted to raise the floor and the ceiling
+of our aspirations by really democratizing
+and empower all of our employees
+with AI tools and so there's multiple
+tools that we're really leveraging
+to do that. And then we're actually
+also focusing on reinvention.
+So like business leaders at the top are really
+looking at each of their respective domains
+to understand how AI
+agentic AI and these new paradigms
+can actually help us re-anchor our aspirations
+of how we can transform in the velocity
+for us to do it. And so for us to do that
+I mean again very very pervasive
+tons of hands-on
+training
+and hackathons all these different
+things that you actually have to do like get in the trenches
+to really help people understand
+what these possibilities are. There's
+mindset shifts that are related to that that I think
+maybe we'll touch on later in the discussion
+but it really has been kind of a full-court
+press that's complimented by
+both a top-down commitment from
+our CEO and his executive leaders
+but again this bottoms up sort of empowerment that
+goes alongside that.
+Thank you Don and Lloyd you have a bit of a
+different challenge and you're working
+with the employees internally but also
+of course the portfolios that
+you that you support. So how do you guys think
+about scaling this and driving
+that transformation at the portfolio level
+realizing that's a lot of different companies you got to help
+train and educate. Yeah, yeah for sure
+so I mean I think a lot of what you said
+resonates Don. So we have 50 companies
+about 120,000 FTE across those companies
+all of our companies look a little bit similar
+and mostly verticalized software platforms
+so what that's
+enabled us to do is really sort of bring transformation
+at scale to that group so that starts with
+a central effort from HG we have
+20 AI specialists internally supported
+by about 150 or so kind of contractors
+and close partners
+and we've been really driving that central change
+across the portfolio
+it's also allowed us to experiment with
+lots of different tools, lots of different initiatives
+and really see what works quickly across that sort of laboratory
+and understand what the best processes
+are but I think
+the top down point has been absolutely critical
+so we've been kind of systematically
+working with each of the leaders of our portfolio
+getting them engaged, getting them hands on
+and then there's also
+the piece I'd add is that we're really trying
+to be disruptive in the way that we think about this
+so you know rather than
+retrofitting existing processes
+and adding some AI we've re-engineered
+a lot of our functions so if I take
+software engineering for example
+on average across the portfolio
+we're now measuring about 30% productivity
+gains in software engineering
+we have some companies
+who have taken their development squads down
+from 9 people to 2 people
+so getting really material leverage
+we have one company that's deployed
+1,000 instances of an
+agentic software engineer so they've kind of added
+50% product capacity to their engineering team
+and that's the sort of reinvention
+that we're now sort of driving out across the portfolio
+I should say there what we're not
+doing is taking out any cost
+what we're doing is then
+reinvesting in
+productivity basically
+clearing down tech debt and also building
+AI products and that's the other key focus for us
+where we're seeing a huge amount of
+transformational value through embedding
+the Anthropoc API but other solutions as well
+into our core software solutions
+and that's adding material growth
+to some of our businesses already
+Thank you Lloyd and
+on the topic of change management
+this also comes up a lot
+with our partners how do you think about
+hey this technology
+there's a lot of it that scares me
+and my employees might interpret this
+as something that could do their work
+and how do you
+tow the line there in
+empowering them to use it
+while also recognizing that there's some fear
+on is this going to kind of do
+my job for me so
+we think about like the cultural
+implications of the firm
+and how do you make this a part of the culture
+and so Fro this one's for you
+because I think Mbimm's done a masterful
+job navigating this
+how do you
+I guess starting from Nikolai but as you
+as a senior portfolio manager in your teams
+how do you see this fitting into the culture
+of the firm and becoming
+just a core part of how you guys operate
+I mean starting with the top
+down perspective obviously very important right
+I mean that's really driven it and I think
+we had
+focus on tech for a long time we've been
+driven organization now we've
+taken a journey from moving from
+infrastructure to the cloud
+having data and snowflake
+integrating cloud for enterprise
+and being able to really chat with the data
+and that fits very well with our
+quantitative nature and our
+inclination to use data right so I think
+from a cultural perspective it's a very good fit
+and I'd say in my team
+for instance a lot of us
+are really introverted right and
+we like to sit down and
+call them and do things and
+I think just having cloud and having
+the projects that we can now
+build assistance and just share and
+collaborate on it it's just
+really accelerating
+the cultural shift that we're seeing
+I think that's super fascinating and I'll also add
+that being a sovereign wealth fund with a
+single owner is just
+having AI into the organization is
+just such a massive enabler for us
+because we can do a lot of stuff with this
+technology that all this just can't write
+so we're not hampered with
+client and customer
+dynamics so we
+are really open
+and lean organization with a
+collaborative culture and we're just
+700 so this is just
+fantastic thank you for
+I really appreciate that
+this idea of the mystifying
+what this technology is all
+about at the individual employee level
+is so critical because
+so quickly you can address
+those concerns or fears
+about a cultural level because very quickly
+they see oh this is just a great assistant
+if you will it's a great partner
+when I wake up and I start my role
+in helping me do my work more
+effectively so it's wonderful to hear that example
+yeah I think JP I think it's a great
+point I think we were actually very intentional I think
+very early on in this journey folks would talk
+about you know AI is not going to take your job
+with someone using AI will
+and so we wanted to really
+address that head on and ensure that as many
+employees as possible and we were
+intentional about every employee having multiple
+solutions and then not just that but getting
+the training involved helped them feel
+even more empowered I thought that was
+really critical to your point to like
+get through some of the all of the fun
+that might be a little bit of a headwind
+awesome thank you Don and often
+times I'll laugh because even
+when partners ask like you know how
+do I train how do I build
+these curriculums
+to drive adoption
+that's Claude and jokes aside
+whether it's Claude or another tool you're using
+these tools are very good at that
+sort of task we're like here's my firm
+and for those dialing in same applies
+here's my size here's what we do
+I want to build a simple training
+program for my employees maybe they've
+got three hours they'll spend over the next two weeks
+how would you break it up
+what would that training look like I'm telling
+you if you do that exercise when you go home
+it'll be a beautiful beautiful output
+and I give you a double down on that
+if your staff
+say I don't know
+what to do I don't know where to
+start tell them to describe
+their job briefly
+and ask
+the AI
+how I start working with this
+what are a few things I can try
+it
+actually works wonders I love
+that example because I'll even go so far as to say
+I've got two little kids for instance
+a four and a two year old
+and
+if I'm looking for an activity to do on the weekend
+I'm not very good coming up with those
+but I'll ask Claude but I'll do one better
+I'll be like Claude I want you to optimize
+the following prompt and I'll be like I need
+to come up with activities for my kids
+and then Claude will rewrite it I'll copy paste it
+and then I get what the world's greatest
+to do's
+so that's another good hack ask
+Claude to write your prompts for you
+but deciding where to start
+is another thing we hear a lot about
+the folks in the audience some of you are smaller firms
+a lot of you are massive firms
+but okay there's a lot you've heard a lot
+from this group transformation
+across the org top down leadership
+I'm going to start with Michael again
+here where do you
+for the folks in the audience if we have to start
+somewhere like what's the use case
+what is the first place they start
+if they're starting to clean slate
+what would you suggest
+so it's incredibly
+tempting
+to look for a first place
+to start
+and my advice
+would be to resist that
+temptation
+your
+colleagues
+I don't know that they know
+more about how best to use the tools
+they certainly don't before you give them the tools
+but once you give them the tools
+they will
+discover
+things to do with those that you
+never imagined
+so we're a pretty decentralized place
+we are
+a place that wants
+to make
+every one of our colleagues better
+using AI
+so our core focus off the bat
+and what I would recommend to others
+is get
+really easy to use tools out there
+let people
+figure out what they're doing and then pay attention
+help accelerate the spread
+in some cases centralize
+as you learn
+but not as
+not as your first
+step
+I'll give one concrete piece of advice on that
+I think some people will do that
+they'll try something
+it won't work the way they'd like it to
+and they'll abandon it
+what we found to be valuable
+is to encourage
+folks to come back
+to what's called every six months
+the rate
+at which the technology and the products
+are changing is just foreign
+to most of your colleagues
+and the degree
+to which they can improve for a particular
+use case in three months
+six months nine months
+can sometimes shock them
+and so pushing them
+to revisit is one
+we don't tend to be too pushy
+but that's one place where I think
+pushiness can pay off
+so I love that because
+I think to Michael's point I want to hear from the rest of the panel
+the notion of starting
+with one specific use case
+often times it can be like
+oh I'm going to build a bespoke analyst
+or risk mitigation
+agent
+we'll always advise
+similar to what Michael said
+first things first get this technology in the hands of your employees
+in a safe responsible way
+obviously you saw we have a solution
+out there and that should almost always be
+step one because so often
+I imagine this is true for everyone in the room
+it's only when you start using this stuff
+and honestly that's true in your personal life
+it's true at work that you really start to see
+what it's capable of
+I'm going through a process today
+I just bought a new house
+I'm getting home insurance
+I don't know when the last time you read a home insurance policy was
+they're brutal and they're like 400 pages
+and I get these three policies
+and I'm like even distilling the difference
+between coverage and umbrellas
+and all that and I work a lot
+of insurance companies so I should know all of this
+I just uploaded to Claude I'd be like
+give me a breakdown of what I'm looking at here
+and I'm sharing this as an example because
+those same aha moments
+and it gave me a wonderful answer
+the fastest way to create them
+is to give your employees access
+to a tool like Claude and again there's
+other tools out there but just to get
+in their hands in a safe and responsible way
+is huge
+that said I want to go over to Lloyd
+as you think about
+advising this group
+on they've got limited resources
+limited people where do they begin
+do you have any other thoughts on
+where they should start
+and let's assume for the purpose of this
+they've already enabled
+a Claude or an AI
+tool at the employee level
+what's next
+yeah so I was just going to add on to Michael's point
+I fully agree with
+I'm visiting the technology every three to six months
+the other point I'd add is
+really investing in your sort of prompt engineering
+or context engineering
+I think there's a massive difference between a sort of average user
+who puts a kind of a lazy prompt into Claude
+versus someone who really thinks about that context
+so I think finding those people
+who sort of become power users in your organization
+and just have a sort of natural intuition for that
+can really help to accelerate if you
+put those people up as AI champions
+that can really drive a lot of change
+I guess on other use cases
+I mean the way we think about that
+is looking at those kind of
+high friction tasks where people
+do a lot of mechanical processing that are quite repeatable
+that are using structured data
+those are often sort of perfect candidates in your organizations
+for something like Claude
+so for us
+for the really critical decisions where
+it requires a lot of sort of careful thought
+and system two type thinking
+we'd maybe use Claude as more of a sounding board
+but for a lot of those sort of mechanical
+tasks that happen in all of our organizations
+it's kind of using Claude plus other automation tools
+to really drive
+transformation of those processes
+how we think about it
+One of my favorite
+questions asked
+I'm obviously going to ask it here
+for the purpose of the audience
+all of you have a lot of experience
+you've kind of gone through this
+you've applied it in your organization
+you've seen a lot of what works and a lot of what doesn't
+I'm going to start with Frode
+knowing what you know now
+what's all over
+what's one thing you would do differently
+I don't know about what I would do differently
+I think in MB we really nailed it
+in terms of getting it
+I think it's just maybe just start
+even before
+earlier
+that's what I would say
+this is something you just have to lean into
+and take on
+so I think
+move fast and make mistakes
+it's really the key takeaway
+if anything it's just
+be there
+Thank you Frode, Don, how about you?
+I'll lean into the do more faster
+but I think one thing we haven't touched on
+that I think that we focused on
+but looking back perhaps we could have focused on earlier
+was this notion of it's a true
+mindset and culture shift
+we talked a lot about democratization
+and a tool rollout
+but certainly this is more than just rolling out tools
+and giving people access
+and expecting like heart disease to be cured
+what we were very intentional about
+is understanding that this is actually a mindset shift
+as well so I think a lot of people
+look at like a clot or a chat CPT
+they see a text box and like oh this is like Google
+I should just like put in one question
+I'm gonna get back and answer and then I'm kind of done
+I think the reality is this technology
+is really designed to be more like a human
+this truly is a companion
+and a co-pilot however you might describe it
+and so having a bit of a mindset shift
+and actually helping folks understand that
+I think is really critical we've been really intentional
+about partnering with
+folks from the outside to help our
+executives especially on that journey
+one analogy we've used is
+you know if you're going to Costa Rica with your family
+you could go to Google and ask for some recommendations
+or you could just prompt
+Claude or chat CPT and say hey
+you are the Costa Rica
+prime you know head of tourism
+I'm going to Costa Rica with
+my family of four my kids are
+10 and 12 one like surfing
+the other one like in a wildlife
+can you come up with a customized itinerary
+and so that's a very different sort of paradigm
+between those two tools
+and frankly for most folks that
+first start to engage that's kind of where they start
+but we think it's really important
+to kind of help people on their journey
+and if I could if we could go back we would maybe even
+started that even soon.
+Thank you Don how about you Lloyd?
+Yeah I mean I think an echo for it
+we are running at this very fast HD
+and I like to think we're sort of ahead of the curve
+we were building our first AI products back in 2023
+but if I could say one thing
+it would be run even faster towards this
+just the you know the exponential
+rate of improvement of models and the ecosystem
+that's developing around that is
+frankly unprecedented so yeah I would
+have said you know run even
+harder even faster.
+Micah?
+So we're pretty relentlessly data driven
+and one thing we do
+is we look at
+the usage
+intensity across the firm and what you see
+is a log normal curve
+something like this
+and the theoretical underpinning
+of that is it
+describes processes that are
+roughly the more you use it
+the more you use it so they're
+multiplicative and if you
+combine that with this bottom up view
+what you want to do
+is just encourage people
+to take more bites of the apple so here
+are two things that
+I do
+to help make that happen
+one
+at a lot of my team meetings
+I just make people do a lightening round
+of some strange AI
+thing you tried in the last week
+it worked it didn't work but 30 seconds each
+share with the team
+and
+two in this place
+the root to comfort
+and learning about how to use
+these at work doesn't have to
+only run through work
+and often
+people are more comfortable taking
+risk in their personal life
+it's not as potentially
+embarrassing at least in their minds
+and so
+encouraging people to experiment
+there I think can pay off
+as much or more
+than encouraging them to take those
+first jumps in the workplace
+yeah no I could not agree
+more and that's a huge huge
+thing
+I think benefit to
+driving
+adoption for everyone here today
+and dialed in
+if I had to recap
+what we've talked about today
+is enable
+so give your employees
+access to one of these tools
+train
+you don't have to be a master trainer
+or buy a million dollar training program
+you can work with some great partners
+of which we've talked touched on
+a few of them today
+and you can use a claw to help you build
+a training program to give them baseline training
+I'm not talking about a hundred hours here
+baseline how to prompt how to interact with these tools
+measure
+there's to Michael's point
+now I think he's doing in a really great
+natural way let's do a speed round
+at anthropic you can imagine
+it's like we are monitoring
+in a way are you using these
+tools to do a better
+job and like you're actually tracking that
+because whether or not
+you use them it's making sure
+you hold your employees accountable for building
+that muscle
+and getting used to using
+it I'll share personal anecdote
+and closing and Michael touched on
+this sometimes folks are more comfortable
+using this
+technology in their personal lives to see what's capable
+of them work I have a
+two-year-old son who has a lot
+of medical
+concerns
+and the
+in learning to navigate what his challenges
+were and what we could do for him
+the hospital sent over 1100 pages
+of notes
+from the NICU
+from our neurologists
+and it's
+very hard to make sense of all of it so even
+when you talk to different doctors
+it's they all give you different answers
+and
+I took all of this and I uploaded a clot I go
+to the doctor to help me understand what's happening here
+and I took that timeline
+and I'm not suggesting
+Claude's a doctor by any means
+I just took that timeline
+1100 pages by the way
+and I took it back to our doctor
+does this seem right
+help me understand what happened here
+and what I can do about it
+and literally the doctor's jaw dropped
+he's like how did you come up with this
+and I'm not sharing that story because
+look how great Claude is
+when it has such a meaningful impact
+on your life personally
+you can see my inclination
+irrespective of working to try
+using this technology
+and work goes up dramatically
+so as a takeaway
+if you don't have one of these apps
+these AI apps in your phone today
+I'm gonna say step one
+use it, set a goal for yourself
+use it, I don't care if you're taking a photo of a tree
+or you're analyzing life insurance statements
+or policies, use it a couple
+times a day, build the muscle
+and in turn you'll be better equipped
+to do that with your own employees
+so I want to say a big thank you to our panel
+I really really appreciate it
+thank you for everyone who dialed in and joining us today
+and for those seated, stay put
+we'll have a chance for questions

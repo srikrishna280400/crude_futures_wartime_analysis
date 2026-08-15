@@ -1,0 +1,296 @@
+In today's YouTube video, I'll be going over how I built an entire hedge fund system using
+Claude. This is a full longshore equity fund that scores every single stock in the S&P 500
+across eight quantitative factors and 27 sub-factors underneath. This hedge fund will
+pull SEC filings and insider transactions automatically, run AI analysis, let you approve
+or reject trades, and even connects to a real broker. Now I call this analyst
+insider hedge fund Jarvis. You can ask him anything about your portfolio, stocks in the
+universe, and he even gives answers based on live data. So in this video, I'll walk you
+through how traditional longshore hedge funds actually work. And then I'll show you how to
+build every single step in that layer from scratch using Claude. Now I've studied math
+and economics at UCLA and spent three years in investment banking at Raymond James. So I've
+seen exactly how institutional firms actually approach the markets. Now obviously you're not
+going to become a one-person Citadel, but you can use the same systems and frameworks that these
+firms use and adjust them for your own trading styles, portfolio size, and risk. It's important
+to remember that no one strategy works forever. So you'll constantly need to adapt and change
+to the market as structure shifts. And that's actually a big part of what the system is designed
+to do. Now as always, this video is not financial advice and I'm not guaranteeing any profits
+in this video. This video is strictly educational for you to potentially use and adopt to your own
+trading styles and strategies. So before I show you the system, let me first go over what we're
+actually building here. Most people hear hedge fund and they just think it's a rich guy picking
+stocks. But the first thing to know is that there's actually a bunch of different types
+of hedge funds. You have trend following funds, stat ARB, global macro, event driven,
+and even activist funds. But the most common one by far is longshore equity funds,
+which is what we're building here. Basically, a longshore fund does two fundamental things.
+It long stocks that it thinks will go up and then short stocks that it thinks will go down.
+So if your model says Intel looks strong, you would buy Intel and then you would shore
+another stock that looks weak. And the reason why it's called a hedge fund is because the
+short side is supposed to protect you from the market in case it drops. This way,
+your actual return comes from picking stocks on both sides, regardless of whether the
+market actually does well or not. But now picking the stocks is just one piece of the puzzle.
+Behind the scenes, a fund like this has a ton of different infrastructure that's actually running
+the entire project. So the very first thing you need is a research layer. Before you ever buy
+or sell anything, you need to score all the stocks in your universe on a bunch of different
+factors. These are things like momentum value, quality, and instead of buying activity.
+So you're not just looking at price charts, you're also pulling 10Ks, earnings reports,
+you're reading SEC filings, you're figuring out what other funds are doing,
+basically tracking all the activity related to this position. And this is exactly what we're
+going to have Claude all do for us. So after that most important research layer is done,
+you have construction. This is what helps actually build out the portfolio. So how much of one
+stock do we buy, making sure we're not overweight in a specific sector. Then once we construct
+the portfolio, we have risk. This risk management layer is just where we have pre checks and circuit
+breakers to make sure nothing goes terribly wrong. And then on top of all this, we have execution
+and reporting. This is where you can connect to a real broker and place trades with limit
+orders to control slippage. And most importantly, tracking your PNL to figure out why you either
+made or lost money. Diving right in, we have our Jarvis analysts right here working at our
+hedge fund, right when we open the dashboard here, we can see that there's over 500. So 503
+stocks scored inside our universe. We have 107 long candidates and 96 short candidates with 18
+positions currently open. There's around 50,000 insider events. We can see CEO CFO buys as well
+as cluster buys. And remember again, this is all updating with live data. So it's automatically
+pulling in reports daily along with price action. So this is just basically a ton of data
+that you would never be able to materially go through manually as a single person. He'll be able
+to answer basically any question based on live data from our system. And just like I said,
+in the beginning of the video, this whole system is built with Claude. So I'll show you how to
+build it with Claude. And then whenever we ask questions, it's also using the Claude model.
+So it's kind of like a two way intelligence street where we have all the data already
+analyzed amassed. And then we have what's basically the top shelf AI model Claude here,
+Opus 4.6 or Opus 4.7, depending on what you prefer to actually answer questions with this data.
+So if we just ask a simple question, like give a summary for today, and then go ahead and click
+ask Jarvis, what we have here is basically our entire universe scored. So we have our portfolio,
+specific metrics around our portfolio, sector performance and how our long candidates are
+performing. So it's basically not hallucinating data since we're literally feeding all this
+data to the Claude model, just so it has a source to understand our criteria and context.
+We can also ask portfolio specific questions, like why is AEP my top long currently? And then it'll
+give some reasoning saying that it has a perfect composite score, strong overall performance
+across momentum, recent price strength, financials. And then below this, we have more complex
+valuation models like the Piotrowski scores of 6.0. We also have an Altman D score of one. So
+obviously there's some distress risk, but generally speaking, this is a fairly strong position,
+at least what Jarvis thinks. Now if we want to ask more institutional questions, something like
+which factor is contributing the most to portfolio variants right now and are we crowded with the
+rest of the market on it? And now this here is cool because it's actually combining two
+different systems in one answer. It's pulling from the factor risk model that we've built,
+and I'll show you how to include this, as well as crowding detection,
+which will basically tell you not just where your risk is, but whether everyone else is
+making the same bet. Now for an actual hedge fund style question, we can ask something like
+did our tech picks be XLK over the last 90 days, or are we just long in the sector?
+This is a real question since it will give you exact numbers showing your stock selection alpha
+versus just writing the sector. And here we can see that our IT picks generated a return of
+19% over the last 90 days, while the sector ETF only returned 10.9%. This shows that we actually
+outperformed the sector by close to 10%. And more importantly, our specific picks actually added way
+more alpha than just holding the ETF. Now there's obviously countless questions you can ask, like
+given today's VIX level of 16.9, are we positioned correctly? This is more so meant to just help
+give some more context and answer specific questions you have. But where all the
+sauce is basically coming from is inside this research tab here. So this research tab is probably
+where you're going to be spending most of your time. It's going to basically show you the top 30
+and bottom 30 stock picks by composite score. And you'll even be able to see all eight factors
+broken out. So momentum, value, quality, growth, revision, short interest, etc. institutional.
+So green means strong on the factor, red means weak. And this way you can just visually scan
+what is weak and strong. But if we scroll down here, we can actually see the top 10 long and
+short candidates. So 10 on each side are already adjusted for sector neutrality, beta and liquidity.
+And now before I go into the top 10 long and short candidates, what I want to cover is this
+portfolio optimizer here. This is a toggle where you can switch between two different methods.
+The first here is MVO, which stands for mean variance optimization. So basically Markowitz,
+this will just mathematically find the optimal portfolio that maximizes your expected return
+for a given level of risk while factoring in estimated transaction costs. This is what actual
+quant funds here use. But on the other side, you also have a simpler conviction till approach
+here with conviction. This is where you just overweight the highest scoring names.
+Now you can go ahead and compare these two portfolio optimizers to see what you want to
+stick with. But generally speaking, MVO would probably be your best bet. Now scrolling down
+again to the top 10 long and short candidates, this is the part where I think is the most
+important. So for each candidate, we can see AEP as a top long candidate, we have three buttons
+approve, reject or reset. So the system or fund in this case gives you recommendations,
+but you make the final decision. Now this is actually how real hedge funds work. So you have
+analysts who go ahead and do the research and generate trade ideas, which is what we're doing
+here. Then there's a PM or portfolio manager who reviews every single trade idea and decides
+whether it actually goes into the book or not. So the analysts might say things like,
+I like the stock because, you know, XYZ, but the PM could still flat out reject it if they don't
+like the name. So this is exactly what we're doing here. Jarvis and the quant model are basically
+your analyst team generating recommendations and you act as the PM. But again, I'm modeling this
+to be as close as possible to a real institutional fund. And now diving deeper to the tickers,
+we can see the positions, shares, and then we have some additional factors here. I touched on
+this earlier, but we have Piotrowski scores as well as Altman Z scores. So this is just basically a
+nine point financial health checklist, things like positive cashflow, declining debt, rising margins,
+and the Altman Z score here is basically just a bankruptcy prediction model. And then out below
+all these tickers, you can actually run an additional cloud analysis. This is where the
+system is going to basically send over the company's financial statements. So 10 Ks, 10 Qs,
+along with the latest insider transaction history, earnings reports, live data to cloud to come out
+with a full breakdown for you. So you basically understand this trade idea. So inside this financial
+analysis here, we have scoring earnings qualities, balance sheet health, flagging any red flags or
+green flags. Then below this, we have risk factors. And then finally, we have insider
+activity. It's looking at all the form for transactions over the last 90 days and interpreting
+them. And then you'll know of someone like, you know, the CFO bought 50,000 shares on the open
+market. This is just basically having a research analyst that reads every single filing for you
+and summarizes what actually matters at scale. So once you have all your positions here approved
+either short or long, see, we would potentially short Coinbase, you would then move on to
+risk management here on the next tab. And just like everything else, it's going to update
+live based on your current portfolio. So up top here, we have circuit breakers. These are
+horizontal bars showing how close you are to the trigger levels. So we have things like
+daily loss limits, weekly loss limits, and drawdown from peak. Right now, everything's green
+and yellow-ish because we're well within the limits. But if we hit something like 2.5%
+daily loss, it's going to shut down the system. And then if we hit 8% drawdown from peak,
+it's going to stop the system completely as well. Now below this, this is basically what
+will make our system a lot more institutional with first the factor risk contributions and then
+marginal risk contributions as well. So this donut chart here is basically breaking down
+your total portfolio risk into two pieces. Factor risk, which is green here, is basically
+the systemic part that comes from exposure to things like momentum and value. And then
+specific risk here in the blue is basically stock specific stuff that basically has nothing
+to do with any factor. So right now it's showing 20.5% factor, around 80% specific. And this is what
+you technically and typically want to see. What this means is just that our risk is mostly coming
+from individual stock picks, not from one big factor bet. And it fills the other way around.
+So if these two were flipped, you'd basically just be making a leveraged bet on one specific
+factor. Now down here, we have marginal risk contributions. So this tells you which
+individual stocks are adding the most risk to your portfolio. Then we have factor exposure spread,
+stress tests during periods of high drawdowns, and then finally correlations as well. This shows you
+how correlated all your positions are with each other. So if you're in a bunch of semis positions,
+it's basically super correlated, right? If everything in your book is moving together,
+you're not actually diversified in that completely goes against how a hedge fund would
+operate. Generally speaking, you want to avoid just making one big bet. So this system flags any pair
+with correlation above 0.85. Now that we've covered risk, what's more important to some people,
+obviously is performance. So on this performance tab, we're able to see things like our equity curve,
+how much we're outperforming spy in our portfolio. Next, we have a monthly returns grid,
+which is the standard institutional tear sheet format drawdown chart. And then down here is PNL
+attribution. So now this is something that retail traders typically would never see as breaking down
+your daily return into four components. First, we can see how much came from market exposure beta
+here. Then we can see how much came from sector allocation, how much came from your factor
+tilt and then finally alpha. This way you can see if you're actually generating alpha from
+stockpicking or if you're just writing the sector up. And just to double click on that,
+once we go past the best and worst contributors, we can actually see sector relative performance.
+And this is how we're able to see if the stocks we picked were better than the sector average.
+This would basically confirm if we're actually picking winners or just writing the market.
+And then we have some final data points like turnover analytics showing how much we're trading
+and a few other things, including a Claude weekly commentary. So at the end of the week,
+you can basically hit a button and have Claude basically summarize a weekly performance.
+And then now finally here we have the execution page, which you can think of as basically your
+own trading desk view. So the idea is that inside the research tab, whenever you hit execute or
+purchase, you'll see the recent trade basically hit here and then also get sent over to your
+broker. You're able to see a log of everything, including the ticker, how many shares, limit
+price, fill price, slippage and basis points. And then for the short side, it actually checks
+whether each stock is actually available to short before it tries to place the order.
+And then we have our last page here, which is the letter. And you can think of this as more so
+for fun. This is a daily investor letter written by Jarvis in the style of an actual LP letter.
+It talks about the day's performance, which positions contributed, what the risk picture
+looks like as if you're communicating to real life LPs. But honestly, it's just very helpful
+for your own trading journal to force you to think about what you did, why you either made
+or lost money in the market that day. Now, let me walk through how this whole system
+is built. Because even though it might seem complex, it's really just seven layers stacked
+on top of each other. So each of these layers will be built by seven different prompts,
+which I'll show you. And each layer or prompt will basically depend on the one before it.
+So if you want to follow along on the prompts, you can pause at any time in the video,
+simply take a screenshot. And if you send it to Claude, it'll give you the text version of
+my prompts. And this way you don't have to type anything. Obviously, my goal is try to
+make this as accessible as possible. But if you do want to go deeper, I have a community
+in the description, which is the largest AI trading community right now. Currently,
+all of our active members are using and testing Claude to build out automated trading bots,
+quant systems, and just analyst frameworks. So inside I have detailed step-by-step guides
+on everything ranging from analyzing, reviewing trades, backtesting results,
+and even coming up with new strategies. And it's all structured so that even
+if you have zero technical knowledge or coding skills, you'll still be able to fall
+long and build real automated trading systems with Claude that just weren't possible for retail
+traders before. I truly believe AI and by extension, Claude is going to be the thing
+that finally closes the gap between retail traders and investors and institutions.
+And if you're not using Claude, at least somewhere in your trading process or frameworks,
+you're going to fall behind people that actually do integrate and implement it.
+Now for the prompts themselves, there's basically three ways to go about building
+out this entire project. First, you can go ahead to, you know, Claude.ai,
+which is their web app, and basically type in each prompt one by one. Then with each prompt,
+you would get the created file and basically string them together at the end yourself.
+Now, obviously, this is probably the simplest way to go about it, but potentially the most
+complicated since at the end, you do have to essentially orchestrate all the different
+moving components. So another option you have here is Claude co-work. This is
+basically the same Claude, but now downloaded to your desktop so that whenever it creates
+files and folders for you, it automatically gets saved onto your local computer. This is
+going to make it a lot easier for Claude to basically go in, make any edits and changes to
+specific files, features or components. And this way you'll have your structure already organized
+for you all in a single project. But in my opinion, the absolute best way to go about
+building out this entire project is using Claude code, which is Claude coding agent.
+So this way this Claude code agent will have to live inside an IDE like VS code here,
+but it's going to be able to read all your files, make any necessary changes or adjustments,
+update files, make sure everything's structured properly. This way it'll make it as simple
+as possible for Claude to go in and create this robust hedge fund system for you. So to
+actually use Claude code, it's a tiny bit more complex than Claude or Claude co-work.
+So what you need to do is first download an IDE like VS code here,
+but once you have this down, you can go ahead to extensions here on the left hand side and then
+download Claude code. So once you go ahead and download and enable it, you should see Claude code
+just on the right hand menu here. And then with this pop up window, you're going to be able to
+essentially input the prompts and Claude code here is going to help you create the whole
+entire folder for you. So all the necessary files you need and logic associated with those
+files. So now heading back over to our diagram, let's now go over all the layers in prompts.
+So at the very bottom, we have our base layer, which is data infrastructure.
+Now this is where we're going to be connecting to five different data sources to get all their
+information and basically shell out our project structure. So inside this prompt here, we have
+first the project structure where you can see how our project is going to be built.
+First is Yahoo Finance, which gives us daily prices for every stock in the S&P 500. It's also
+going to pull the financial statements and any other important documents. But if you want
+more detailed data across more time frames, I would recommend a paid source like Polygon
+or Alpha Vantage. It also connects to the SEC Edgar, which is the public database.
+And this is where it gets really data heavy. So the system pulls 10 Ks, 10 Qs and 8 Ks for
+text analysis. But the big one is form four, which are all the insider transaction filings.
+Then it pulls 13 F filings where we can basically track what every other fund is doing
+like Citadel point 72 and Bridgewater. After this, we're going to get short interest data.
+We have analyst estimates. First run takes about an hour or two just because it's downloading
+everything from scratch. But after that, it's basically a 10 minute daily update that just
+grabs what's new since yesterday. Now on top of all the data sits the scoring engine here,
+which is our second layer. This will basically take everything and distill it into eight factor
+scores built from 27 underlying sub factors for every single stock. So first we have momentum,
+which is measuring if the stock has actually been going up. Now this isn't just simple price
+change. It avoids short term reversals, looks at acceleration adds relative strength versus sector
+ETFs, and it uses 52 week high proximities as signals. Next, we have value, which is how cheap
+the stock is relative to its fundamentals. So this is where we use all of our downloaded documents.
+Then we have quality, which looks at earnings and actual real cash flow. Following that we have
+growth, estimate revisions, short interest, insider activity, and institutional flow. So all
+eight of these factors are basically scored and ranked within its own sector. Then all eight get blended
+into a composite score, which is basically how you essentially rate stocks. And the final piece
+after all of this is crowding detection to make sure that factors themselves aren't getting crowded.
+Now after the scoring engine, what we have is our AI analysis. And this adds a whole
+another layer of complexity and takes our system from just being quantitatively focused
+to something that has real analysis potential. This is where we can hook up our existing system
+to cloud and have it analyze specific tickers based on the information we've already pulled in
+from the scoring engine and data infrastructure. So you can think of these two as more quantitatively
+focused and then this AI analysis brings more fundamental qualitative natures to our system.
+What you first need to do is head over to cloud developers and get your own API key. And if
+you do want to use chat GBT for cheaper compute that works too. And then what you would do is
+just paste in your API keys to the ENV file that's created inside this prompt. So for this
+prompt, it's going to run four main analyzers, the filing analyzer, which sends all the financial data
+and has cloud do a forensic review. The risk analyzer reads entire risk factors from the
+latest 10 cues. The insider analyzer takes the parsed form for data to have cloud interpret
+patterns. And the earnings transcripts also get analyzed. And each analysis gets cash,
+so you only have to pay for it once per filing period. Then after the AI analysis layer,
+we have portfolio construction. So this is where we take both the quantitative scores
+as well as qualitative fundamental analyses into our portfolio. So our portfolio builder uses
+the market with framework where you mathematically find the best balance between expected return and
+risk. It picks the top and bottom names within each sector. So your sector neutral sizes positions
+based on conviction and volatility adjust for beta. It checks that you can actually trade
+the size without moving the price and even budgets turnover. Then once we're done with
+our portfolio, we need to handle risk. And this is where the risk management layer comes in.
+You can think of this as sitting at the very top above the portfolio above analysis above
+scoring. So that even if all of these check out quantitatively and qualitatively,
+the risk management can still veto or make sure that your system doesn't fall apart,
+despite what these other layers are telling you. So there's going to be a comprehensive factor
+risk model that decomposes your total portfolio risk into factor versus specific components.
+Then for risk checks before every trade, it's going to check a pre trade veto.
+It's going to make sure that your circuit breakers aren't hitting on your daily or weekly max drawdowns.
+It's going to check your factor monitor correlations, tail risks, stress tests,
+as well as risk states. Then after we make sure our portfolio is properly constructed
+and has limited risks, we can handle execution. This is where we can basically connect to Alpaca
+and place limit orders with slippage tracking. So before you run this prompt, you're going to
+need to sign up for an account with Alpaca, which is an API for his broker that lets you
+place and execute trades directly from our system. So after you sign up, you'll get an API key and
+secret key, which we'll place in the same exact file where your anthropic API key is.
+So this execution prompt connects to Alpaca and places limit orders with slippage tracking.
+You'll be able to see things like the order executor, short availability and order manager.
+Then once we verify that we can actually place orders in that it works,
+we can handle reporting and dashboard. Now this is the tail end of the system where
+we're able to log our trades, see our performance, update everything we need to,
+and basically view all of these other layers inside an all-inclusive dashboard.
+So the prompt here is first going to build the reporting engine and then finally the
+dashboard that has all the information. So for the reporting engine, it's basically going to
+include a daily P&L attribution, when loss analytics, sector relative performance,
+additional turnover analytics and a tier sheet. Moving on, we have the streamlit dashboard
+that's actually going to show everything. So in our case, the portfolio, research,
+risk, performance, execution and letter. So you can think of this as basically tying everything
+together into one final package that you yourself can view to understand what's happening at a quick
+glance. Now if you found this video helpful, make sure to like, comment and subscribe
+as it greatly helps out the channel. Cover everything regarding AI trading and how to
+actually use AI in your own trading portfolio and strategies. And like I mentioned in the
+beginning of the video, if you are interested in diving a little bit deeper and getting full guides,
+as well as an active community, all censored around using AI and Claude,
+click the link in the description for my school community.

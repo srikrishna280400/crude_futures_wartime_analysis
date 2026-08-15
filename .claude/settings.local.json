@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/pip install *)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python)",
+      "mcp__mcpm_brave-search__brave_web_search",
+      "WebSearch",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/data_validator.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python -c ' *)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/primitives_engine.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/window_pattern_engine.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/triplet_miner.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/conformity_engine.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/anomaly_engine.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/day_type_engine.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/cross_factor_engine.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/synthesis_engine.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/dashboard_engine.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python -m http.server 8765 --bind 127.0.0.1)",
+      "mcp__mcpm_playwright__browser_navigate",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/update_all.py --list)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/update_all.py --from 7)",
+      "Read(//tmp/**)",
+      "Read(//home/srikrishna/.venv-wsl-new/lib/python3.12/site-packages/**)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/update_all.py --from 8)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/backtester.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/statistical_rigor.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/cross_asset.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/regime_classifier.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/risk_management.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/dashboard_engine_v3.py)",
+      "Bash(/home/srikrishna/.venv-wsl-new/bin/python fix_template.py)",
+      "mcp__mcpm_filesystem__directory_tree",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('checksums keys:', len\\(d\\)\\)\")"
+    ]
+  }
+}

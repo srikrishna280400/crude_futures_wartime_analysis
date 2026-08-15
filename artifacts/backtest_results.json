@@ -1,0 +1,35 @@
+{
+  "overall": {
+    "total_trades": 3892,
+    "win_rate": 49.306269270298046,
+    "avg_win": 0.9482745162523918,
+    "avg_loss": -0.832615642287687,
+    "profit_factor": 1.115655350608635,
+    "expectancy": 0.04846987498632087,
+    "sharpe": 0.3633405243871161,
+    "sortino": 0.7882097930519059,
+    "max_drawdown": -889.0696224630116,
+    "avg_trade_pct": 0.04846987498632087,
+    "median_trade_pct": -0.010894375662899967
+  },
+  "monte_carlo_ci": {
+    "sharpe_ci_lower": -0.1156421005153518,
+    "sharpe_ci_upper": 0.6819784675446391,
+    "sharpe_median": 0.36400863693858393,
+    "win_rate_ci_lower": 47.81539054470709,
+    "win_rate_ci_upper": 50.72006680369989,
+    "win_rate_median": 49.306269270298046,
+    "expectancy_ci_lower": -0.010563974511002888,
+    "expectancy_ci_upper": 0.11341270592662718,
+    "expectancy_median": 0.04589804790988304,
+    "max_dd_ci_lower": -14032.628953439384,
+    "max_dd_ci_upper": -65.21520764895165,
+    "max_dd_median": -404.1966146764139
+  },
+  "n_signals": 93,
+  "n_trades": 3892,
+  "date_range": [
+    "2026-03-12 00:00:00",
+    "2026-07-17 00:00:00"
+  ]
+}

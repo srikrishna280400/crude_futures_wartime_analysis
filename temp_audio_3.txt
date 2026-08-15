@@ -1,0 +1,1395 @@
+The subject of today's lecture is hedging.
+So this is what hedge funds do.
+It's what almost everyone on Wall Street does nowadays,
+at least to some extent, say half the people on Wall
+Street do it nowadays.
+It was hardly done at all in the past.
+So first of all just to mention what a hedge fund is,
+a hedge fund is a firm that manages money.
+And why is it different from any other firm that manages
+money?
+Well, the definition of hedge fund basically has three parts.
+One is that hedge funds hedge.
+Now I'll say what that is in a second.
+Secondly, hedge funds use borrowed money in addition to
+their investor's money to buy assets.
+So they do what's called leveraging,
+which is going to be an important subject for the last
+few lectures of the course.
+And thirdly, they charge their investors very high fees.
+That's basically the definition of a hedge fund because they're
+supposed to be so good at what they do they can charge high
+fees and still get the investors.
+So what is hedging?
+Hedging is the idea that you want to cancel out some of your
+risks.
+So for instance you might know that a company is not going to
+default whereas the rest of the market thinks it is going
+to default.
+So you know the company is worth more than the rest of the
+market thinks.
+So you might be tempted to buy the company.
+But if the interest rate were to change, say you go way up and
+the company's paying has constant cash payments,
+if the interest rate goes way up and the company has constant
+cash payments, you could end up losing money
+anyway because the present value is going to go down just
+because the interest rate has gone up.
+So what a hedger would do is the hedger would say,
+I'm relying on my expertise as an evaluator to realize there's no
+default risk.
+I want to bet that there's no default risk in this company.
+It's not going to default.
+I don't want to bet on which way interest rates are going to
+go because I don't know which way interest rates are going to
+go.
+So I want to hedge myself against that.
+So to take a, sorry I'm just starting here,
+a lot of hello.
+Sorry, hard to talk when everyone else is talking.
+So if you, so what does hedging a risk mean?
+It means no matter which way the risk factor goes,
+you're going to still end up with the same amount of money.
+So the first person to do this and call himself a hedge
+fund was somebody named Jones in the 1940s.
+And he was a stock picker who would try to find the best
+possible stock to buy.
+So before him people would say, okay, Ford is a great auto
+company.
+We're going to buy Ford.
+The trouble is that Ford may in fact turn out to be the best
+auto company but because the whole economy collapsed it may
+be that Ford collapsed with the rest of the economy even though
+it did better than all the other auto companies.
+So what Jones said is I'm not going to just buy Ford.
+What I'm going to do is I'm going to buy Ford and I'm going to
+sell General Motors.
+So that way I'm going to be betting not on whether Ford is
+better than General Motors and in addition whether the whole
+economy is going to go up.
+I only want to bet on whether Ford is better than General
+Motors.
+So if the whole economy goes down Ford and General Motors
+will go down together.
+So what you own in Ford, you won't own something as
+valuable anymore but what you owe by having sold General
+Motors short also won't be as valuable.
+So what you've bought and what you've sold will cancel each
+other out and you won't have lost any money.
+On the other hand, if Ford ends up doing better
+than General Motors you'll have gained more with Ford than
+you'll have lost with General Motors.
+So whether the economy goes up or down if the gap between
+Ford and General Motors stays the same you won't lose or
+win money.
+So you're hedged against general changes in the economy.
+You're only going to make or lose money depending on the
+thread between Ford and General Motors.
+So you've canceled out the economy-wide risk and you're only
+holding one risk which you really think that you've
+understood.
+So that's what hedging is.
+So I'm going to now show you that hedging is actually a
+slightly delicate thing.
+It's quite complicated and we're going to learn the
+technique of dynamic hedging.
+Now why is dynamic hedging so important?
+Dynamic hedging is so important because there's so many
+things that can happen in the future.
+And as I said, for example, if you hold a mortgage you may
+think the mortgage is more valuable because you know people
+aren't going to default and the rest of the economy thinks
+they're going to default.
+On the other hand, the value of the mortgage will
+change with the interest rate.
+So you want to protect yourself against the interest rate
+change.
+But it's not just the interest rate change.
+Over 10 years or 30 years, the life of the mortgage,
+there are going to be a huge number of interest rates
+changes.
+There'll be a whole path of interest rate changes.
+And the mortgage will be paying different cash flows
+along the whole path.
+And over 30 years, even if you only think of one
+change a day, there's an exponentially
+growing set of changes.
+So there's an exponential number of paths.
+You'll never be able to equalize your cash flows,
+you would think, over every single path.
+There are just too many of them.
+But dynamic hedging says you don't have to equalize
+over every path from the very beginning.
+You don't have to hold a portfolio at the very beginning
+that equalizes your cash flows by the end on every path.
+You only have to equalize your cash flow one step at a time
+and then dynamically change your hedge.
+So it's a much easier thing to hedge
+than it sounds at first glance.
+So I want to illustrate that because you can't know
+what that means yet until we see an example.
+So let's start with a very easy thing to understand
+the World Series where we started with before.
+So you have some expertise.
+In fact, there are other people besides you
+who have the same expertise, these other bookies.
+You all know the Yankees have a 60% chance of winning
+every game against the Phillies.
+And let's just assume for simplicity that the World Series
+is only going to take a couple weeks,
+the interest rate is zero over such a short period of time.
+You don't care whether you get the money now
+or at the end of two weeks, it's just so long as you
+get it.
+And secondly, and you can borrow or lend
+zero interest over those short number of days.
+And secondly, you know that the probability
+of winning is 60%.
+Now suppose that some naive person comes to you and says,
+I'm a Phillies fan, I want to bet at even odds
+that the Phillies are going to win for $100.
+So you're going to now get a payoff that's
+minus $100 at the end of game seven,
+assuming I counted right.
+So this is the start.
+So this would be game one here.
+So it's 1, 2, 3, 4, 5, 6, 7.
+So by the end of game seven if you played it to the end
+you would have made $100 if the Yankees won a majority of the
+games and you would have lost $100 if the Yankees
+didn't win a majority of the games.
+So how much is that worth to you?
+Well, obviously it's worth a lot more than $20
+because if they only played one game and the Yankees had a 60%
+chance of winning the expected payoff for the Yankees would be,
+that bet for one game would be $20 because in one game a 0.6
+chance of 100 and a 0.4 chance of minus 100,
+that gives you an expectation of 20.
+60 minus 40 is 20.
+However, we're playing a seven game series.
+The whole point of playing a long series is that the Yankees
+are more likely to win.
+They're better teams, more likely to win.
+And in fact we know that by doing this backward induction
+calculation we know that the expected winnings for the Yankees
+is $42.
+However, the Yankees you could lose $100.
+If the Phillies just got lucky you could lose as well as win
+$100.
+You don't want to face that risk.
+So what could you do?
+Well, the simplest thing to do is to go to another bookie
+and say, I want to bet on the World Series with this other
+bookie.
+And so if the bookie is willing to make a bet with you for the
+whole series, so the bookie has to be pretty
+sophisticated and do the same calculation,
+the bookie is going to let you bet however you want to at the
+right odds.
+So what would you do?
+So here you can win $100, there are only two outcomes.
+You can win $100 or you can lose $100.
+Now the odds of winning the game, I forgot to say,
+the series we figured this out before.
+Oh dear, what were the odds?
+I hope I have another one of these World Series things.
+Oh, right.
+So what are the odds that the Yankees are going to win the
+World Series?
+So four, do you remember what it was?
+Well, we know some probability P times 100 plus some probability
+1 minus T times minus 100 gives you 42.
+So P times 100 plus 1 minus P times minus 100 equals 42.
+Approximately that's 42, right?
+So we know that therefore 2P times 100 equals 142.
+So P equals 142 over 100 times 2, which equals about 0.71.
+So this other bookie would have calculated the odds are 71% that
+the Yankees are going to win the World Series.
+And we calculated this a few classes ago.
+The Yankees have a 71% chance of winning the World Series.
+Okay, so if you went to another bookie who could do this
+calculation, the other bookie would be
+willing to give you odds of 71% Yankees versus 39% Phillies.
+So you could just unload this whole bet and get $42 for sure.
+In fact, what would you bet with the other guy?
+What would you bet with the other bookie?
+What would you do if you could bet on the whole World Series?
+Somebody suggested that.
+He was sitting over there at the end of the last class.
+What would you do if you could bet on the whole World Series
+with the other bookie?
+What bet would you make?
+You know that the bet is giving you $42 on expectation.
+The trouble is some of the time it's giving you 100,
+some of the time it's giving you minus 100.
+You don't want to fix this risk.
+You want to end up with $42 for sure.
+How can you do that?
+Well, if you did minus 68 here, that would equal 42.
+Okay, and if you did plus 142 here, that would also equal 42.
+So could you figure out a way of betting with the other bookies
+142 versus 68?
+You win 142 if the Phillies win and you lose 68 if the
+Yankees win.
+That's not 32, 42, by the way.
+Okay, would another bookie be willing to give you this bet?
+What's the answer?
+The answer is yes.
+How do you know the other bookie would be willing to give you
+this bet?
+What is p times 42 plus 1 minus p times 42?
+It's 42.
+What's p times 100 plus 1 minus p times minus 100?
+It's also 42.
+So therefore what's p times this plus 1 minus p times that?
+Zero.
+Okay, so at the odds p and 1 minus p, this bet is perfectly
+fair.
+So the other bookie would say that's the odds 71 percent to
+39 percent.
+That's exactly what these odds are.
+So if p times this plus 1 minus p times that is 42 and p
+times this plus 1 minus p times that, that's obviously 42,
+that must be p times this plus 1 minus p times that is 0.
+In other words, at the odds p and 1 minus p,
+this is a fair bet.
+So the other bookie ought to be able to give you those odds.
+Okay, so that's what hedging is in its simplest form.
+We haven't had to do anything dynamic.
+Some guy's willing to bet on the World Series with you,
+so you know that he's done something wrong in his
+calculations.
+He's got the wrong p.
+So you can take advantage of the situation.
+You know that p is higher than he does.
+On the other hand, there's still God in the
+background and luck which might make the Phillies win.
+And so you don't want to subject yourself to that risk.
+So what do you do?
+You take the bet, the advantageous bet,
+but you put together with the advantageous bet a hedging
+bet where you're betting on the wrong team.
+The team you think is going to lose.
+Okay, but you're betting on the wrong team,
+but this time at fair odds on the wrong team.
+And so you're transforming your risky payoff,
+albeit with very favorable odds.
+You know, p we just said was 0.71.
+You're taking your risky payoff and turning it into a safe
+payoff of 42 no matter what.
+That's the essence of hedging.
+And in order to do that, you might have to bet the
+opposite way that you think is going to turn out.
+Okay, so there's principle number one.
+So let me pause and see if there are any questions for that
+about that.
+The idea is that there's something you know that you can
+take advantage of, but life is more complicated
+than knowing one thing, namely what p is.
+Life also involves all kinds of other things that might
+happen.
+You want to insulate yourself from those other things and
+concentrate entirely on what you know about p and 1-p,
+and therefore assure yourself of a bet of 42 no matter what.
+And you're taking advantage of the fact that other people
+will be able to bet at p with you.
+And this one outsider doesn't understand that all the bookies
+are willing to take odds of p, he's offering odds of a half,
+which are crazy.
+It's a big gap, 71-29 to p,
+so you can take 42 of his dollars for sure.
+Okay, so now let's go to...
+Okay, so this is hedging.
+It's also an arbitrage.
+Hedging created a pure arbitrage because now in this case it's
+done even better than in my example with Ford because you've
+taken now a bet and transformed it where on expectation you're
+going to win and to a bet where you can't possibly lose.
+Okay, now suppose that these other brokers weren't as
+smart as you.
+Okay, so that's hedging.
+Now we're going to do dynamic hedging.
+Suppose the other brokers, they're not as smart as you,
+they don't know how to build these trees,
+they can't do backward induction.
+They just know the odds are 60% that the Yankees are going to
+win any game against the Phillies.
+Now what would you do?
+Okay, you can't go to another broker and say,
+I want to bet on a whole seven-game series.
+The guy's going to say, it's just too complicated for me,
+I'm a simple man, I make a simple living,
+I just do one-game bets.
+Tell me, I'll let you bet any game you want.
+You can tell me what you want to bet.
+We'll bet one game at a time, 60-40 odds.
+The whole series, it's much more complicated for
+me.
+So is there anything you can do now?
+What can you do now?
+So now you have to do something more complicated which is
+called dynamic hedging.
+So we started to talk about this last time.
+So what would you do?
+You only now have the opportunity of protecting yourself
+against bad luck by betting one game at a time with these other
+brokers.
+So what should you do?
+Well, let's look at this picture here.
+You know that this bet of plus 100 minus 100 by doing
+transaction is worth 42.
+So if you were a trader, a hedge fund manager,
+you would be marking your position at 42.
+You're expecting now, you've just made a trade which
+you know on average is going to make you $42.
+Of course, if you had bad luck you could end up losing $100,
+which means you're going to go out of business,
+you're going to be fired, your name's going to be in the
+newspaper, you're going to be probably
+sued by your investors.
+We haven't been sued by any investors.
+Or you might make $100.
+Now you don't want to face that.
+You want to hedge yourself, protect yourselves,
+you're going to make the money for sure.
+Now some people don't hedge.
+They say when you hedge you're betting against yourself and
+something bad can happen.
+The hedge might go negative.
+It may be that the Yankees win just as you think,
+but because you've hedged you're not going to get $100,
+you're only going to get $42.
+So the essence of hedging is you give something up on the
+upside to get something on the downside.
+So people don't like hedging because they're giving something
+up.
+Okay, so you're giving something up.
+The point is you're getting something back on the
+downside and you're making it so you're locking in your
+profit.
+So hedging is a good thing.
+So people who don't hedge, I think they're just very
+simple-minded.
+So there are a lot of people who still don't hedge.
+There's a revolution in financial thought in the last 30
+years, anticipated by Ford, but people didn't really
+catch on until the 70s, that you should hedge.
+So how can you hedge this if you can only bet one time,
+one game at a time?
+That was the question we dealt with last time.
+What should you do?
+Well, you see the principles we've learned so far tell us
+what to do.
+You started here thinking on average you're going to
+make $42.
+You should be marking your position correctly,
+that it's worth $42.
+Now if you win the first game you're at a big advantage.
+The Yankees are up again and by backward induction we know that
+then your position will be worth $64.
+Okay, if you lose your position will be worth $8.
+Now what is 60% of 64 and plus 40% of 9?
+It's 42.
+60% of 64 is 38.4.
+Okay, so you're at 42 and you could go with 60% probability to
+60, well I can't even remember the number,
+64 or down to 0.9, 40%, sorry,
+I'm getting a senile 9 with 40% probability.
+So 60% times that is 38.4 plus 40% of 9 is 3.6 and the 2 add up to
+42.
+Okay, so to say that the value is worth 42,
+how did you get the 42?
+We were doing backward induction.
+We took 60% of that plus 40% of that and we got 42.
+So if you're marking yourself to market after the first game of the
+series you'll have to say to the world, admit to the world,
+that you're either now worth $64 or you've gotten crushed and
+you're down to $8.
+That already might get you fired.
+Going from 42 to 8, that's a pretty drastic loss.
+So even the first day you'd be, if you have to mark to
+market, you're going to be revealing to the world that
+you've screwed up and now your position is only 8.
+You've told all your investors, you've done this brilliant
+work.
+They're up $42.
+The next day you're going to have to tell them,
+well, I'm sorry, you're only up $8.
+They're going to be very upset.
+So what would you do?
+You know what to do, what would you do?
+What?
+Hedge, good answer.
+How would you hedge?
+Right, so you'd go, so what would you say?
+You'd go, so here this is minus,
+no this is 9, so you'd go plus 33 minus 22.
+So that's equal to 42 and that's also equal to 42.
+So can you do this at a fair, is it fair odds to do this?
+Well yes, it has to be fair odds to do this because 60%
+of 64 plus 40% of 9 is indeed 42,
+60% of 42 plus 40% of 42 obviously is 42,
+so therefore the difference 60% of this plus 40% of that
+must be 0, so in other words it's fair odds
+and sure enough this is obviously 3 to 2 odds, right?
+6040 means you're betting at 3 to 2 odds,
+that's 3 to 2 odds.
+So it is a fair bet, so the other bookie who's
+willing to bet at 3 to 2 odds is going to give you this bet.
+So again, you think the Yankees are going to win,
+and you make a bet with the naive Philly fan,
+you're betting the Yankees are going to win,
+you go to your broker friend and you bet against your Yankees.
+You're going to lose $22 if the Yankees win and win 33 if the Phillies win.
+You're betting against yourself, but of course you're betting
+against yourself to a smaller extent than you're betting
+against the other guy and therefore you still locked in $42.
+So now we don't have to go any further,
+you would only be confusing to go further,
+and I usually go further and then so it would just be complicated.
+If you can do something once you can do it many times.
+So you can, by making the right hedging bet,
+you can lock in a profit of $42 up here and up here.
+But that means you can lock it in going forward
+until the very end because you can keep repeating
+that hedge over and over again.
+So maybe I better go one step further, you don't really believe me.
+So what could you do going from here to here?
+Well, the average of here and here is 8.
+But of course you've got 9, you've collected $33,
+don't forget, from your hedging bet.
+So although this says 9, you've got the 33 in the background
+so it's 42, but it's 9.
+So what you want to do, this is 9.
+You just want to transform this and this until 9.
+Once you've transformed this and this into 9,
+which you can do because 60% of this plus 40% of that is 9.
+So the other broker is going to,
+you can do an offloading hedging bet with another broker
+at 6040 odds to get 9 for sure here.
+Why is that?
+Because 60% of this plus 40% of that is 9.
+So therefore there must be offsetting a bet he'd take
+that gave you 9 for sure in both cases,
+because the offsetting bet would also be valued at 0
+according to 6040 odds.
+So you can transform this and this into 9,
+but don't forget you've been paid the 33.
+So actually this is 42 and 42.
+So you can keep 42 and 42 going forever.
+And by the end you'll have 42 forever.
+So that's what dynamic hedging is.
+It's as simple as that.
+Okay.
+Yes?
+Yes.
+So how do you make money in hedging?
+You effectively were betting against the Philly's fan at 50%
+odds and you've got your broker who's willing to give you 60%
+odds and you're exploiting that gap.
+Okay.
+So let's do another example.
+So it's an excellent question you're asking.
+So I haven't answered this question yet.
+I want to give another example to answer this question.
+So what is really going on with the hedging?
+I mean what am I relying on?
+I mean how many brokers do I have to deal with the hedge?
+What's going on here?
+So I've given an example of a world series where it's
+very simple to figure out what to do.
+So now I want to give an example of a bond.
+So it doesn't matter what bond I have to confess.
+I haven't done this in advance.
+Okay.
+So here we have a 30-year bond, 8% 30-year bond.
+Okay.
+And it's an 8% 30-year bond.
+It's an 8% 30-year bond.
+Okay.
+So we know what its payment is.
+And now if the guy, if the homeowner,
+homeowners are all perfectly not paying attention,
+the bond is going to be worth some amount of money.
+Okay.
+So here are the interest rates.
+I forgot to say.
+So we have to assume what the risk is.
+So we know.
+So in fact what does this mean?
+We know that the risk is 6% and it has a 20% volatility.
+Okay.
+So what does that tell us?
+It tells us that the interest rates could go up or down by this amount.
+Now we've assumed that the odds that it can go up or down are 50-50.
+So we've assumed that everybody thinks the odds are 50-50,
+that the interest rate could go up or down.
+That's an assumption.
+And so now I'm going to make, okay.
+We've assumed that the odds are 50-50.
+Let's assume that everybody is willing to trade you 50-50 odds.
+Okay.
+So what does that mean?
+This is like your other broker.
+Okay.
+The interest rate is here, R0.
+It can go up to R0 times up or it can go down to R0 times some down.
+Okay.
+And up remember is, you know, up by the way.
+This equals R0E to the volatility times E to the drift.
+And down equals R0E to the minus volatility E to the drift.
+Okay.
+So R0 can go up or it can go down.
+So U is bigger than 1, D is less than 1 probably.
+And so we see examples of that.
+Now I'm making an assumption here that the odds are a half and a half
+and that everybody understands and is willing to bet on these odds of a half
+and a half.
+So betting on an interest rate move is called that kind of betting on
+interest rates means trading interest rate derivatives.
+All right.
+So there are a bunch of ways that you can trade in the interest rate market to get
+a dollar if the interest rate goes up to this number in exchange for losing a
+dollar down to this number.
+Okay.
+And these things are called swaps and they're called interest rate
+derivatives and they're called a whole bunch of other things which is going
+to take too long to explain.
+Okay.
+But so let's suppose that you can go out into the interest rate
+derivative market and simply trade a security that'll pay a dollar if
+things go up, you know, or you can buy another security that'll pay
+a dollar if things go down.
+So what is the price of this security that pays a dollar if the
+interest rates go up?
+Let's say they can only go up or down to one of two values.
+So what would somebody, what would be the cost if
+everyone agrees the odds are 50% of getting out here,
+what is the price today going to be of getting a dollar if the
+interest rate goes up?
+Excellent.
+Who said that?
+Perfect.
+Okay.
+I didn't expect anyone to say that so fast, so right.
+So the price here we could write is 0.5 divided by 1
+plus R0.
+And this price is going to be going down is going to be 0.5
+divided by 1 plus R0.
+Okay.
+Now how did he figure that out?
+Well, the odds are 50% of going up here and 50% of going down
+here but don't forget you're getting the money later and this
+is a one period interest rate, 1 plus R0.
+So therefore what you'd be willing to pay here is 50% of the
+dollar that you'll get discounted by 1 plus R0.
+What you'd paid here for that is 50% of the dollar you'd be
+paid discounted by 1 plus R0.
+Okay.
+So exactly right.
+But now these are like the World Series game by game odds.
+They're going to change depending on where you are in the
+tree because if you go here in the tree you've got a higher
+interest rate so it's going to be 0.5 divided by 1 plus RU or
+something which is a bigger number.
+Okay.
+So the price of betting on a dollar, what you have to pay to
+get a dollar of interest rates go up is going to be more here
+than it is here say because you're going to still have 50%
+chance of getting here but you're discounting by a higher
+interest rate.
+Okay.
+So this is slightly subtler but not much.
+It's like the broker in the World Series who game by game,
+there's the interest rate derivative market and they're
+willing to trade you, they're willing to let you
+bet on which way the interest rates are going to go.
+Okay.
+So what have we got now?
+We've got this mortgage that's sitting there.
+Okay.
+So let's say that you know that the mortgage is owned by
+a very rational guy.
+You know the mortgage is owned by a very, you know,
+the homeowner, he's not the owner of the
+mortgage, the homeowner is a very rational
+people.
+The market is very foolish.
+This is an exaggeration.
+The market might think, oh the homeowner,
+you know he's got this, the homeowner never does
+anything, the market thinks.
+So they think the bond is worth 120 but you're much,
+you've studied prepayments much more than the market does.
+You realize that the homeowners aren't going to just sit there
+dumbly paying whatever they owe if the interest rates go down.
+They're going to prepay.
+So in fact the mortgage is only worth 98.
+Okay.
+So the market thinks it's worth 100.
+The market thinks it's worth 100.
+The market understands the interest rate probabilities and
+is willing to give interest rate risk.
+They agree with you about that.
+You don't know anything more about interest rates than the
+market does.
+What you do know is you know something about the prepayments
+that the market doesn't know and so you know the bond is
+really worth 98 instead of 120.
+Okay.
+So what should you do?
+Now let's suppose that the market is actually treating,
+so what the market thinks, market thinks,
+mortgage is equal to a 30-year bond,
+a 30-year, you know, 30-year,
+well okay it's not actually a bond because it doesn't have a
+principle at the end.
+So the market, so I'm going to have to do a
+different sheet here to get it together,
+the market thinks mortgage never prepays.
+Now let's suppose that what you can trade in the market is you
+can trade these interest rate derivatives.
+So what should you do?
+So what should you do now?
+You can trade the mortgage, you can buy it,
+you can sell it short, you can buy or sell these
+interest rate derivatives.
+What would you do?
+Let's say you can only buy or sell one unit of the mortgage,
+there's only one mortgage that is trading and you want to,
+since you know there's a mistake being made,
+you're going to use all of it.
+So what would you do?
+Do you think the mortgage is overvalued or undervalued?
+It's overvalued, so therefore what should
+you do?
+Sell all you're allowed to sell, I've assumed a little
+artificially.
+All you can do is sell one unit of the mortgage short,
+so you're going to sell it for $120.
+But what does it mean to sell it short?
+It means you have to make the payments that the mortgage is
+making.
+So you know those payments are only worth $98.
+So what does that mean?
+It means that you know you're going to get a profit of $22.
+However, you could get completely crushed if things don't
+turn out exactly the way you thought, so you want to lock in a
+constant profit for sure.
+So you don't want to get a huge profit more than 20 and no
+profit in some other cases or even a negative profit and a huge
+profit, you want your $22 for sure.
+So how would you do that?
+What would you do?
+Yes?
+Okay, so let's be more precise.
+It's exactly right, but let's just see what that
+really means.
+Okay, so I'm going to copy these numbers down,
+which I can't see yet.
+Okay, so you have a mortgage that's $98.
+It's worth 98 something, 0.8, and it could go in the
+upstate to 92.6 or in the downstate it could go to 99.11.
+Okay, now on the other hand the market thinks that this
+mortgage, in the other hand,
+this other instrument, you're selling at the same time
+something that's worth 120, you're selling it for 120.
+Okay, it doesn't even matter.
+It doesn't matter what the mistake is the market makes.
+That's the reason why the market made its mistake.
+You don't care why they made their mistake.
+They're just willing to give you 120 for it.
+So you're making a $22 profit, so what should you do?
+If you were marking yourself to market, what would you do?
+What would you mark yourself to market here?
+Well, you've gotten $122, so you've marked yourself to
+market here.
+You'd say you're $21.16 up.
+Here you'd have to say, well, you're not up so much
+money anymore because you've just lost some of the value of
+your mortgage.
+You've lost six bucks.
+So you'd have to say you're only up $15 now.
+And here you'd have to say, well, you made a little bit of
+money, so you're up $22 now.
+But you want to lock in this profit, 21.16 for sure.
+So what should you do?
+If you're marking yourself to market, you want to turn this
+money into 21.16, but more than 21.16.
+You want to turn this into 21.16 times 1 plus r0.
+And you want to turn this into 21.16 times 1 plus r0.
+Okay, because then, having locked in 21.16 times
+1 plus r0, that's no risk, and it's got the same
+present value as this.
+And so every period, you want to keep locking your
+money into 21.16.
+That's the gap between that and up there.
+Maybe 1.6 wasn't the right number, by the way.
+What was this price up here that they were willing to pay?
+They were willing to pay 120.58.
+So that's a little bit more.
+That's 21.7 or something.
+So it's 21.7.
+That was the gap.
+So it's 120.58.
+And so the gap here is 21.7.
+Okay, so you want to turn this into 21.7 and this into 21.7.
+Okay, so 21.7 here, you want to ensure that
+that's where you're marking yourself to position.
+You want to know by the end of the next year,
+you could turn this into 21.7, discount it up,
+and then keep it discounting till all the very end.
+So whether you take your money now or you take your money
+later, it's always a sure thing with
+exactly the same present value.
+So how would you turn 21.7 knowing that you're going to
+run this risk if you're marking yourself to market?
+How would you do that?
+Well, you know the value of this plus this at this
+interest rate in the mortgage derivative market,
+it's worth 98.84.
+Okay, so you can always transform this into exactly
+91.84 by doing a fair bet.
+You can get this to go up to 91.84 and this to go down to 91.
+Oh, there's also a payment here, don't forget the payment.
+So sorry, we've forgotten the payment.
+So this is the mortgage is much subtler because you've
+actually gotten $8 here, plus 8, and this is plus 8.
+Okay, so we forgot about this.
+The present, so you've got an $8 coupon plus
+what was left was 92.6 and this is 99.1 plus 8.
+So the total value here is 100.6 and the total value here is
+107.11.
+Okay, and you discount this by this, you know,
+6% interest and you get 98.84.
+Okay, so I left out a crucial step.
+So remember, the cash flows here are the coupon plus the
+value of the mortgage that's left.
+So the value of the mortgage that's left is 92.65,
+okay, plus the $8 coupon.
+So over here you're going to have a value of 100.6.
+Down here you're going to have a value of 107.11.
+Okay, so how can you want that to equal, locked in forever,
+you want that to equal.
+So you know that you've just sold this mortgage for 100,
+what do you call it, 120.
+So you've got $21.7 sitting here.
+Okay, so now what can you do with this $21.7?
+You can cancel your cash flows, so what you owe on the mortgage
+is always exactly the same thing, 98.84.
+So you want to make this 98.84.
+So you have to subtract off something from here,
+100.6, you have to subtract.
+So you want this to be equal to, so let's do it this way,
+okay, let's make this 98.
+This is a simpler way of saying it, I think 98.84.
+Okay, so let's turn this thing and this thing,
+the present value of this and this is 98.84.
+Therefore you know there must be some fair trade in the
+derivatives market that turns this thing and this thing into
+98.04 times 1 plus R0, and this into the same thing,
+98.84 times 1 plus R0.
+How do you know you can do that?
+Because the present value of 98.84 times 1 plus R0 and 98.84
+times 1 plus R0, a half of that,
+divided by 1 plus R0 is 98.84.
+So therefore the present value of this thing has to be the same as
+the present value of that thing.
+And therefore there must be some trade in the derivatives market
+you can make where you sell some of these interest rate
+derivatives and you buy some of these interest rate derivatives
+that guarantees you 98.84 in both cases.
+So that means the present value of what you have to
+deliver in cash is 98.84.
+Still $21.7 in present value terms less than what you've
+received.
+So what have you done with this $120?
+You've invested that at the same interest rate and so now
+you've got a profit.
+You owe 98.84 jacked up by the interest rate,
+but the 120 you've invested, you've got that 120
+plus the interest rate.
+So you've always got more that you're carrying on than the
+present value of what you owe and you keep going to the end of
+the tree when it ends, you're going to still owe 98.84
+increased by the interest rate a bunch of times,
+but then the value of the money you have is going to be 120
+increased by the same interest rate.
+And so you're going to end up with money for sure,
+so then you can just reverse it all and get the money
+$21.7 locked in for sure at the beginning and owe
+nothing later in the tree.
+So to say it all one more time you have to think of yourself as
+marking to market, and if you're marking to market
+correctly you know what you owe is only worth 98 dollars and
+what you've sold it for is 120 dollars.
+That's a profit of 21.7, but you want to make sure you
+can maintain the same profit forever or to put it another
+way, if you've bought this bond and got those,
+you want to make sure you can lock in your profit forever.
+Okay, so how would you do this?
+Well, there are different ways of doing it.
+I was saying suppose you, so let's say you want this
+$21.7 for sure at the beginning and you don't want to
+ever have to make any payments in the end.
+You want everything to cancel out.
+What would you do?
+How would you do this?
+Well, this number tells you you owe in present value
+terms 98.84 dollars.
+Okay, so you've gotten 120 dollars.
+So with this you could take the 120 dollars,
+put 21.7 in your pocket, and now with this 98 dollars
+you can buy these cash flows.
+What can you buy?
+You can invest money so that you can buy the right
+interest rate derivatives so you're able to make all the
+payments of the future bonds.
+So this bond, the actual payments the bond is going to
+make, you can buy all those payments for 98.84 dollars.
+Okay, I guess that's the simplest way of saying it.
+I'm going a little bit in circles.
+What is the mortgage security down here if you know how
+the mortgage is going to pay?
+All this is is a bunch of payments at different parts in
+the tree, right?
+It pays $8 here, it pays $8 here.
+Somewhere low in the tree it's going to just prepay for
+sure and pay the whole remaining balance down here.
+It's not paying any, it's just paid off for sure.
+Okay, so it's prepaid.
+So what is the, sorry, it's prepaid at the top.
+It's just going to, at the bottom it's prepaid.
+So the fact that all these payments together are worth
+98.84 means that by taking 98.84 dollars in trading on the
+derivatives market you can buy all those payments for exactly
+98.84.
+So therefore as you go farther into the tree you always will
+have the payments to make.
+You sold the bond short, what does that mean?
+Any time this bond makes a payment, a dividend payment,
+you have to make the payment.
+But you can always buy those payments for 98.84.
+How do you know you can buy those payments for 98.84?
+Well, because by backward induction.
+Here the payments are $8 here plus $92 of remaining payments.
+So there's a way in the interest rate derivatives market of
+buying 8 plus 92.6, that's $100.6 here,
+and buying 107.11 dollars here.
+So by spending this 98.84 you can get,
+by this many interest rate derivatives,
+$100 of payments here and $107 of payments here.
+Half of 100 plus half of 107 discounted at 6% interest gives
+you 98.84.
+So it's possible on the market to buy $100 up here and $107
+down here with this 98.84.
+Now out of those $100 up here you've bought,
+give 8 of them to the guy you sold the bond short to.
+That's the coupon payment.
+Down here give 8 of these dollars to the same guy you sold the
+coupon short to.
+Now that leaves you with $92 up there and $99 there.
+But this $92 is the present value of what's going to happen
+next.
+And what's going to happen next up here is that you're going
+to owe $8 to the guy here and you're going to owe $8 to the
+guy here, but what's left will be worth $83
+or $97.
+So therefore with this $92 you in fact are able to buy
+this $92 plus $105 here because the present value of $92,
+that's almost $92 plus $105 here is exactly $92.
+That's how we got that number.
+It's a half times this number plus the coupon plus a half
+times this number plus the coupon discounted at the
+interest rate corresponding to here that is $92.
+So therefore by investing here in the interest rate
+you can buy that cash flow here, the $84 plus $8,
+$92.
+Pay the guy the $8.
+You'll still have $83 left.
+And with the cash you have over here, remember you bought
+exactly this much cash.
+You've got this much cash left.
+You can buy all the payments you need to make here,
+the $8 coupon plus you'll still have $97 left.
+So all the way forward through the tree you could always
+afford to buy all the cash payments of this bond.
+You can pay off the guy you sold it short to all the coupon
+payments that this bond is making by having invested $98.84
+at the beginning.
+And similarly you got $120 by selling the bond short.
+So you've made $21.7 and there's never any more cash
+coming out of your pocket.
+You pocketed the $21.7 and you invested the $98.4 in the
+derivatives market over and over changing your investment
+and therefore reproducing all the cash flows that you
+have to make to the guy for having sold it short.
+So do I need to say this?
+I didn't say it very well.
+Do you?
+How followable was that?
+Not very followable.
+Sorry, I didn't do a good job.
+So let's try again.
+What is the essence of what's going on?
+The essence of what's going on is that game by game or month
+by month you can find someone else who will always trade
+at fair odds with you.
+Fair odds means in the interest rate market.
+They don't know these people trading the interest rate market.
+They don't understand prepayments.
+It's not like the bookie here.
+They don't understand prepayments.
+They're not willing to bet with you on what prepayments are
+going to be.
+They're just going to bet with you on what interest rate is
+going to turn up.
+But you see the cash flows from the bond depended on
+prepayments and depended on the interest rate.
+So you calculated it was worth $98.84 because you know what
+prepayments to put in the future.
+So if you're absolutely confident on your prepayments,
+you're going to know what this bond is going to do in the
+future.
+So remember what the prepayment, and so what are those
+prepayments?
+It's this stuff.
+So down here where the ones are, the guy's prepaid for
+sure.
+So you'd have to deliver to the market the entire remaining
+balance at that point.
+But see when you calculated this bond you were anticipating
+what all the payments were going to be,
+whether they're going to be the whole remaining balance or
+just the coupon, taking the present value,
+what calculations were you doing?
+In the present value you're doing calculations that this
+guy can do.
+You're just taking a half times this plus a half times that
+discounted.
+The interest rate derivative guy is willing to do that.
+He doesn't know what the prepayments are going to be,
+but you're never betting on prepayments with him,
+with the interest rate derivatives guy.
+You're just saying, let me pay you some money
+now, you give me money if things go up here,
+or I'll pay you some money now, and you give me money if things
+go down here, if interest rates go up here,
+or interest rates go down here.
+So because the present value of the mortgage cash flows
+evaluated according to the interest rate probabilities and
+discounting is 98.84, that means that you can
+successively trade on the interest rate market and
+reproduce all the mortgage payments.
+Assuming you're right about what they're going to be.
+And therefore, with 98.84 dollars,
+you can replicate what the mortgage is going to pay.
+And therefore, you make 21.7 for free,
+because you sold it for 120.
+You only need 98.84 of that to reproduce all the payments
+of the mortgage bond.
+And how do you know that you can do that?
+Because it's just one step repeated over and over again.
+At every step there's going to be a payment of,
+say, $8 and a present value of what's left.
+And there'll be a payment down here of $8 and a present value
+of what's left.
+Or maybe this thing is just a prepayment,
+in which case it's a single payment of 99.5,
+that's the remaining balance after one period.
+But when you figure out this number, it's always taken by
+averaging this number discounted with this number discounted.
+So therefore, averaging at the odds the
+interest rate guy will give you.
+So therefore, using this money, we're now doing the opposite
+of the World Series, using this money,
+you can buy this total payment and you can buy this total
+payment, because that's exactly what the
+interest rate guy will give you.
+This is equal to a half of all that,
+divided by 1 plus r0, plus a half of all this,
+divided by 1 plus r0, that is this number.
+So therefore, in the interest rate market,
+by using this cash, you can buy that and you
+can buy that.
+And that's enough to make the payment,
+a, 8, that the mortgage is paying,
+so you keep your promise.
+And over here, if the mortgage prepaid,
+the remaining balance, that's that number,
+99.5, you can pay that too.
+And then the mortgage is done.
+Here the mortgage is going to go on.
+But see what's going on at present value you've calculated
+at 92.6.
+You bought 92.6 plus 8.
+You used the 8 to pay off the coupon.
+You still have 92.6 dollars in your pocket here.
+You're going to use that to buy the future payments of the
+mortgage, some of which will be a coupon,
+and maybe this will be another coupon,
+plus the present value of what's left.
+It goes down here again, the guy might prepay,
+but you're going to have enough money left to make that
+prepayment.
+So with this 98.84 dollars, you're just doing fair odds
+over and over again.
+You're buying the future cash flows of the mortgage.
+And therefore, with 98.84 dollars,
+you can keep all your promises,
+and yet you've gotten 120 at the beginning,
+so you've locked it in.
+So that's it.
+Any questions?
+I don't know if that was too clear.
+So somebody ask a question.
+You are great at asking questions.
+Is this followable or?
+Well, that's too good.
+Too great.
+Okay, so let's see if I can do another example.
+Okay, let's suppose that we've got this bond.
+Let's say you can't trade in the interest rate derivatives
+market directly, but you can trade in the bond
+market.
+So let's get more realistic now.
+Let's suppose that there's a bond market.
+Now here we had interest rates of 30-year bond,
+8 percent.
+The starting interest rate was 6 and the volatility was 20.
+So we had that sheet that was bond market trading.
+So let's just go to that.
+The file was open.
+Okay, so callable bond.
+Okay, so here we are in the bond market.
+So let's say there's a 9 percent coupon bond.
+It doesn't matter what it is.
+We start at the interest rate at 0.06.
+Was that where we were starting?
+And the volatility was 20.
+Okay, so here we have the same exact,
+got exactly the same interest rate process as before.
+So those are the interest rates just as we had before.
+Okay, and now let's talk about a bond.
+So it's a non-collable bond.
+I forgot already now what I said.
+How long was this bond?
+It was a 30-year bond.
+It didn't have to be 30 years, but it was a 30-year 9 percent bond.
+And its value was 140.93.
+So the bond is worth 140.93.
+Interest rates go up.
+Same interest rate process.
+It can go to 121.4 or to 159.4.
+Okay, so now let's suppose you can't trade in the interest rate
+market anymore.
+What should you do now?
+Well, you've got the interest rate.
+You've got the one-month bond that you can trade at an
+interest rate of 6 percent, and you've got this bond market.
+So anyone will buy and sell with you.
+This is the 30-year 9 percent coupon bond.
+They're all willing to buy and sell this with you.
+And you've got this mortgage that everybody else thinks is
+the price is worth 120, but you're sure it's worth
+98.84, because you know the
+prepayments, the homeowners are smart,
+and they're going to prepay.
+And no one else realizes they're going to do it.
+So what should you do now?
+You can't trade interest rate derivatives anymore.
+All you can do is trade in the bond market.
+So do you have any idea what you could do?
+What would you do?
+So this is even slightly more realistic example.
+You've got a mortgage that you know is overvalued.
+You've got a bond that you can trade.
+And of course you can trade a very short bond,
+the one-year bond, which is trading at 6 percent
+interest.
+You can trade a one-year treasury, and here's the 30-year 9
+percent treasury, which happens to be worth 140.
+So what should you do?
+Well, you know that you could sell this mortgage short,
+get $120 for it, and you think the value of
+the payments is only 98.
+So you'd love to do this.
+The trouble is the future values depend on a lot of
+money.
+So it may be that you'd have to, you know,
+the payments you might have to make are more than 98.
+They could go, you know, so what are you going to do?
+How would you lock in your profit for sure?
+Can anybody figure out what to do?
+Just intuitively it seems like pretty complicated to figure
+out what to do.
+So you sell this bond for 120.
+You put the $21.7 in your pocket.
+You have $98.4 now that you have to spend to somehow
+acquire payments that are going to just allow you to make the
+bond payments you sold short, the mortgage payments you sold
+short, at every node.
+So you never have to give up any more money.
+So what should you do?
+You want to acquire some assets with this $98.84 that'll put you
+in a position where you have $100.6 up here and $100.71 down
+there.
+So how can you do that?
+Well, you have a combination of the short.
+You have this 30-year bond you could invest in.
+If you spent $98 on the 30-year bond,
+that's 70% of that.
+So that would give you $84 up here and $105 down there.
+So it wouldn't match what you really need.
+On the other hand, you could also put your $98 in
+the one-year bond, which would give you $98.84
+times 1.06 and $98.04 times 1.06.
+So you've got this choice, or you can put $100 here
+and get $106 there.
+That's what the interest rate we said was 6%.
+So that means there's a one-year bond that pays $106 in these
+two cases.
+There's the 30-year bond where $140 could be worth this in the
+two cases.
+So let's say you can't go trade on the derivatives market.
+It doesn't exist.
+But, or at least you don't know how to trade on it.
+So what you've got to trade is on the bond market and the long bond
+market and the short bond market.
+So let's call this the long bond market and the short bond
+market.
+So what would you do?
+Any thoughts here?
+So let me repeat the problem.
+You find, like you typically do when you're a trader,
+you know something other guys don't do.
+That's what you're making your whole livelihood on.
+You understand that prepayments are going to be very fast.
+They're going to, you know, the people know how to
+prepay.
+The rest of the market hasn't occurred to them yet that
+you can prepay.
+They're grossly overpaying for the mortgage,
+paying $120.
+So you go and sell the mortgage short.
+Now that means you have to deliver whatever anyone else with
+the mortgage is paying.
+You have to deliver it to other people.
+So that's a lot to take on.
+But I say that you can sell this bond for $120,
+put $21.7 in your pocket, take the remaining $98.84
+and now buy the cash flows that you're going to have to
+deliver in the future.
+How do you know you can buy all the cash flows?
+There are 30 years of cash flows.
+There are coupon payments, there are prepayments.
+There are all kinds of complicated payments of the
+cash flows.
+How with this $98.84 you can be able to buy them all
+exactly.
+All you can do is trade by the long bond and by the short
+bond, or maybe sell the long bond short,
+or sell the short bond short.
+So how by trading these two securities over and over again
+can you replicate the cash flows of the mortgage?
+That way you will have hedged out your risk and you'll have the
+$21.7 locked in with ever having to worry about
+anything in the future, provided your prepayment
+calculations are correct.
+If you're wrong about prepayments then you're going to be
+in big trouble.
+So you're betting on knowing what the prepayments are.
+So what should you do?
+Well here this thing is going to, you know,
+the cash flows at this point are going to be worth 100.6,
+8 that you have to deliver, 92.6 for the present value of
+the future cash flows.
+Here they're worth, let's just do the real thing,
+never mind that stuff, here they're worth 107.11.
+Now you know that a half times 1 over 1 plus R is 0 of 106
+plus a half over 1 plus 0.06 times 107 is 98.84.
+So the average of these discounted is that number.
+Okay?
+So and you know that the average of these numbers,
+so this is the non-collable bond, so it's not these numbers,
+it's this number plus 9 and this number plus 9 is paid a
+coupon, so the average of these numbers
+accounted by 6% is that.
+Okay?
+So what does that tell you you should do?
+Well, I claim by combining this bond and this bond you can
+produce 100.6 and 107.11 here.
+So we know that this top bond is going to pay you 130.4 up there
+and 168.4 down here.
+Okay?
+So if you bought X units of the long bond, that's what your
+payoffs would be, the short bond is going to pay
+you 106 in both cases.
+So if you bought X units of the short bond,
+that's what your payoff would be.
+So you want the payoff to be 100.6 and 107.11.
+Okay?
+So there must be an XL and an XS that equals that.
+How do you know there has to be?
+Because it's two equations and two unknowns and these are
+independent equations.
+In fact, you can tell what XL has to be.
+The gap between 100.6 and 107, that gap is about 7 and this
+gap is about 38.
+Okay?
+So 7 is like a fifth of 38.
+So XL is going to have to be a fifth.
+So I know in advance that this is going to turn out to be
+about 7 over 38.
+Okay?
+And XL, so just by general principles you know there's a
+solution for XL and XS.
+Okay?
+Now, okay?
+So I know there's a solution to that because it's two linear
+equations and two unknowns and they're not degenerate,
+so I know there has to be a solution to that.
+Okay?
+And I also can tell you what XL has to be because the gap,
+that's the difference between the top number and the bottom
+number, is 7.
+That gap over there is 38.
+So obviously the middle gap, 100.6 and 100.6 is 0.
+So if I take XL to be 7.38 of that number,
+the gap is going to go down from 38 to 7.
+And then I'll just have to find the right XS to make that equal.
+Okay?
+So that combination of XL and XS will produce this payoff here
+and this payoff there.
+Okay?
+So I know what combination of the long bond and the short
+bond to hold.
+So I produce exactly these things.
+So I'm going to get a cash flow of 100.6 and 107.11.
+And I'll be able to use that to make the coupon payment of
+8 in both cases.
+And on top of that have enough money to continue buying future
+cash flows.
+Okay?
+Now what will the cost of this XL and X short be?
+It'll be XL.
+I'll have to pay $100 for the short bond.
+If I do XX, X short and I'll have to take 7.38 of 140.
+That's how much it'll cost me to buy the long bond.
+So the right combination of short bond and long bond,
+short bond and long bond will give me the right payoffs.
+And now, and it's clear that there is an XS here and an XL here,
+such that I get the payoffs I want of 100 and 107.
+But the last thing to notice is the cost of this XL and this
+XS, which is going to be 140 times XL plus 100 times XS.
+The cost will be exactly 98.84.
+Okay?
+How do I know that?
+And therefore I'll just be able to do it.
+Okay?
+So I'll ask you that question in a second.
+So here's what this hedging amounts to.
+The hedging amounts to, again, you know,
+because of your superior knowledge of prepayments,
+that the mortgage cash flows, not the mortgage itself,
+the cash flows that haven't come from the mortgage,
+are only worth 98.8.
+Someone's handing you $120 in exchange for making those mortgage
+cash flows.
+Okay?
+So what do you do for that?
+You take the 98.84 dollars out of the 120,
+you take 21.7 that goes into your pocket.
+The 98.84 you have to use to buy the future cash flows.
+Well, you know the first cash flows are going to be $8,
+but you're going to need more money to buy the cash flows
+that come after.
+How much more money do you need?
+92.6 here at 99.1 there.
+Okay?
+So how can you put yourself in a position to have $100.6 here
+and $107.11 here?
+Can you use this amount of money to buy these,
+this value at the next step?
+Well, we saw in the derivatives market, yes you can.
+But even if you can't trade in the derivatives market,
+you don't need to if you could trade a short bond and a
+long bond.
+You would just find how much of the long bond do I hold and
+how much of the short bond do I hold so I can get these
+$100.6 and $107.11.
+And the answer is you have to solve that equation up there.
+What XL and what XS gives you that number?
+Okay?
+And you know that there's some XL and some XS that will solve
+that because it's two equations and two unknowns,
+I'm repeating myself.
+You even know what XL is without writing down the
+equations because the gap has to be one thing there's no
+risk and the other thing there's a big risk.
+The only risk in the payoff has to come from the long bond.
+So that gap of 38, if you take 738 of that,
+you're going to get the gap to go down to 7.
+So the XL is going to turn out to be 738.
+XS you have to solve by algebra.
+So you know how much that XL is and what the XS is.
+Okay?
+So that's what you hold.
+That combination of XL and XS, you hold here and you
+get exactly the payoffs.
+And then the final step is to notice that you can exactly
+afford it with 98.84 dollars.
+How do you know that you can afford it?
+Because what you want is 100.6 and 107.11,
+and that costs 98.84.
+Okay?
+What you're buying, you're buying two things together
+whose payoffs together are worth 98.84.
+So therefore, the cost of the two things
+separately have to be worth 98.84.
+Okay?
+So it will turn out when you solve for XL and XS,
+you'll exactly be able to afford it with this amount of cash.
+Okay?
+And so you can just do that going forward all the time,
+constantly re-hedging your portfolio.
+So that's the essence of dynamic hedging.
+It's a very beautiful idea, which I probably haven't
+explained in the optimal way, but the point is that,
+to summarize the whole thing again,
+the point is that you take, you know something about a bond,
+but you're subject to more risk besides what you know.
+You hedge out the extra risk still relying on yourself to be
+right about what you know.
+You relied on your being right about the prepayments.
+You don't know anything about the future interest rates.
+But there's another guy like the trader in the World Series,
+the broker in the World Series, who's willing to make bets on
+the interest rate with you.
+Okay?
+Or to say the same thing, who's been calculating the values
+of the bonds as if, you know, the short and the long
+bond, as if he was making bets on the interest rate.
+Because he's calculated at the same 50-50 odds discounting
+by the interest rate.
+So because there are all these guys on the market who are
+willing to make these game by game bets,
+either directly, I'm almost done,
+they're either to make the game by game bets on the
+interest rate directly in the derivatives market,
+or what's equivalent to that, they've used that calculus to
+figure out the value of these long and short bonds.
+So by trading through the long and short bonds you're
+effectively doing the same interest rate bet.
+So either way, by trading through the two bonds
+or trading directly in the interest rate derivative
+market, you're able to buy,
+by going game at a time, year by year,
+you're able to buy all the cash flows of your mortgage,
+the cash flows that you're predicting it's going to have.
+And therefore you can make the profit for sure.
+So it's predicting something, being confident in your
+prediction, then being able to buy what you've predicted the
+cash flows are for a smaller price than you can sell the
+security for.
+That's how you locked in your profit.

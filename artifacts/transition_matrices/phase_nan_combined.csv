@@ -1,0 +1,10 @@
+direction,next_direction,count,probability,n_total_in_row,phase_id
+UP,UP,0,0.0,0,
+DOWN,UP,0,0.0,0,
+FLAT,UP,0,0.0,0,
+UP,DOWN,0,0.0,0,
+DOWN,DOWN,0,0.0,0,
+FLAT,DOWN,0,0.0,0,
+UP,FLAT,0,0.0,0,
+DOWN,FLAT,0,0.0,0,
+FLAT,FLAT,0,0.0,0,

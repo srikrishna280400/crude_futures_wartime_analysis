@@ -1,0 +1,10 @@
+direction,next_direction,count,probability,n_total_in_row,phase_id,stream
+UP,UP,5,0.5,10,4.0,BRENT_session
+DOWN,UP,3,0.2,15,4.0,BRENT_session
+FLAT,UP,3,0.25,12,4.0,BRENT_session
+UP,DOWN,4,0.4,10,4.0,BRENT_session
+DOWN,DOWN,6,0.4,15,4.0,BRENT_session
+FLAT,DOWN,4,0.3333333333333333,12,4.0,BRENT_session
+UP,FLAT,1,0.1,10,4.0,BRENT_session
+DOWN,FLAT,6,0.4,15,4.0,BRENT_session
+FLAT,FLAT,5,0.4166666666666667,12,4.0,BRENT_session

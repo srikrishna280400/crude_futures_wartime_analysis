@@ -1,0 +1,10 @@
+direction,next_direction,count,probability,n_total_in_row,phase_id,stream
+UP,UP,11,0.34375,32,10,WTI_session
+DOWN,UP,11,0.39285714285714285,28,10,WTI_session
+FLAT,UP,9,0.45,20,10,WTI_session
+UP,DOWN,13,0.40625,32,10,WTI_session
+DOWN,DOWN,9,0.32142857142857145,28,10,WTI_session
+FLAT,DOWN,6,0.3,20,10,WTI_session
+UP,FLAT,8,0.25,32,10,WTI_session
+DOWN,FLAT,8,0.2857142857142857,28,10,WTI_session
+FLAT,FLAT,5,0.25,20,10,WTI_session

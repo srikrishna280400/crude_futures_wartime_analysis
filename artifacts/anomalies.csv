@@ -1,0 +1,16 @@
+__stream,trade_date_ist,phase_id,phase_label,vol_native,move_native,abs_excursion,volume_series,anomaly_metric,z_value
+BRENT_daily,2026-03-12,1,full_scale_war,3.876436969,3.588536882,6.391058112,74333.0,abs_excursion_rolling_z,2.6666666666666665
+WTI_daily,2026-03-12,1,full_scale_war,4.240634111,4.17162073,6.427948715,375133.0,abs_excursion_rolling_z,2.6666666666666665
+BRENT_daily,2026-03-23,1,full_scale_war,14.03577544,6.442608288,14.346898,92590.0,abs_excursion_rolling_z,2.7488487188298496
+WTI_daily,2026-03-23,1,full_scale_war,13.16358061,9.794959628,14.36256027,627974.0,abs_excursion_rolling_z,2.6372418183199824
+WTI_daily,2026-05-06,2,post_ceasefire_complex,6.94503251,6.319374933,13.67087994,392000.0,abs_excursion_rolling_z,2.5956160195038582
+BRENT_daily,2026-06-11,3,strong_escalation_op_rising_lion,4.370657971,6.102446336,6.82967529,44540.0,move_native_rolling_z,2.6201144403143943
+WTI_daily,2026-06-11,3,strong_escalation_op_rising_lion,4.593183133,6.319785183,7.056912885,288404.0,move_native_rolling_z,2.5560188658559726
+BRENT_daily,2026-06-19,4,naval_blockade_removed,0.810377756,0.214265411,0.668009584,836.0,volume_series_rolling_z,-3.115732240899219
+WTI_daily,2026-06-19,4,naval_blockade_removed,0.851688811,0.185675579,0.57029217,8605.0,volume_series_rolling_z,-3.6330377715771722
+BRENT_daily,2026-06-22,5,slight_escalation_strait_closure,11.30424343,1.970566555,6.009004375,26687.0,vol_native_rolling_z,3.9464998731228196
+WTI_daily,2026-07-03,5,slight_escalation_strait_closure,0.594159643,0.847584142,1.066788475,6402.0,volume_series_rolling_z,-2.503433030356208
+BRENT_daily,2026-07-08,6,ceasefire_collapse_renewed_escalation,3.623239757,2.645087765,6.027111409,86429.0,volume_series_rolling_z,3.045989880982021
+BRENT_daily,2026-07-14,7,sustained_major_reescalation_hormuz_war,4.119816436,2.473580198,5.115276415,113379.0,volume_series_rolling_z,2.910762878413068
+BRENT_daily,2026-07-22,7,sustained_major_reescalation_hormuz_war,15.77818593,2.589875491,7.813355217,54690.0,vol_native_rolling_z,4.060474743962695
+BRENT_daily,2026-07-23,7,sustained_major_reescalation_hormuz_war,21.72020653,5.575394065,9.63880776,55590.0,vol_native_rolling_z,3.4054168456597416
