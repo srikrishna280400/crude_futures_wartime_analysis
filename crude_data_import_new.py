@@ -26,17 +26,17 @@ except Exception:
 # CONFIG
 # ============================================================
 
-START_DATE = os.getenv("START_DATE", "2026-08-12")
-END_DATE = os.getenv("END_DATE", "2026-08-13")
+START_DATE = os.getenv("START_DATE", "2026-08-13")
+END_DATE = os.getenv("END_DATE", "2026-08-14")
 TZ_NAME = os.getenv("TZ", "Asia/Kolkata")
 
 SELECTIVE_REPAIR_MODE = os.getenv("SELECTIVE_REPAIR_MODE", "1").strip() == "1"
 
-HISTORICAL_PATCH_START_DATE = os.getenv("HISTORICAL_PATCH_START_DATE", "2026-08-12").strip()
-HISTORICAL_PATCH_END_DATE = os.getenv("HISTORICAL_PATCH_END_DATE", "2026-08-13").strip()
+HISTORICAL_PATCH_START_DATE = os.getenv("HISTORICAL_PATCH_START_DATE", "2026-08-13").strip()
+HISTORICAL_PATCH_END_DATE = os.getenv("HISTORICAL_PATCH_END_DATE", "2026-08-14").strip()
 
-FORWARD_FULL_START_DATE = os.getenv("FORWARD_FULL_START_DATE", "2026-08-12").strip()
-FORWARD_FULL_END_DATE = os.getenv("FORWARD_FULL_END_DATE", "2026-08-13").strip()
+FORWARD_FULL_START_DATE = os.getenv("FORWARD_FULL_START_DATE", "2026-08-13").strip()
+FORWARD_FULL_END_DATE = os.getenv("FORWARD_FULL_END_DATE", "2026-08-14").strip()
 
 OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "output r"))
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

@@ -2,15 +2,15 @@
   "macro_regimes": {
     "neutral": 68,
     "risk_off": 37,
-    "risk_on": 29
+    "risk_on": 31
   },
   "dollar_regimes": {
     "strong_dollar": 75,
     "neutral_dollar": 31,
-    "weak_dollar": 28
+    "weak_dollar": 30
   },
   "vix_regimes": {
-    "normal_vol": 134
+    "normal_vol": 136
   },
   "conditional_returns": [
     {
@@ -27,12 +27,12 @@
     },
     {
       "condition": "spx_trend_up",
-      "n": 71,
-      "avg_mean": -0.06279926231732484,
-      "sharpe": -0.26951035725390476
+      "n": 73,
+      "avg_mean": -0.06112528788972391,
+      "sharpe": -0.2653154072892437
     }
   ],
-  "current_spread": 5.8300018300000005,
-  "current_spread_z": 0.18304107490000074,
+  "current_spread": 6.11000061,
+  "current_spread_z": 0.3695472604443524,
   "latest_correlations": {}
 }

@@ -1,0 +1,1504 @@
+Outputs 
+
+when 'python scripts/enhanced_update_all.py --skip news_events' is ran
+
+(.venv-wsl) srikrishna@DESKTOP-DQGB5FL:/mnt/d/My Docs/Investing/Crude Analysis Agentic$ python scripts/enhanced_update_all.py --skip news_events
+
+######################################################################
+ENHANCED CRUDE OIL WAR-REGIME PIPELINE
+Full run | 2026-08-17 09:45:45
+######################################################################
+
+>>> Source file changes detected: 0
+
+============================================================
+>>> Enhanced Data Ingestion (enhanced_data_ingestion.py)
+    Ingest source CSVs, detect changes, generate MCX data
+============================================================
+>>> Enhanced Data Ingestion Starting
+>>> Checking source file changes...
+  UNCHANGED: wti_daily_ist.csv
+  UNCHANGED: brent_daily_ist.csv
+  UNCHANGED: wti_5m_ist.csv
+  UNCHANGED: brent_5m_ist.csv
+  UNCHANGED: wti_15m_ist.csv
+  UNCHANGED: brent_15m_ist.csv
+  UNCHANGED: wti_60m_ist.csv
+  UNCHANGED: brent_60m_ist.csv
+  UNCHANGED: wti_session_windows_summary.csv
+  UNCHANGED: brent_session_windows_summary.csv
+  UNCHANGED: daily_master_summary.csv
+  UNCHANGED: wti_spot_daily_reference_ist.csv
+  UNCHANGED: brent_spot_daily_reference_ist.csv
+>>> Generating synthetic MCX CRUDEOILM data...
+>>> Synthetic MCX generation complete
+  Wrote mcx_crudeoilm_5m_ist.csv (8640 rows)
+  Wrote mcx_crudeoilm_15m_ist.csv (2880 rows)
+  Wrote mcx_crudeoilm_60m_ist.csv (720 rows)
+  Wrote mcx_crudeoilm_daily_ist.csv (120 rows)
+  Wrote mcx_session_windows_summary.csv (960 rows)
+>>> Updated checksums for 18 files
+>>> Ingestion Complete: 0 files changed, MCX generated: True
+
+Summary: {'files_processed': 13, 'files_changed': 0, 'mcx_generated': True, 'changed_files': [], 'total_rows': 83600, 'date_range': {'start': '2026-03-02', 'end': '2026-08-14'}}
+  OK (19.5s)
+  !! Expected output missing: mcx_crudeoilm_daily_ist.csv
+  !! Expected output missing: mcx_crudeoilm_5m_ist.csv
+  !! Expected output missing: mcx_crudeoilm_15m_ist.csv
+  !! Expected output missing: mcx_crudeoilm_60m_ist.csv
+  !! Expected output missing: mcx_session_windows_summary.csv
+  !! Expected output missing: mcx_spot_daily_reference_ist.csv
+
+============================================================
+============================================================
+>>> Data Validator (rebuild clean_master) (data_validator.py)
+    Load source CSVs + session summaries, phase-tag via merge_asof vs phase_lookup, prune invariant cols, rebuild clean_master.parquet. MUST run after ingestion so downstream engines see freshly appended dates.
+============================================================
+>>> data_validator.py starting
+  load wti_5m_ist.csv
+    rows=29,489  cols=17
+  load wti_15m_ist.csv
+    rows=8,328  cols=17
+  load wti_60m_ist.csv
+    rows=2,571  cols=17
+  load wti_daily_ist.csv
+    rows=118  cols=55
+  load brent_5m_ist.csv
+    rows=28,053  cols=17
+  load brent_15m_ist.csv
+    rows=9,694  cols=17
+  load brent_60m_ist.csv
+    rows=2,579  cols=17
+  load brent_daily_ist.csv
+    rows=118  cols=56
+  load wti_session_windows_summary.csv
+    rows=1,150  cols=17
+  load brent_session_windows_summary.csv
+    rows=1,145  cols=17
+
+>>> master rows: 83,245
+>>> dropped 218 rows with no trade_date
+
+>>> wrote /mnt/d/My Docs/Investing/Crude Analysis Agentic/artifacts/clean_master.parquet (83,027 rows × 69 cols)
+>>> wrote /mnt/d/My Docs/Investing/Crude Analysis Agentic/artifacts/pruning_log.md
+
+>>> Stream × window row counts:
+     __stream    session_window_ist  rows
+    BRENT_15m global_reopen_pre_mcx  2262
+    BRENT_15m               us_open  1294
+    BRENT_15m          india_midday  1277
+    BRENT_15m         europe_midday  1077
+    BRENT_15m           us_pre_open   863
+    BRENT_15m         india_morning   837
+    BRENT_15m        mcx_open_drive   619
+    BRENT_15m               us_late   619
+    BRENT_15m              mcx_tail   429
+    BRENT_15m            asia_early   417
+     BRENT_5m global_reopen_pre_mcx  6222
+     BRENT_5m               us_open  3857
+     BRENT_5m          india_midday  3781
+     BRENT_5m         europe_midday  3195
+     BRENT_5m           us_pre_open  2562
+     BRENT_5m         india_morning  2430
+     BRENT_5m               us_late  1828
+     BRENT_5m        mcx_open_drive  1689
+     BRENT_5m              mcx_tail  1280
+     BRENT_5m            asia_early  1209
+    BRENT_60m global_reopen_pre_mcx   535
+    BRENT_60m               us_open   327
+    BRENT_60m          india_midday   326
+    BRENT_60m         europe_midday   218
+    BRENT_60m           us_pre_open   218
+    BRENT_60m         india_morning   214
+    BRENT_60m        mcx_open_drive   214
+    BRENT_60m            asia_early   210
+    BRENT_60m               us_late   208
+    BRENT_60m              mcx_tail   109
+  BRENT_daily               us_late   118
+BRENT_session               us_open   216
+BRENT_session         europe_midday   108
+BRENT_session           us_pre_open   108
+BRENT_session     other_valid_hours   104
+BRENT_session          india_midday    96
+BRENT_session        mcx_open_drive    96
+BRENT_session              mcx_tail    96
+BRENT_session global_reopen_pre_mcx    95
+BRENT_session         india_morning    94
+BRENT_session               us_late    12
+BRENT_session            asia_early    11
+      WTI_15m global_reopen_pre_mcx  1956
+      WTI_15m               us_open  1104
+      WTI_15m          india_midday  1092
+      WTI_15m         europe_midday   920
+      WTI_15m           us_pre_open   736
+      WTI_15m         india_morning   720
+      WTI_15m        mcx_open_drive   538
+      WTI_15m               us_late   534
+      WTI_15m              mcx_tail   368
+      WTI_15m            asia_early   360
+       WTI_5m global_reopen_pre_mcx  7021
+       WTI_5m               us_open  3888
+       WTI_5m          india_midday  3849
+       WTI_5m         europe_midday  3238
+       WTI_5m           us_pre_open  2592
+       WTI_5m         india_morning  2537
+       WTI_5m        mcx_open_drive  1914
+       WTI_5m               us_late  1890
+       WTI_5m              mcx_tail  1296
+       WTI_5m            asia_early  1264
+      WTI_60m global_reopen_pre_mcx   535
+      WTI_60m               us_open   324
+      WTI_60m          india_midday   323
+      WTI_60m         europe_midday   216
+      WTI_60m           us_pre_open   216
+      WTI_60m        mcx_open_drive   214
+      WTI_60m         india_morning   213
+      WTI_60m            asia_early   212
+      WTI_60m               us_late   210
+      WTI_60m              mcx_tail   108
+    WTI_daily               us_late   118
+  WTI_session               us_open   216
+  WTI_session         europe_midday   108
+  WTI_session           us_pre_open   108
+  WTI_session     other_valid_hours   106
+  WTI_session        mcx_open_drive    97
+  WTI_session global_reopen_pre_mcx    96
+  WTI_session          india_midday    96
+  WTI_session              mcx_tail    96
+  WTI_session         india_morning    95
+  WTI_session               us_late    12
+  WTI_session            asia_early    11
+
+>>> Phase × stream row counts:
+ phase_id      __stream  rows
+      1.0        WTI_5m  4846
+      1.0      BRENT_5m  4806
+      1.0     BRENT_15m  1618
+      1.0       WTI_15m  1618
+      1.0     BRENT_60m   423
+      1.0       WTI_60m   423
+      1.0 BRENT_session   143
+      1.0   WTI_session   143
+      1.0   BRENT_daily    26
+      1.0     WTI_daily    26
+      2.0        WTI_5m 11574
+      2.0      BRENT_5m 11271
+      2.0     BRENT_15m  3867
+      2.0       WTI_15m  3866
+      2.0     BRENT_60m  1009
+      2.0       WTI_60m  1009
+      2.0   WTI_session   425
+      2.0 BRENT_session   425
+      2.0     WTI_daily    43
+      2.0   BRENT_daily    43
+      3.0        WTI_5m  1104
+      3.0      BRENT_5m  1083
+      3.0     BRENT_15m   366
+      3.0       WTI_15m   359
+      3.0       WTI_60m    96
+      3.0     BRENT_60m    96
+      3.0   WTI_session    40
+      3.0 BRENT_session    40
+      3.0   BRENT_daily     4
+      3.0     WTI_daily     4
+      4.0        WTI_5m  1174
+      4.0      BRENT_5m  1136
+      4.0     BRENT_15m   390
+      4.0       WTI_60m   103
+      4.0     BRENT_60m   103
+      4.0   WTI_session    42
+      4.0 BRENT_session    42
+      4.0     WTI_daily     5
+      4.0   BRENT_daily     5
+      5.0        WTI_5m  3106
+      5.0      BRENT_5m  2923
+      5.0     BRENT_15m  1019
+      5.0     BRENT_60m   274
+      5.0       WTI_60m   271
+      5.0   WTI_session   112
+      5.0 BRENT_session   112
+      5.0   BRENT_daily    12
+      5.0     WTI_daily    12
+      6.0        WTI_5m   828
+      6.0      BRENT_5m   798
+      6.0     BRENT_15m   273
+      6.0       WTI_15m   194
+      6.0     BRENT_60m    93
+      6.0       WTI_60m    72
+      6.0 BRENT_session    30
+      6.0   WTI_session    30
+      6.0     WTI_daily     3
+      6.0   BRENT_daily     3
+      7.0        WTI_5m  2755
+      7.0      BRENT_5m  2614
+      7.0       WTI_15m   920
+      7.0     BRENT_15m   912
+      7.0     BRENT_60m   240
+      7.0       WTI_60m   240
+      7.0 BRENT_session   100
+      7.0   WTI_session   100
+      7.0   BRENT_daily    10
+      7.0     WTI_daily    10
+      8.0        WTI_5m   274
+      8.0      BRENT_5m   261
+      8.0     BRENT_15m    92
+      8.0       WTI_15m    92
+      8.0       WTI_60m    24
+      8.0     BRENT_60m    24
+      8.0   WTI_session    10
+      8.0 BRENT_session    10
+      8.0   BRENT_daily     1
+      8.0     WTI_daily     1
+      9.0        WTI_5m  1101
+      9.0      BRENT_5m   695
+      9.0       WTI_15m   368
+      9.0     BRENT_15m   308
+      9.0       WTI_60m    96
+      9.0     BRENT_60m    92
+      9.0   WTI_session    40
+      9.0 BRENT_session    39
+      9.0   BRENT_daily     4
+      9.0     WTI_daily     4
+     10.0        WTI_5m  2481
+     10.0      BRENT_5m  2243
+     10.0       WTI_15m   829
+     10.0     BRENT_15m   770
+     10.0       WTI_60m   216
+     10.0     BRENT_60m   204
+     10.0   WTI_session    90
+     10.0 BRENT_session    86
+     10.0   BRENT_daily     9
+     10.0     WTI_daily     9
+  OK (20.4s)
+
+============================================================
+>>> Primitives Engine (primitives_engine.py)
+    Compute window returns, regime-relative thresholds, magnitude tiers, legs
+============================================================
+>>> primitives_engine.py starting
+>>> loaded master (83027, 69), phase (10, 9)
+>>> session rows: 2,077
+>>> wrote /mnt/d/My Docs/Investing/Crude Analysis Agentic/artifacts/primitives.parquet (83,027 rows)
+ phase_id  n_rows  n_non_null  median_abs_return  mean_return  mean_range_pct  phase_atr_pct  direction_threshold_pct  n_up  n_down  n_flat                                        phase_label
+      1.0     286         286           1.000007     0.143704        2.945360       2.945360                 0.500004   124      90      72                                     full_scale_war
+      2.0     850         850           0.601268    -0.050405        1.808016       1.808016                 0.300634   311     302     237                             post_ceasefire_complex
+      3.0      80          80           0.644473    -0.184548        1.681890       1.681890                 0.322236    22      37      21                   strong_escalation_op_rising_lion
+      4.0      84          84           0.603979    -0.134057        1.338847       1.338847                 0.301990    25      36      23                             naval_blockade_removed
+      5.0     224         224           0.434435    -0.039108        1.271135       1.271135                 0.217217    77      81      66                   slight_escalation_strait_closure
+      6.0      60          60           1.111479    -9.970269        1.578943       1.578943                 0.555740    14      23      23              ceasefire_collapse_renewed_escalation
+      7.0     200         200           0.578874     0.158882        1.751745       1.751745                 0.289437    78      60      62            sustained_major_reescalation_hormuz_war
+      8.0      20          20           0.748115    -0.384383        1.887057       1.887057                 0.374058     5      13       2                operational_pause_renewed_diplomacy
+      9.0      79          79           0.465398     0.033450        1.538586       1.538586                 0.232699    27      33      19       ceasefire_pause_breakdown_renewed_escalation
+     10.0     176         176           0.579381    -0.000985        1.359349       1.359349                 0.289691    65      62      49 second_deescalation_active_negotiation_hormuz_deal
+>>> wrote definitions.md
+  OK (6.0s)
+
+============================================================
+>>> Window Pattern Engine (window_pattern_engine.py)
+    Direction splits, transition matrices, magnitude distributions, high/low attribution
+============================================================
+>>> window_pattern_engine.py starting
+>>> session rows: 2,077
+>>> wrote window_stats.csv (184 rows)
+>>> wrote magnitude_crosstabs.csv (502 rows)
+>>> wrote magnitude_x_eia.csv (120 rows)
+
+>>> Sample window_stats (first 12 rows):
+       stream    session_window_ist  phase_id            phase_label  n_total  n_valid  n_up  n_down  n_flat    pct_up  pct_down  pct_flat  mean_return_pct  median_return_pct  std_return_pct  low_confidence_flag
+BRENT_session            asia_early       1.0         full_scale_war       11       11     3       4       4 27.272727 36.363636 36.363636         0.048924          -0.122604        1.438901                False
+BRENT_session         europe_midday       1.0         full_scale_war       18       18     8       8       2 44.444444 44.444444 11.111111        -0.520630          -0.088238        2.003249                False
+BRENT_session global_reopen_pre_mcx       1.0         full_scale_war        6        6     4       2       0 66.666667 33.333333  0.000000         0.993727           1.091621        2.783698                False
+BRENT_session          india_midday       1.0         full_scale_war        6        6     3       3       0 50.000000 50.000000  0.000000         0.568018           0.050713        2.348740                False
+BRENT_session         india_morning       1.0         full_scale_war        6        6     1       1       4 16.666667 16.666667 66.666667        -0.863638          -0.113016        2.334414                False
+BRENT_session        mcx_open_drive       1.0         full_scale_war        6        6     3       1       2 50.000000 16.666667 33.333333         0.299854           0.351507        0.743144                False
+BRENT_session              mcx_tail       1.0         full_scale_war        6        6     1       2       3 16.666667 33.333333 50.000000        -0.272658          -0.402732        0.720437                False
+BRENT_session     other_valid_hours       1.0         full_scale_war       18       18     8       7       3 44.444444 38.888889 16.666667         0.640483           0.300693        3.587776                False
+BRENT_session               us_late       1.0         full_scale_war       12       12     7       2       3 58.333333 16.666667 25.000000         0.306409           0.723929        1.717854                False
+BRENT_session               us_open       1.0         full_scale_war       36       36    14       8      14 38.888889 22.222222 38.888889         0.035448           0.237635        1.465709                False
+BRENT_session           us_pre_open       1.0         full_scale_war       18       18     6       5       7 33.333333 27.777778 38.888889         0.319546          -0.147902        1.710813                False
+BRENT_session         europe_midday       2.0 post_ceasefire_complex       43       43     8      22      13 18.604651 51.162791 30.232558        -0.374031          -0.311433        1.032361                False
+  OK (8.1s)
+
+>>> Triplet Miner (triplet_miner.py)
+    Sequential 3-leg pattern mining with composite scoring
+============================================================
+>>> triplet_miner.py starting
+>>> raw triplets: 1,621
+>>> wrote /mnt/d/My Docs/Investing/Crude Analysis Agentic/artifacts/triplets_catalog.json (1456 entries)
+>>> wrote triplets_catalog.csv
+
+>>> Top 30 triplets (low-conf filtered):
+       stream            phase_label                            leg_triplet  n_occurrences  support  confidence  composite_score
+BRENT_session post_ceasefire_complex FLAT_Q1_0_25|FLAT_Q1_0_25|FLAT_Q1_0_25              6 0.139535    0.333333         0.116883
+  WTI_session post_ceasefire_complex FLAT_Q1_0_25|FLAT_Q1_0_25|FLAT_Q1_0_25              5 0.116279    0.312500         0.097205
+  OK (19.2s)
+
+============================================================
+>>> Conformity Engine (conformity_engine.py)
+    Quantitative conformity to trading frameworks (mean reversion, momentum, vol clustering)
+============================================================
+>>> conformity_engine.py starting
+>>> wrote conformity_stats.csv (106 rows)
+>>> wrote volatility_clustering.csv (20 rows)
+>>> wrote concept_citations.md
+  OK (14.6s)
+
+============================================================
+>>> Anomaly Engine (anomaly_engine.py)
+    Rolling z-score anomaly detection (|z| > 2.5)
+============================================================
+>>> anomaly_engine.py starting
+>>> daily rows: 236
+>>> wrote anomalies.csv (15 flagged rows)
+ phase_id  n_anomalies  pct_of_phase_dates
+      1.0            4           15.384615
+      2.0            1            2.173913
+      3.0            2           50.000000
+      4.0            2           40.000000
+      5.0            2           16.666667
+      6.0            1           12.500000
+      7.0            3                 NaN
+  OK (9.7s)
+
+============================================================
+>>> Day Type Engine (day_type_engine.py)
+    Day archetype classification (trend, whipsaw, gap-and-hold, range-bound)
+============================================================
+>>> day_type_engine.py starting
+>>> daily rows: 236
+>>> wrote day_types.csv
+>>> wrote day_type_phase_crosstab.csv
+     stream  phase_id                             phase_label              day_archetype  count       pct  low_confidence_flag
+BRENT_daily       1.0                          full_scale_war           all_day_trend_up      7 26.923077                False
+BRENT_daily       1.0                          full_scale_war               mixed_regime      6 23.076923                False
+BRENT_daily       1.0                          full_scale_war          whipsaw_two_sided      6 23.076923                False
+BRENT_daily       1.0                          full_scale_war   late_session_decisive_up      2  7.692308                False
+BRENT_daily       1.0                          full_scale_war            gap_and_hold_up      2  7.692308                False
+BRENT_daily       1.0                          full_scale_war         all_day_trend_down      2  7.692308                False
+BRENT_daily       1.0                          full_scale_war               gap_and_fade      1  3.846154                False
+BRENT_daily       2.0                  post_ceasefire_complex         all_day_trend_down     12 27.906977                False
+BRENT_daily       2.0                  post_ceasefire_complex          whipsaw_two_sided     12 27.906977                False
+BRENT_daily       2.0                  post_ceasefire_complex           all_day_trend_up     10 23.255814                False
+BRENT_daily       2.0                  post_ceasefire_complex            gap_and_hold_up      5 11.627907                False
+BRENT_daily       2.0                  post_ceasefire_complex late_session_decisive_down      1  2.325581                False
+BRENT_daily       2.0                  post_ceasefire_complex   late_session_decisive_up      1  2.325581                False
+BRENT_daily       2.0                  post_ceasefire_complex               gap_and_fade      1  2.325581                False
+BRENT_daily       2.0                  post_ceasefire_complex               mixed_regime      1  2.325581                False
+BRENT_daily       3.0        strong_escalation_op_rising_lion         all_day_trend_down      2 50.000000                 True
+BRENT_daily       3.0        strong_escalation_op_rising_lion           all_day_trend_up      1 25.000000                 True
+BRENT_daily       3.0        strong_escalation_op_rising_lion          whipsaw_two_sided      1 25.000000                 True
+BRENT_daily       4.0                  naval_blockade_removed          whipsaw_two_sided      3 60.000000                False
+BRENT_daily       4.0                  naval_blockade_removed               gap_and_fade      1 20.000000                False
+BRENT_daily       4.0                  naval_blockade_removed         all_day_trend_down      1 20.000000                False
+BRENT_daily       5.0        slight_escalation_strait_closure          whipsaw_two_sided      4 33.333333                False
+BRENT_daily       5.0        slight_escalation_strait_closure         all_day_trend_down      3 25.000000                False
+BRENT_daily       5.0        slight_escalation_strait_closure           all_day_trend_up      2 16.666667                False
+BRENT_daily       5.0        slight_escalation_strait_closure            gap_and_hold_up      1  8.333333                False
+BRENT_daily       5.0        slight_escalation_strait_closure               gap_and_fade      1  8.333333                False
+BRENT_daily       5.0        slight_escalation_strait_closure               mixed_regime      1  8.333333                False
+BRENT_daily       6.0   ceasefire_collapse_renewed_escalation          whipsaw_two_sided      2 66.666667                 True
+BRENT_daily       6.0   ceasefire_collapse_renewed_escalation         all_day_trend_down      1 33.333333                 True
+BRENT_daily       7.0 sustained_major_reescalation_hormuz_war          whipsaw_two_sided      4 40.000000                False
+
+KMeans × archetype crosstab:
+kmeans_cluster              0.0  1.0  2.0  3.0
+day_archetype                                 
+all_day_trend_down            6    0   34    1
+all_day_trend_up              7    0    0   33
+gap_and_fade                  0    2    4    2
+gap_and_hold_up               0   10    4    4
+late_session_decisive_down    0    0    2    0
+late_session_decisive_up      1    0    0    2
+mixed_regime                  2    0    8    7
+whipsaw_two_sided             1   56    0    0
+>>> done
+  OK (13.5s)
+
+============================================================
+>>> Cross-Factor Engine (cross_factor_engine.py)
+    Brent-WTI lead-lag, EIA Wednesday, weekly structure, OPEC+, expiry proximity
+============================================================
+>>> cross_factor_engine.py starting
+>>> wrote cross_factor_stats.csv (23 rows)
+
+Lead-lag results:
+           test  lag_windows                          label   n      corr      p_value  low_confidence_flag  lag_days
+lead_lag_window         -2.0 BRENT leads WTI by 2 window(s) 604 -0.000094 9.981534e-01                False       NaN
+lead_lag_window         -1.0 BRENT leads WTI by 1 window(s) 714 -0.041181 2.717970e-01                False       NaN
+lead_lag_window          0.0                Contemporaneous 824  0.179025 2.303327e-07                False       NaN
+lead_lag_window          1.0 WTI leads BRENT by 1 window(s) 715 -0.017424 6.418386e-01                False       NaN
+lead_lag_window          2.0 WTI leads BRENT by 2 window(s) 606  0.016828 6.792837e-01                False       NaN
+ lead_lag_daily          NaN          BRENT leads WTI by 3d 135 -0.108725 2.093877e-01                False      -3.0
+ lead_lag_daily          NaN          BRENT leads WTI by 2d 136 -0.096902 2.617443e-01                False      -2.0
+ lead_lag_daily          NaN          BRENT leads WTI by 1d 137  0.062850 4.656179e-01                False      -1.0
+ lead_lag_daily          NaN                Contemporaneous 138  0.749628 3.812631e-26                False       0.0
+ lead_lag_daily          NaN          WTI leads BRENT by 1d 137  0.101557 2.376567e-01                False       1.0
+ lead_lag_daily          NaN          WTI leads BRENT by 2d 136 -0.098308 2.548570e-01                False       2.0
+ lead_lag_daily          NaN          WTI leads BRENT by 3d 135 -0.077481 3.717386e-01                False       3.0
+
+EIA Wed effect:
+         test  phase_id  factor  n  mean_wti_ret  mean_brent_ret  std_wti_ret  std_brent_ret
+eia_wednesday         1  is_wed  5     -0.001071        0.931962     2.846352       4.135314
+eia_wednesday         1 non_wed 21      2.429651        1.474027     6.618534       3.839717
+eia_wednesday         2  is_wed 14     -0.763231       -2.464407     8.495397       7.288924
+eia_wednesday         2 non_wed 50     -0.034216        0.593050     2.904772       2.880367
+eia_wednesday         5  is_wed  2     -3.561714       -3.212758     1.119306       1.371427
+eia_wednesday         5 non_wed 10      0.344781        0.301314     2.720283       2.548858
+
+Weekly structure:
+            test  phase_id factor  n  mean_wti_ret  mean_brent_ret  std_wti_ret  std_brent_ret
+weekly_structure         0 monday 26      0.967285        0.986043     4.541182       4.483580
+weekly_structure         0 friday 27     -0.396910        0.885200     3.648135       3.008265
+weekly_structure         0  other 86      0.184302       -0.248027     5.019691       4.268550
+
+OPEC+ meeting day effect:
+            test  phase_id           factor   n  mean_wti_ret  mean_brent_ret  std_wti_ret  std_brent_ret
+opec_meeting_day         0     non_opec_day 133      0.309653        0.237488     4.705552       4.101345
+opec_meeting_day         0 opec_meeting_day   6     -1.926443       -0.687874     3.943305       4.547768
+  OK (10.5s)
+
+============================================================
+>>> Statistical Rigor (statistical_rigor.py)
+    FDR correction, Bayesian posteriors, hierarchical shrinkage
+============================================================
+>>> statistical_rigor.py starting
+>>> Loaded window_stats: 184, triplets: 1456, playbook: 193
+>>> wrote window_stats_fdr.csv (184 rows)
+>>> wrote triplet_fdr.csv (1456 rows)
+>>> wrote bayesian_posteriors.csv (193 rows)
+>>> wrote playbook_shrunk.csv (193 rows)
+>>> Significant window biases after FDR: 1
+     stream  phase_id session_window_ist    q_up  q_down
+WTI_session       1.0            us_open 0.01609     1.0
+
+>>> statistical_rigor.py complete
+  OK (9.1s)
+
+============================================================
+>>> Synthesis Engine (synthesis_engine.py)
+    Compile all artifacts into conditional probability playbook
+============================================================
+>>> synthesis_engine.py starting
+>>> loaded 184 window_stats, 2649 transition rows, 1456 triplets, 15 anomalies
+>>> wrote playbook_summary.csv (193 rows)
+>>> wrote playbook_strong_patterns.csv (73 strong patterns)
+>>> wrote playbook.json
+>>> wrote final_playbook.md
+>>> wrote coverage_limitations.md
+
+>>> Synthesis complete.
+  OK (6.8s)
+============================================================
+>>> Live Regime Classifier (live_regime_classifier.py)
+    Train/update regime classifier, predict current phase
+============================================================
+>>> Regime Classifier: train mode
+  WARNING: Dropping classes with <3 samples: {8}
+  Training on 9 classes with 106 samples
+>>> Model saved to /mnt/d/My Docs/Investing/Crude Analysis Agentic/models/regime_classifier.pkl
+>>> Training complete. CV Accuracy: 0.435 (+/- 0.294)
+>>> Predictions saved to /mnt/d/My Docs/Investing/Crude Analysis Agentic/artifacts/regime_predictions_live.csv
+{
+  "status": "trained",
+  "metadata": {
+    "trained_at": "2026-08-17T09:48:58.404969",
+    "n_samples": 106,
+    "n_features": 99,
+    "classes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      9,
+      10
+    ],
+    "class_distribution": {
+      "2": 43,
+      "1": 18,
+      "5": 11,
+      "7": 10,
+      "10": 9,
+      "3": 4,
+      "4": 4,
+      "9": 4,
+      "6": 3
+    },
+    "cv_accuracy": 0.4352941176470589,
+    "cv_accuracy_std": 0.2943528471340425,
+    "feature_names": [
+      "brent_ret",
+      "wti_ret",
+      "wti_close_native_ret_1d",
+      "wti_close_native_ret_3d",
+      "wti_close_native_ret_5d",
+      "wti_close_native_ret_10d",
+      "wti_close_native_ret_20d",
+      "brent_close_native_ret_1d",
+      "brent_close_native_ret_3d",
+      "brent_close_native_ret_5d",
+      "brent_close_native_ret_10d",
+      "brent_close_native_ret_20d",
+      "wti_ret_vol_5d",
+      "wti_ret_vol_10d",
+      "wti_ret_vol_20d",
+      "brent_ret_vol_5d",
+      "brent_ret_vol_10d",
+      "brent_ret_vol_20d",
+      "brent_wti_spread",
+      "brent_wti_spread_pct",
+      "wti_volume_ratio",
+      "brent_volume_ratio",
+      "wti_range_pct",
+      "wti_body_pct",
+      "wti_upper_wick",
+      "wti_lower_wick",
+      "brent_range_pct",
+      "brent_body_pct",
+      "brent_upper_wick",
+      "brent_lower_wick",
+      "DXY",
+      "SPX",
+      "GOLD",
+      "US10Y",
+      "VIX",
+      "WTI",
+      "BRENT",
+      "COPPER",
+      "SILVER",
+      "NATGAS",
+      "DXY_ret_1d",
+      "DXY_ret_5d",
+      "DXY_ret_20d",
+      "SPX_ret_1d",
+      "SPX_ret_5d",
+      "SPX_ret_20d",
+      "GOLD_ret_1d",
+      "GOLD_ret_5d",
+      "GOLD_ret_20d",
+      "US10Y_ret_1d",
+      "US10Y_ret_5d",
+      "US10Y_ret_20d",
+      "VIX_ret_1d",
+      "VIX_ret_5d",
+      "VIX_ret_20d",
+      "WTI_ret_1d",
+      "WTI_ret_5d",
+      "WTI_ret_20d",
+      "BRENT_ret_1d",
+      "BRENT_ret_5d",
+      "BRENT_ret_20d",
+      "COPPER_ret_1d",
+      "COPPER_ret_5d",
+      "COPPER_ret_20d",
+      "SILVER_ret_1d",
+      "SILVER_ret_5d",
+      "SILVER_ret_20d",
+      "NATGAS_ret_1d",
+      "NATGAS_ret_5d",
+      "NATGAS_ret_20d",
+      "DXY_ma_20",
+      "DXY_ma_50",
+      "DXY_trend",
+      "DXY_trend_strength",
+      "SPX_ma_20",
+      "SPX_ma_50",
+      "SPX_trend",
+      "SPX_trend_strength",
+      "GOLD_ma_20",
+      "GOLD_ma_50",
+      "GOLD_trend",
+      "GOLD_trend_strength",
+      "US10Y_ma_20",
+      "US10Y_ma_50",
+      "US10Y_trend",
+      "US10Y_trend_strength",
+      "VIX_ma_20",
+      "VIX_ma_50",
+      "VIX_trend",
+      "VIX_trend_strength",
+      "risk_on_score",
+      "macro_regime",
+      "copper_gold_ratio",
+      "inflation_hedge",
+      "yield_curve_steep",
+      "dollar_regime",
+      "vix_regime",
+      "wti_brent_corr_20d",
+      "wti_dxy_corr_20d"
+    ],
+    "hyperparameters": {
+      "n_estimators": 500,
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "class_weight": "balanced"
+    },
+    "sklearn_version": "1.9.0",
+    "evaluation": {
+      "accuracy": 0.9906542056074766,
+      "classification_report": {
+        "1": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 18.0
+        },
+        "2": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 43.0
+        },
+        "3": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 4.0
+        },
+        "4": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 4.0
+        },
+        "5": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 11.0
+        },
+        "6": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 3.0
+        },
+        "7": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 10.0
+        },
+        "8": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "9": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1-score": 0.8888888888888888,
+          "support": 4.0
+        },
+        "10": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 9.0
+        },
+        "accuracy": 0.9906542056074766,
+        "macro avg": {
+          "precision": 0.8800000000000001,
+          "recall": 0.9,
+          "f1-score": 0.888888888888889,
+          "support": 107.0
+        },
+        "weighted avg": {
+          "precision": 0.983177570093458,
+          "recall": 0.9906542056074766,
+          "f1-score": 0.9865005192107996,
+          "support": 107.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          18,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          43,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          11,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          3,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          10,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          9
+        ]
+      ],
+      "calibration": {
+        "phase_1": {
+          "bins": [
+            0.0,
+            0.1,
+            0.2,
+            0.30000000000000004,
+            0.4,
+            0.5,
+            0.6000000000000001,
+            0.7000000000000001,
+            0.8,
+            0.9,
+            1.0
+          ],
+          "empirical": [
+            0.0,
+            NaN,
+            NaN,
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            1.0
+          ]
+        },
+        "phase_2": {
+          "bins": [
+            0.0,
+            0.1,
+            0.2,
+            0.30000000000000004,
+            0.4,
+            0.5,
+            0.6000000000000001,
+            0.7000000000000001,
+            0.8,
+            0.9,
+            1.0
+          ],
+          "empirical": [
+            0.0,
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            1.0,
+            1.0,
+            NaN,
+            NaN,
+            1.0
+          ]
+        },
+        "phase_3": {
+          "bins": [
+            0.0,
+            0.1,
+            0.2,
+            0.30000000000000004,
+            0.4,
+            0.5,
+            0.6000000000000001,
+            0.7000000000000001,
+            0.8,
+            0.9,
+            1.0
+          ],
+          "empirical": [
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            1.0,
+            1.0
+          ]
+        },
+        "phase_4": {
+          "bins": [
+            0.0,
+            0.1,
+            0.2,
+            0.30000000000000004,
+            0.4,
+            0.5,
+            0.6000000000000001,
+            0.7000000000000001,
+            0.8,
+            0.9,
+            1.0
+          ],
+          "empirical": [
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            1.0,
+            1.0
+          ]
+        },
+        "phase_5": {
+          "bins": [
+            0.0,
+            0.1,
+            0.2,
+            0.30000000000000004,
+            0.4,
+            0.5,
+            0.6000000000000001,
+            0.7000000000000001,
+            0.8,
+            0.9,
+            1.0
+          ],
+          "empirical": [
+            0.0,
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            1.0
+          ]
+        },
+        "phase_6": {
+          "bins": [
+            0.0,
+            0.1,
+            0.2,
+            0.30000000000000004,
+            0.4,
+            0.5,
+            0.6000000000000001,
+            0.7000000000000001,
+            0.8,
+            0.9,
+            1.0
+          ],
+          "empirical": [
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            1.0,
+            1.0
+          ]
+        },
+        "phase_7": {
+          "bins": [
+            0.0,
+            0.1,
+            0.2,
+            0.30000000000000004,
+            0.4,
+            0.5,
+            0.6000000000000001,
+            0.7000000000000001,
+            0.8,
+            0.9,
+            1.0
+          ],
+          "empirical": [
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            1.0
+          ]
+        },
+        "phase_9": {
+          "bins": [
+            0.0,
+            0.1,
+            0.2,
+            0.30000000000000004,
+            0.4,
+            0.5,
+            0.6000000000000001,
+            0.7000000000000001,
+            0.8,
+            0.9,
+            1.0
+          ],
+          "empirical": [
+            0.0,
+            NaN,
+            0.0,
+            NaN,
+            NaN,
+            0.0,
+            NaN,
+            NaN,
+            1.0,
+            NaN
+          ]
+        },
+        "phase_10": {
+          "bins": [
+            0.0,
+            0.1,
+            0.2,
+            0.30000000000000004,
+            0.4,
+            0.5,
+            0.6000000000000001,
+            0.7000000000000001,
+            0.8,
+            0.9,
+            1.0
+          ],
+          "empirical": [
+            0.0,
+            0.0,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            NaN,
+            1.0,
+            NaN,
+            1.0
+          ]
+        }
+      },
+      "cv_accuracy": 0.4352941176470589,
+      "cv_accuracy_std": 0.2943528471340425
+    }
+  }
+}
+  OK (53.3s)
+  !! Expected output missing: models/regime_classifier.pkl
+
+============================================================
+>>> Probabilistic Signal Engine (probabilistic_signal_engine.py)
+    Generate today's trading signals with Bayesian posteriors, Kelly sizing, ATR stops
+============================================================
+>>> Probabilistic Signal Engine: live mode
+>>> Generated 0 signals
+  OK (12.4s)
+  !! Expected output missing: signals_history.csv
+  !! Expected output missing: signal_performance.csv
+============================================================
+>>> Prediction Scorecard (P1) (prediction_scorecard.py)
+    Resolve each emitted signal against actual next-window outcome; rolling hit-rate & edge-decay; flags stale patterns
+============================================================
+>>> prediction_scorecard.py starting
+>>> wrote prediction_scorecard.csv (0 rows)
+>>> wrote prediction_rolling_metrics.csv (0 rows)
+>>> verdict: {'total_signals_emitted': 0, 'resolved_signals': 0, 'resolved_hits': 0, 'overall_hit_rate': None, 'last_resolved_date': None, 'stale_patterns': [], 'generated_at': '2026-08-17T09:49:13.953771'}
+  OK (4.7s)
+============================================================
+>>> Daily News-Conditional Plan (daily_report_generator.py)
+    Build the NEXT-trading-day window-by-window plan from artifacts + live news (Al Jazeera/CNN/X) + escalation/de-escalation scenarios
+============================================================
+>>> daily_report_generator.py starting
+>>> fetching live news (fail-soft)...
+>>> raw news lines collected: 8
+>>> wrote news-conditional daily plan for 2026-08-17
+  OK (47.8s)
+  !! Expected output missing: daily_trading_report_*.md
+  !! Expected output missing: daily_trading_report_*.json
+  !! Expected output missing: TODAYS_PLAN.md
+============================================================
+>>> Walk-Forward Backtester (walkforward_backtester.py)
+    Full walk-forward backtest with risk management, Monte Carlo CIs
+============================================================
+>>> Walk-Forward Backtester Starting
+>>> Testing 41 playbook signals
+
+============================================================
+BACKTEST SUMMARY
+============================================================
+  total_return_pct: -11.0681
+  annual_return_pct: -23.5645
+  total_trades: 297
+  win_rate: 63.6364
+  avg_win_pct: 1.0291
+  avg_loss_pct: -0.8595
+  profit_factor: 2.0955
+  expectancy_pct: 0.3424
+  sharpe: 4.2855
+  sortino: 7.5658
+  calmar: -1.0000
+  max_drawdown_pct: -11.0681
+  max_drawdown_duration: 0
+  avg_hold_windows: 1.0000
+  best_trade_pct: 3.6160
+  worst_trade_pct: -2.9454
+  mc_expectancy_ci: (0.1975909429678755, 0.47664106381590227)
+  mc_sharpe_ci: (2.500668225935424, 5.951529116112004)
+
+MC 95% CI Expectancy: (0.1975909429678755, 0.47664106381590227)
+MC 95% CI Sharpe: (2.500668225935424, 5.951529116112004)
+  OK (568.6s)
+
+============================================================
+>>> Enhanced Cross-Asset Macro (enhanced_cross_asset.py)
+    DXY/SPX/Gold/US10Y/VIX regimes, COT positioning, options vol surface
+============================================================
+>>> Enhanced Cross-Asset Analysis Starting
+>>> Fetching macro price data...
+  DXY: 135 rows
+  SPX: 135 rows
+  GOLD: 135 rows
+  US10Y: 135 rows
+  VIX: 136 rows
+  WTI: 135 rows
+  BRENT: 135 rows
+  COPPER: 135 rows
+  SILVER: 135 rows
+  NATGAS: 135 rows
+>>> Saved macro_prices.csv: 136 rows
+>>> Saved macro_regime.csv: 136 rows
+>>> Saved macro_conditional_returns.csv: 3 conditions
+>>> Saved brent_wti_spread_signals.csv
+>>> Saved rolling_cross_correlations.csv: 0 rows
+>>> EIA API key not set, skipping inventory fetch
+
+>>> Cross-Asset Analysis Complete!
+  Conditional findings: 3 regime-condition pairs analyzed
+{
+  "status": "success",
+  "summary": {
+    "macro_regimes": {
+      "neutral": 68,
+      "risk_off": 37,
+      "risk_on": 31
+    },
+    "dollar_regimes": {
+      "strong_dollar": 75,
+      "neutral_dollar": 31,
+      "weak_dollar": 30
+    },
+    "vix_regimes": {
+      "normal_vol": 136
+    },
+    "conditional_returns": [
+      {
+        "condition": "spx_trend_down",
+        "n": 11,
+        "avg_mean": -0.32647259301620435,
+        "sharpe": -1.0124937721517464
+      },
+      {
+        "condition": "spx_trend_flat",
+        "n": 34,
+        "avg_mean": 0.9927817811444751,
+        "sharpe": 3.0991924595834957
+      },
+      {
+        "condition": "spx_trend_up",
+        "n": 73,
+        "avg_mean": -0.06112528788972391,
+        "sharpe": -0.2653154072892437
+      }
+    ],
+    "current_spread": 6.11000061,
+    "current_spread_z": 0.3695472604443524,
+    "latest_correlations": {}
+  }
+}
+  OK (29.3s)
+  !! Expected output missing: cot_positioning.csv
+  !! Expected output missing: options_vol_surface.csv
+  !! Expected output missing: cross_asset_correlation.json
+
+============================================================
+>>> Dashboard (separated HTML + data JS) (rebuild_dashboard.py)
+    Build dashboard_v3.html from template + separate dashboard_data.js — avoids inline-JSON parsing failures
+============================================================
+>>> wrote dashboard_v3.html (134,103 chars)
+  OK (6.2s)
+  !! Expected output missing: dashboard_v3.html
+  !! Expected output missing: dashboard_data.js
+
+# Crude Oil War-Regime Pipeline — Daily Report
+**Date:** 2026-08-17 10:00:06
+**Mode:** full
+
+## Execution Summary
+- **Total Steps:** 18
+- **Successful:** 18
+- **Failed:** 0
+- **Skipped:** 0
+- **Duration:** 860.4s
+
+## Step Results
+- ✅ **Enhanced Data Ingestion** (19.5s)
+- ✅ **Data Validator (rebuild clean_master)** (20.4s)
+- ✅ **Primitives Engine** (6.1s)
+- ✅ **Window Pattern Engine** (8.2s)
+- ✅ **Triplet Miner** (19.2s)
+- ✅ **Conformity Engine** (14.6s)
+- ✅ **Anomaly Engine** (9.7s)
+- ✅ **Day Type Engine** (13.6s)
+- ✅ **Cross-Factor Engine** (10.5s)
+- ✅ **Statistical Rigor** (9.1s)
+- ✅ **Synthesis Engine** (6.8s)
+- ✅ **Live Regime Classifier** (53.4s)
+- ✅ **Probabilistic Signal Engine** (12.4s)
+- ✅ **Prediction Scorecard (P1)** (4.7s)
+- ✅ **Daily News-Conditional Plan** (47.8s)
+- ✅ **Walk-Forward Backtester** (568.7s)
+- ✅ **Enhanced Cross-Asset Macro** (29.3s)
+- ✅ **Dashboard (separated HTML + data JS)** (6.2s)
+
+
+## Key Outputs
+- ✅ signals_live.csv (1 bytes, updated 09:49:15)
+- ❌ signals_history.csv (missing)
+- ✅ playbook.json (135,043 bytes, updated 09:48:09)
+- ❌ dashboard_v3.html (missing)
+- ✅ regime_predictions_live.csv (7,494 bytes, updated 09:49:02)
+- ✅ backtest_summary.json (1,456 bytes, updated 09:59:36)
+- ✅ prediction_scorecard.csv (1 bytes, updated 09:49:20)
+- ✅ prediction_rolling_metrics.csv (1 bytes, updated 09:49:20)
+- ✅ prediction_scorecard_summary.json (209 bytes, updated 09:49:20)
+- ❌ news_pipeline_summary.json (missing)
+- ❌ TODAYS_PLAN.md (missing)
+
+## Current Regime Prediction
+- Phase: 10.0 (N/A)
+- Confidence: 0.0%
+- Model Version: N/A
+
+
+
+
+
+
+
+Outputs 
+
+when 'python scripts/enhanced_update_all.py --signals-only' is ran 
+
+######################################################################
+ENHANCED CRUDE OIL WAR-REGIME PIPELINE
+Full run | 2026-08-17 10:06:34
+######################################################################
+
+>>> Source file changes detected: 0
+>>> No source changes — generating report from existing artifacts.
+
+============================================================
+>>> Live Regime Classifier (live_regime_classifier.py)
+    Train/update regime classifier, predict current phase
+============================================================
+>>> Regime Classifier: predict mode
+>>> Prediction: Phase 10 (second_deescalation_active_negotiation_hormuz_deal) @ 100.0% confidence
+{
+  "status": "predicted",
+  "prediction": {
+    "timestamp": "2026-08-13T00:00:00",
+    "phase_id": 10,
+    "phase_label": "second_deescalation_active_negotiation_hormuz_deal",
+    "confidence": 1.0,
+    "probabilities": {
+      "Phase_1": 0.0,
+      "Phase_2": 0.0,
+      "Phase_3": 0.0,
+      "Phase_4": 0.0,
+      "Phase_5": 0.0,
+      "Phase_6": 0.0,
+      "Phase_7": 0.0,
+      "Phase_9": 0.0,
+      "Phase_10": 1.0
+    },
+    "top_features": {
+      "SPX_ma_50": 262.0921782222759,
+      "SPX": 178.81056093645938,
+      "GOLD_ma_50": 170.24317392345458,
+      "SPX_ma_20": 144.49870904308486,
+      "GOLD_ma_20": 125.87076896891588,
+      "GOLD": 72.70123388363717,
+      "DXY_ma_20": 4.262110203276735,
+      "DXY_ma_50": 3.9647873259598128,
+      "WTI": 3.0617652017847212,
+      "BRENT": 2.846787405426131
+    },
+    "model_version": "2026-08-17",
+    "feature_vector": {
+      "brent_ret": 2.0667369904086152,
+      "wti_ret": -0.9199880576057019,
+      "wti_close_native_ret_1d": -1.6590006292568238,
+      "wti_close_native_ret_3d": -1.3244276179890102,
+      "wti_close_native_ret_5d": 3.809274692583897,
+      "wti_close_native_ret_10d": -3.275369259329919,
+      "wti_close_native_ret_20d": 2.94080328043973,
+      "brent_close_native_ret_1d": -1.5955682088060086,
+      "brent_close_native_ret_3d": -1.0130898184408377,
+      "brent_close_native_ret_5d": 9.562802150715566,
+      "brent_close_native_ret_10d": -2.7836757461174977,
+      "brent_close_native_ret_20d": 2.474662331963895,
+      "wti_ret_vol_5d": 11.684983674966029,
+      "wti_ret_vol_10d": 10.567867474192052,
+      "wti_ret_vol_20d": 12.260867862065957,
+      "brent_ret_vol_5d": 12.61526313893765,
+      "brent_ret_vol_10d": 13.982242969394742,
+      "brent_ret_vol_20d": 13.59776746737449,
+      "brent_wti_spread": 5.75,
+      "brent_wti_spread_pct": 7.0804088968597,
+      "wti_volume_ratio": 0.7989998364477562,
+      "brent_volume_ratio": 0.8869669507885505,
+      "wti_range_pct": 3.8800998182384236,
+      "wti_body_pct": -1.8373071658001623,
+      "wti_upper_wick": 0.6889878724163068,
+      "wti_lower_wick": 1.353804780021955,
+      "brent_range_pct": 3.560119541568703,
+      "brent_body_pct": -1.7179071228281144,
+      "brent_upper_wick": 0.610299795992237,
+      "brent_lower_wick": 1.2319126227483512,
+      "DXY": 99.95999908447266,
+      "SPX": 7798.990234375,
+      "GOLD": 4363.60009765625,
+      "US10Y": 4.640999794006348,
+      "VIX": 14.630000114440918,
+      "WTI": 81.25,
+      "BRENT": 87.06999969482422,
+      "COPPER": 6.59250020980835,
+      "SILVER": 64.87300109863281,
+      "NATGAS": 2.726999998092652,
+      "DXY_ret_1d": -0.0499980508846698,
+      "DXY_ret_5d": -0.01000513764962685,
+      "DXY_ret_20d": -0.7644239519504992,
+      "SPX_ret_1d": 0.6516130138091158,
+      "SPX_ret_5d": 1.1547436548123624,
+      "SPX_ret_20d": 3.5204182521654914,
+      "GOLD_ret_1d": -1.0274627614797693,
+      "GOLD_ret_5d": 2.8665746736503905,
+      "GOLD_ret_20d": 9.48414268210913,
+      "US10Y_ret_1d": -0.8757019395111421,
+      "US10Y_ret_5d": -0.6209910452637968,
+      "US10Y_ret_20d": 1.5758378281856222,
+      "VIX_ret_1d": 0.5498276471294972,
+      "VIX_ret_5d": -3.4323400474105092,
+      "VIX_ret_20d": -12.552298178453505,
+      "WTI_ret_1d": -2.425839707578037,
+      "WTI_ret_5d": 5.123559370636643,
+      "WTI_ret_20d": 2.913240203499501,
+      "BRENT_ret_1d": -2.146553821140696,
+      "BRENT_ret_5d": 5.55219050753093,
+      "BRENT_ret_20d": 3.3717158075559306,
+      "COPPER_ret_1d": -0.0682114927800014,
+      "COPPER_ret_5d": -1.413183652906469,
+      "COPPER_ret_20d": 4.709342531988647,
+      "SILVER_ret_1d": -1.0403465843460968,
+      "SILVER_ret_5d": 5.589286884001576,
+      "SILVER_ret_20d": 16.0560350637142,
+      "NATGAS_ret_1d": -2.746073660800074,
+      "NATGAS_ret_5d": 3.2954503686140724,
+      "NATGAS_ret_20d": -4.583626316505585,
+      "DXY_ma_20": 100.458500289917,
+      "DXY_ma_50": 100.55180038452148,
+      "DXY_trend": -1.0,
+      "DXY_trend_strength": -0.4962260077601179,
+      "SPX_ma_20": 7568.5919921875,
+      "SPX_ma_50": 7507.747626953125,
+      "SPX_trend": 1.0,
+      "SPX_trend_strength": 3.0441361144229067,
+      "GOLD_ma_20": 4156.240002441406,
+      "GOLD_ma_50": 4159.1380078125,
+      "GOLD_trend": 1.0,
+      "GOLD_trend_strength": 4.989127073822462,
+      "US10Y_ma_20": 4.652349972724915,
+      "US10Y_ma_50": 4.55693998336792,
+      "US10Y_trend": 0.0,
+      "US10Y_trend_strength": -0.2439665714124977,
+      "VIX_ma_20": 16.857499885559083,
+      "VIX_ma_50": 17.21539991378784,
+      "VIX_trend": -1.0,
+      "VIX_trend_strength": -13.213701831469947,
+      "risk_on_score": 3.0,
+      "macro_regime": 0.0,
+      "copper_gold_ratio": 0.0015107938542189,
+      "inflation_hedge": 1.0,
+      "yield_curve_steep": 0.0720000267028808,
+      "dollar_regime": 0.0,
+      "vix_regime": 0.0,
+      "wti_brent_corr_20d": 0.2823848262099838,
+      "wti_dxy_corr_20d": 0.22292914772912092
+    }
+  },
+  "explanation": null,
+  "needs_retrain": false,
+  "retrain_reason": null
+}
+  OK (15.9s)
+  !! Expected output missing: models/regime_classifier.pkl
+
+============================================================
+>>> Probabilistic Signal Engine (probabilistic_signal_engine.py)
+    Generate today's trading signals with Bayesian posteriors, Kelly sizing, ATR stops
+============================================================
+>>> Probabilistic Signal Engine: live mode
+>>> Generated 0 signals
+  OK (7.9s)
+  !! Expected output missing: signals_history.csv
+  !! Expected output missing: signal_performance.csv
+
+============================================================
+>>> Prediction Scorecard (P1) (prediction_scorecard.py)
+    Resolve each emitted signal against actual next-window outcome; rolling hit-rate & edge-decay; flags stale patterns
+============================================================
+>>> prediction_scorecard.py starting
+>>> wrote prediction_scorecard.csv (0 rows)
+>>> wrote prediction_rolling_metrics.csv (0 rows)
+>>> verdict: {'total_signals_emitted': 0, 'resolved_signals': 0, 'resolved_hits': 0, 'overall_hit_rate': None, 'last_resolved_date': None, 'stale_patterns': [], 'generated_at': '2026-08-17T10:07:03.163924'}
+  OK (4.1s)
+
+============================================================
+>>> Daily News-Conditional Plan (daily_report_generator.py)
+    Build the NEXT-trading-day window-by-window plan from artifacts + live news (Al Jazeera/CNN/X) + escalation/de-escalation scenarios
+============================================================
+>>> daily_report_generator.py starting
+>>> fetching live news (fail-soft)...
+>>> raw news lines collected: 8
+>>> wrote news-conditional daily plan for 2026-08-17
+  OK (42.9s)
+  !! Expected output missing: daily_trading_report_*.md
+  !! Expected output missing: daily_trading_report_*.json
+  !! Expected output missing: TODAYS_PLAN.md
+
+============================================================
+>>> Dashboard (separated HTML + data JS) (rebuild_dashboard.py)
+    Build dashboard_v3.html from template + separate dashboard_data.js — avoids inline-JSON parsing failures
+============================================================
+>>> wrote dashboard_v3.html (131,127 chars)
+  OK (6.3s)
+  !! Expected output missing: dashboard_v3.html
+  !! Expected output missing: dashboard_data.js
+
+# Crude Oil War-Regime Pipeline — Daily Report
+**Date:** 2026-08-17 10:07:52
+**Mode:** signals_only
+
+## Execution Summary
+- **Total Steps:** 5
+- **Successful:** 5
+- **Failed:** 0
+- **Skipped:** 0
+- **Duration:** 77.7s
+
+## Step Results
+- ✅ **Live Regime Classifier** (15.9s)
+- ✅ **Probabilistic Signal Engine** (7.9s)
+- ✅ **Prediction Scorecard (P1)** (4.2s)
+- ✅ **Daily News-Conditional Plan** (43.0s)
+- ✅ **Dashboard (separated HTML + data JS)** (6.4s)
+
+
+## Key Outputs
+- ✅ signals_live.csv (1 bytes, updated 10:07:05)
+- ❌ signals_history.csv (missing)
+- ✅ playbook.json (135,043 bytes, updated 09:48:09)
+- ❌ dashboard_v3.html (missing)
+- ✅ regime_predictions_live.csv (9,086 bytes, updated 10:06:57)
+- ✅ backtest_summary.json (1,456 bytes, updated 09:59:36)
+- ✅ prediction_scorecard.csv (1 bytes, updated 10:07:09)
+- ✅ prediction_rolling_metrics.csv (1 bytes, updated 10:07:09)
+- ✅ prediction_scorecard_summary.json (209 bytes, updated 10:07:09)
+- ❌ news_pipeline_summary.json (missing)
+- ❌ TODAYS_PLAN.md (missing)
+
+## Current Regime Prediction
+- Phase: 10.0 (second_deescalation_active_negotiation_hormuz_deal)
+- Confidence: 100.0%
+- Model Version: 2026-08-17

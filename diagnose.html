@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><body>
+<h1>Dashboard Diagnosis</h1>
+<div id="out"></div>
+<script src="dashboard_data.js"></script>
+<script>
+var out = document.getElementById('out');
+try {
+  if (typeof D === 'undefined') throw new Error('D is undefined');
+  out.innerHTML = '<p style="color:green">✅ data.js loaded: D has keys: ' + Object.keys(D).join(', ') + '</p>';
+  out.innerHTML += '<p>Phases: ' + (D.phases || []).length + '</p>';
+  out.innerHTML += '<p>Prices: ' + (D.prices || []).length + ' days</p>';
+  out.innerHTML += '<p>Window stats: ' + (D.window_stats || []).length + ' rows</p>';
+  out.innerHTML += '<p>Cross-phase sim: ' + (D.cross_phase_sim || []).length + ' rows</p>';
+  out.innerHTML += '<p>Strong patterns: ' + (D.strong_patterns || []).length + '</p>';
+  out.innerHTML += '<p>Backtest trades: ' + ((D.backtest||{}).metrics||{}).total_trades + '</p>';
+  out.innerHTML += '<p style="color:green;font-size:18px;font-weight:bold">✅ DATA LOADS SUCCESSFULLY</p>';
+} catch(e) {
+  out.innerHTML = '<p style="color:red;font-size:18px">❌ ERROR: ' + e.message + '</p>';
+}
+</script>
+</body></html>

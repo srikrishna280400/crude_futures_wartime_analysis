@@ -31,7 +31,10 @@
       "Bash(/home/srikrishna/.venv-wsl-new/bin/python scripts/dashboard_engine_v3.py)",
       "Bash(/home/srikrishna/.venv-wsl-new/bin/python fix_template.py)",
       "mcp__mcpm_filesystem__directory_tree",
-      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('checksums keys:', len\\(d\\)\\)\")"
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('checksums keys:', len\\(d\\)\\)\")",
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(npm run *)"
     ]
   }
 }

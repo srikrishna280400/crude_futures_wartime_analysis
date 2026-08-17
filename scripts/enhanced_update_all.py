@@ -283,12 +283,25 @@ PIPELINE_STEPS = [
         "required": False,
     },
     {
-        "id": "dashboard",
-        "name": "Enhanced Dashboard",
-        "script": "dashboard_engine_v3_fixed.py",
-        "description": "Build interactive HTML dashboard with live signals, macro regime, anomaly alerts",
+        "id": "cross_phase",
+        "name": "Cross-Phase Similarity Engine",
+        "script": "cross_phase_engine.py",
+        "description": "Compute cross-phase similarity matrix + borrow patterns from similar phases for low-n windows",
         "outputs": [
-            "dashboard_v3.html",
+            "cross_phase_similarity.csv",
+            "cross_phase_borrowed.csv",
+            "cross_phase_features.csv",
+        ],
+        "required": False,
+    },
+    {
+        "id": "dashboard",
+        "name": "React Dashboard (Vite + React)",
+        "script": "build_react_dashboard.py",
+        "description": "Build React/Vite dashboard app. Serves via: cd dashboard_app && python3 -m http.server 8080. Dev mode: cd dashboard && npm run dev.",
+        "outputs": [
+            "dashboard_app/index.html",
+            "dashboard_app/dashboard_data.json",
         ],
         "required": True,
     },
@@ -503,8 +516,8 @@ def run_pipeline(
     signals_only: bool = False,
     dashboard_only: bool = False,
     quiet: bool = False,
-    skip_steps: List[str] = None,
-    only_steps: List[str] = None,
+    skip_steps: Optional[list[str]] = None,
+    only_steps: Optional[list[str]] = None,
 ) -> Dict[str, Any]:
     """Run the enhanced pipeline."""
 

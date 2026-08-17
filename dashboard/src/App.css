@@ -1,0 +1,76 @@
+/* ─── Global Styles ─── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0e17; --p: #111827; --p2: #1a2035; --b: #252d4a;
+  --t: #e2e8f0; --d: #8892b0; --r: #e94560; --g: #f7b733;
+  --gn: #38ada9; --o: #ffa500; --font: 'Inter', system-ui, -apple-system, sans-serif;
+}
+body { font-family: var(--font); background: var(--bg); color: var(--t); line-height: 1.5; font-size: 14px; }
+.app { min-height: 100vh; }
+.loading { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 16px; color: var(--d); }
+.spinner { width: 40px; height: 40px; border: 3px solid var(--p2); border-top-color: var(--g); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── Header ─── */
+header { background: linear-gradient(135deg, var(--p2), var(--p)); padding: 24px 32px 16px; border-bottom: 1px solid var(--b); position: sticky; top: 0; z-index: 100; }
+header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+header .sub { font-size: 13px; color: var(--d); max-width: 700px; }
+.header-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; font-size: 11px; color: var(--d); }
+.header-meta span { padding: 3px 10px; background: var(--p); border: 1px solid var(--b); border-radius: 4px; }
+
+/* ─── Tab Navigation ─── */
+.tabs { display: flex; background: var(--p); padding: 0 16px; overflow-x: auto; border-bottom: 1px solid var(--b); position: sticky; top: 96px; z-index: 99; gap: 4px; }
+.tab-btn { background: none; border: none; color: var(--d); padding: 12px 18px; cursor: pointer; font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.tab-btn:hover { background: var(--p2); color: var(--t); }
+.tab-btn.active { background: var(--p2); color: #fff; border-bottom-color: var(--accent, var(--g)); }
+
+/* ─── Content ─── */
+.content { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
+.content h2 { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: #fff; border-bottom: 2px solid var(--g); padding-bottom: 6px; }
+.content h3 { font-size: 16px; font-weight: 600; margin: 20px 0 10px; color: var(--g); }
+.content p { font-size: 13px; color: var(--d); margin-bottom: 12px; line-height: 1.6; }
+
+/* ─── Cards & Grids ─── */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 800px) { .grid, .grid3 { grid-template-columns: 1fr; } .content { padding: 16px; } }
+
+.card { background: var(--p); border: 1px solid var(--b); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+.card .title { font-size: 13px; font-weight: 600; color: var(--g); margin-bottom: 8px; }
+
+/* ─── Metrics ─── */
+.metric { background: var(--p2); padding: 14px 18px; border-radius: 6px; border-left: 3px solid var(--b); }
+.metric.good { border-left-color: var(--gn); }
+.metric.bad { border-left-color: var(--r); }
+.metric.warn { border-left-color: var(--g); }
+.metric .lbl { font-size: 10px; color: var(--d); text-transform: uppercase; letter-spacing: 0.3px; }
+.metric .val { font-size: 22px; font-weight: 700; margin-top: 2px; }
+.metric .sub { font-size: 11px; color: var(--d); margin-top: 2px; }
+
+/* ─── Tables ─── */
+table { border-collapse: collapse; width: 100%; font-size: 12px; margin: 8px 0; }
+th { background: var(--p2); color: var(--t); padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--b); position: sticky; top: 0; font-weight: 600; }
+td { padding: 6px 10px; border-bottom: 1px solid var(--b); }
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+tr:hover td { background: rgba(247,183,51,0.05); }
+
+/* ─── Badges ─── */
+.badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 600; }
+.badge.up { background: rgba(56,173,169,0.2); color: var(--gn); }
+.badge.down { background: rgba(233,69,96,0.2); color: var(--r); }
+.badge.flat { background: rgba(136,146,176,0.2); color: var(--d); }
+.badge.low { background: rgba(255,165,0,0.2); color: var(--o); }
+
+/* ─── Signal Cards ─── */
+.signal { background: linear-gradient(135deg, var(--p), var(--p2)); padding: 14px; border-radius: 6px; margin-bottom: 8px; border-left: 3px solid var(--g); transition: transform 0.15s; }
+.signal:hover { transform: translateX(4px); }
+.signal.up { border-left-color: var(--gn); }
+.signal.down { border-left-color: var(--r); }
+.signal .h { font-size: 11px; color: var(--d); margin-bottom: 4px; }
+.signal .a { font-size: 13px; font-weight: 600; margin-top: 4px; }
+.signal .m { font-size: 11px; color: var(--d); margin-top: 4px; }
+
+/* ─── Notes ─── */
+.note { background: rgba(255,165,0,0.08); padding: 12px 16px; border-left: 3px solid var(--o); border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 12px; line-height: 1.6; }
+.note.good { border-left-color: var(--gn); background: rgba(56,173,169,0.08); }
+.note.bad { border-left-color: var(--r); background: rgba(233,69,96,0.08); }

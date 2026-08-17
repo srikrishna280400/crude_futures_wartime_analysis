@@ -1,702 +1,218 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Crude Oil War-Regime Dashboard v3 — Trader Terminal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crude Analysis Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <style>
-:root {{
-  --bg: #0d1117;
-  --panel: #161b22;
-  --panel2: #21262d;
-  --border: #30363d;
-  --text: #e6edf3;
-  --text-dim: #8b949e;
-  --accent: #f78166;
-  --accent2: #d29922;
-  --good: #3fb950;
-  --warn: #d29922;
-  --bad: #f85149;
-  --neutral: #8b949e;
-}}
-* {{ box-sizing: border-box; }}
-body {{ font-family: 'SF Mono', 'Fira Code', 'Monaco', monospace; margin: 0; padding: 0; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }}
-header {{ background: linear-gradient(135deg, #161b22, #0d1117); padding: 16px 24px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }}
-header h1 {{ margin: 0; font-size: 18px; font-weight: 600; color: #fff; }}
-header .subtitle {{ font-size: 12px; color: var(--text-dim); margin-top: 4px; }}
-.kpi-bar {{ display: flex; gap: 12px; padding: 12px 24px; background: var(--panel); border-bottom: 1px solid var(--border); flex-wrap: wrap; }}
-.kpi {{ background: var(--panel2); padding: 10px 16px; border-radius: 6px; min-width: 120px; border-left: 3px solid var(--accent); }}
-.kpi.good {{ border-left-color: var(--good); }}
-.kpi.warn {{ border-left-color: var(--warn); }}
-.kpi.bad {{ border-left-color: var(--bad); }}
-.kpi .label {{ font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }}
-.kpi .value {{ font-size: 18px; font-weight: 600; margin-top: 2px; }}
-.kpi .sub {{ font-size: 10px; color: var(--text-dim); margin-top: 2px; }}
-nav.tabs {{ display: flex; background: var(--panel); padding: 0 8px; border-bottom: 1px solid var(--border); overflow-x: auto; position: sticky; top: 60px; z-index: 99; }}
-nav.tabs button {{ background: none; border: none; color: var(--text-dim); padding: 12px 16px; cursor: pointer; font-size: 12px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }}
-nav.tabs button:hover {{ background: var(--panel2); color: var(--text); }}
-nav.tabs button.active {{ background: var(--panel2); color: #fff; border-bottom-color: var(--accent); }}
-.tab-content {{ display: none; padding: 20px 24px; }}
-.tab-content.active {{ display: block; animation: fadeIn 0.2s; }}
-@keyframes fadeIn {{ from {{ opacity: 0; transform: translateY(4px); }} to {{ opacity: 1; transform: translateY(0); }} }}
-.tab-content h2 {{ font-size: 16px; color: var(--accent2); border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 0; }}
-.tab-content h3 {{ font-size: 14px; color: var(--accent); margin-top: 24px; }}
-.tab-content p {{ font-size: 12px; line-height: 1.6; color: var(--text-dim); }}
-.grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }}
-.grid-3 {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }}
-.grid-full {{ display: grid; grid-template-columns: 1fr; gap: 16px; }}
-.chart-card {{ background: var(--panel); padding: 16px; border-radius: 8px; border: 1px solid var(--border); }}
-.chart-card .title {{ font-size: 13px; color: var(--text); margin-bottom: 12px; font-weight: 600; }}
-.chart-card canvas {{ max-height: 350px; }}
-table {{ border-collapse: collapse; width: 100%; font-size: 11px; margin: 12px 0; background: var(--panel); }}
-th {{ background: var(--panel2); color: var(--text); padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); position: sticky; top: 0; }}
-td {{ padding: 6px 10px; border-bottom: 1px solid var(--border); }}
-tr:nth-child(even) td {{ background: rgba(255,255,255,0.02); }}
-tr:hover td {{ background: rgba(247,129,102,0.08); }}
-td.low-conf {{ background: rgba(248,81,73,0.15) !important; color: var(--bad); font-weight: bold; }}
-td.ok {{ color: var(--good); }}
-td.warn {{ color: var(--warn); }}
-.badge {{ display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 600; }}
-.badge.up {{ background: rgba(63,185,80,0.2); color: var(--good); }}
-.badge.down {{ background: rgba(248,81,73,0.2); color: var(--bad); }}
-.badge.flat {{ background: rgba(139,148,158,0.2); color: var(--neutral); }}
-.badge.warn {{ background: rgba(210,153,34,0.2); color: var(--warn); }}
-.signal-card {{ background: linear-gradient(135deg, var(--panel), var(--panel2)); padding: 14px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--accent); }}
-.signal-card.up {{ border-left-color: var(--good); }}
-.signal-card.down {{ border-left-color: var(--bad); }}
-.signal-card.low-conf {{ border-left-color: var(--warn); opacity: 0.8; }}
-.signal-card .header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }}
-.signal-card .condition {{ font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }}
-.signal-card .action {{ font-size: 13px; font-weight: 600; margin-top: 8px; }}
-.signal-card .meta {{ font-size: 10px; color: var(--text-dim); margin-top: 6px; }}
-.note {{ background: rgba(210,153,34,0.1); padding: 12px 16px; border-left: 3px solid var(--warn); margin: 12px 0; font-size: 11px; color: var(--text); border-radius: 0 6px 6px 0; }}
-.hidden {{ display: none !important; }}
-.filter-bar {{ display: flex; gap: 12px; padding: 12px; background: var(--panel); border-radius: 8px; margin-bottom: 16px; border: 1px solid var(--border); flex-wrap: wrap; align-items: flex-end; }}
-.filter-bar label {{ font-size: 11px; color: var(--text-dim); display: flex; flex-direction: column; gap: 4px; }}
-.filter-bar select {{ padding: 6px 10px; background: var(--panel2); border: 1px solid var(--border); color: var(--text); border-radius: 4px; font-size: 12px; min-width: 140px; }}
-.filter-bar input[type="checkbox"] {{ accent-color: var(--accent); }}
-.equity-curve {{ height: 200px; }}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --bg: #0b1120; --panel: #131a2b; --panel2: #1a2340; --border: #253050; --text: #e2e8f0; --dim: #8892b0; --accent: #e94560; --gold: #f7b733; --green: #38ada9; --font: sans-serif; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); }
+nav { display: flex; flex-wrap: wrap; background: var(--panel); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+nav button { background: none; border: none; color: var(--dim); padding: 12px 14px; cursor: pointer; font-size: 12px; border-bottom: 3px solid transparent; transition: 0.2s; }
+nav button:hover { background: var(--panel2); color: var(--text); }
+nav button.active { background: var(--panel2); color: #fff; border-color: var(--accent); }
+.tab { display: none; padding: 20px; max-width: 1200px; margin: 0 auto; }
+.tab.active { display: block; }
+.tab h2 { font-size: 18px; color: #fff; margin-bottom: 12px; border-bottom: 2px solid var(--accent); padding-bottom: 6px; }
+.tab h3 { font-size: 14px; color: var(--gold); margin: 16px 0 8px; }
+.tab p { font-size: 12px; color: var(--dim); margin-bottom: 10px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media(max-width:800px){ .grid,.grid3 { grid-template-columns: 1fr; } }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 14px; }
+.card .t { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.card canvas { max-height: 280px; }
+.m { background: var(--panel2); padding: 12px 16px; border-radius: 5px; border-left: 3px solid var(--accent); }
+.m.g { border-color: var(--green); } .m.b { border-color: var(--accent); } .m.w { border-color: var(--orange); }
+.m .l { font-size: 10px; color: var(--dim); text-transform: uppercase; }
+.m .v { font-size: 20px; font-weight: 700; margin-top: 2px; }
+.m .s { font-size: 10px; color: var(--dim); }
+table { border-collapse: collapse; width: 100%; font-size: 11px; margin: 8px 0; }
+th { background: var(--panel2); color: var(--text); padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+td { padding: 4px 8px; border-bottom: 1px solid var(--border); font-size: 11px; }
+tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.b { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 10px; font-weight: 600; }
+.b.u { background: rgba(56,173,169,0.2); color: var(--green); }
+.b.d { background: rgba(233,69,96,0.2); color: var(--accent); }
+.b.f { background: rgba(136,146,176,0.2); color: var(--dim); }
+.b.w { background: rgba(255,165,0,0.2); color: var(--orange); }
+.sc { background: linear-gradient(135deg, var(--panel), var(--panel2)); padding: 12px; border-radius: 6px; margin-bottom: 8px; border-left: 4px solid var(--gold); }
+.sc.u { border-color: var(--green); } .sc.d { border-color: var(--accent); }
+.sc .h { font-size: 11px; color: var(--dim); }
+.sc .a { font-size: 13px; font-weight: 600; margin-top: 4px; }
+.sc .m { font-size: 10px; color: var(--dim); margin-top: 4px; }
+.n { background: rgba(255,165,0,0.08); padding: 10px 14px; border-left: 3px solid var(--orange); border-radius: 0 6px 6px 0; margin: 10px 0; font-size: 12px; }
+.he { background: linear-gradient(135deg,var(--panel2),var(--panel)); padding: 30px 24px; text-align: center; border-bottom: 1px solid var(--border); }
+.he h1 { font-size: 26px; } .he p { font-size: 13px; color: var(--dim); max-width: 650px; margin: 8px auto; }
+.au { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+.au s { padding: 4px 12px; border-radius: 16px; font-size: 10px; background: var(--panel); border: 1px solid var(--border); color: var(--dim); text-decoration: none; }
+.tg { margin-top: 6px; }
+.tg s { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 9px; background: var(--panel2); color: var(--dim); margin: 2px; text-decoration: none; }
 </style>
 </head>
 <body>
-
-<header>
-  <h1>🛢️ Crude Oil War-Regime Terminal v3</h1>
-  <div class="subtitle">Actionable signal cards • Backtest validation • Regime classifier • Risk metrics • <span id="lastUpdate"></span></div>
-</header>
-
-<div class="kpi-bar" id="kpiBar"></div>
-
-<nav class="tabs" id="tabs">
-  <button class="active" data-tab="signals">🎯 Signals</button>
-  <button data-tab="backtest">📊 Backtest</button>
-  <button data-tab="regime">🤖 Regime</button>
-  <button data-tab="cross">🔗 Cross-Asset</button>
-  <button data-tab="anomalies">⚠️ Anomalies</button>
-  <button data-tab="daytype">📊 Day Types</button>
-  <button data-tab="triplets">🔗 Triplets</button>
-  <button data-tab="bayes">🧮 Bayes</button>
-  <button data-tab="anomalies">⚡ Anomalies</button>
-  <button data-tab="review">📝 Review</button>
+<nav>
+<button class="a" data-t="overview">Overview</button><button data-t="regime">Regime</button><button data-t="patterns">Patterns</button><button data-t="signals">Signals</button><button data-t="backtest">Backtest</button><button data-t="anomalies">Anomalies</button><button data-t="similarity">Cross-Phase</button><button data-t="about">About</button>
 </nav>
+<div class="he"><h1>Crude Oil War-Regime Analysis</h1><p>Agentic pipeline mining 80K+ rows across a live Iran-Israel timeline for conditional-probability trading patterns.</p><div class="au"><s>Quant Traders</s><s>AI Builders</s><s>Vibe Coders</s><s>Recruiters</s></div><div class="tg" id="ht"></div></div>
+<div class="tab a" id="t-overview"><h2>Overview</h2><div class="grid3" id="kpi"></div><h3>Top Patterns</h3><div id="topPat"></div><div class="card"><div class="t">Price Journey</div><canvas id="ovPrice"></canvas></div></div>
+<div class="tab" id="t-regime"><h2>War Regime Classifier</h2><div class="grid3" id="rp"></div><div id="ptab"></div></div>
+<div class="tab" id="t-patterns"><h2>Window Patterns (Phase 10)</h2><div id="wintab"></div><div class="card"><div class="t">Direction by Phase</div><canvas id="patChart"></canvas></div></div>
+<div class="tab" id="t-signals"><h2>Signals & Playbook</h2><div id="sigCards"></div><h3>Strong Patterns</h3><div id="sigt"></div></div>
+<div class="tab" id="t-backtest"><h2>Walk-Forward Backtest</h2><div class="grid3" id="btm"></div><div class="n" id="btmc"></div></div>
+<div class="tab" id="t-anomalies"><h2>Anomalies</h2><div id="anomt"></div></div>
+<div class="tab" id="t-similarity"><h2>Cross-Phase Similarity</h2><p>When the current phase lacks data, this engine borrows patterns from similar historical phases. Borrowed patterns are blended with own data (weighted by similarity &times; reliability).</p><h3>Similarity to Current Phase (10)</h3><div id="simt"></div><h3>Borrowed Patterns for Phase 10</h3><div id="borrowedt"></div></div>
+<div class="tab" id="t-about"><h2>About</h2><div class="grid">
+<div class="card"><div class="t">What It Does</div><p style="font-size:12px;color:var(--dim);line-height:1.6">Mines OHLCV crude data across a live Iran-Israel war timeline for repeatable conditional-probability patterns. 15-stage automated pipeline: data ingestion, regime classification, window analysis, triplet mining, statistical rigor (FDR/Bayesian), signal generation, walk-forward backtest, dashboards. Single command regenerates everything.</p></div>
+<div class="card"><div class="t">Statistical Rigor</div><p style="font-size:12px;color:var(--dim);line-height:1.6">Bayesian Dirichlet posteriors + 95% HDI, Benjamini-Hochberg FDR per family, hierarchical shrinkage, regime-relative magnitude tiers, walk-forward expanding-window backtest, Monte Carlo 95% CI on all metrics. Every number carries n and a LOW-CONFIDENCE flag at n&lt;5.</p></div>
+<div class="card"><div class="t">Tech Stack</div><p style="font-size:12px;color:var(--dim);line-height:1.6">Python 3.12 - pandas 3.0 - numpy - scipy - scikit-learn - Chart.js - 50+ scripts - 20K+ lines - 80K+ rows across 13 source files. Single entry: python scripts/enhanced_update_all.py --signals-only</p></div>
+</div></div>
 
-<div class="tab-content active" id="tab-signals">
-  <h2>🎯 Actionable Signal Cards — "If You See X, Then Y"</h2>
-  <p>Filter by phase, day-type, window. Cards show historical base rate (n, win%), suggested stop/target from ATR × tier.</p>
-  <div class="filter-bar">
-    <label>Phase<select id="filterPhase"><option value="all">All</option></select></label>
-    <label>Stream<select id="filterStream"><option value="all">All</option></select></label>
-    <label>Archetype<select id="filterArchetype"><option value="all">All</option></select></label>
-    <label>Window<select id="filterWindow"><option value="all">All</option></select></label>
-    <label><input type="checkbox" id="hideLowConf" checked> Hide LOW-CONF (n<5)</label>
-  </div>
-  <div id="signalCards" class="grid-full"></div>
-</div>
-
-<div class="tab-content" id="tab-backtest">
-  <h2>📊 Backtest Validation — Every Signal Stress-Tested</h2>
-  <div class="grid">
-    <div class="chart-card"><div class="title">Equity Curve (All Signals)</div><canvas id="equityCurve" class="equity-curve"></canvas></div>
-    <div class="chart-card"><div class="title">Drawdown</div><canvas id="ddCurve" class="equity-curve"></canvas></div>
-  </div>
-  <div class="grid">
-    <div class="chart-card"><div class="title">Expectancy by Signal (Top 20)</div><canvas id="expBySignal" height="400"></canvas></div>
-    <div class="chart-card"><div class="title">Win Rate vs Expectancy</div><canvas id="wrVsExp" height="400"></canvas></div>
-  </div>
-  <h3>Per-Signal Performance</h3>
-  <div id="btSignalTable"></div>
-  <h3>By Phase</h3>
-  <div id="btPhaseTable"></div>
-  <h3>By Archetype</h3>
-  <div id="btArchTable"></div>
-</div>
-
-<div class="tab-content" id="tab-regime">
-  <h2>🤖 Regime Classifier — Live Phase Detection</h2>
-  <p>Random Forest trained on rolling returns, vol, spread, correlation. Input: latest market data → Output: phase_id + confidence.</p>
-  <div class="grid">
-    <div class="chart-card"><div class="title">Feature Importance</div><canvas id="featImp" height="350"></canvas></div>
-    <div class="chart-card"><div class="title">Confusion Matrix</div><canvas id="confMat" height="350"></canvas></div>
-  </div>
-  <div id="regimePrediction" class="note"></div>
-  <h3>Feature Importance</h3>
-  <div id="regimeTable"></div>
-  <h3>Diagnostics</h3>
-  <pre id="regimeDiag" style="background:var(--panel2);padding:12px;border-radius:6px;font-size:11px;overflow:auto;"></pre>
-</div>
-
-<div class="tab-content" id="tab-cross">
-  <h2>🔗 Cross-Asset Overlays — DXY, SPX, Gold, 10Y, VIX</h2>
-  <p>Conditional Brent/WTI returns given macro state. Use as confirmation filters.</p>
-  <div class="grid">
-    <div class="chart-card"><div class="title">Brent Return | DXY Direction</div><canvas id="condDxy" height="300"></canvas></div>
-    <div class="chart-card"><div class="title">Brent Return | SPX Direction</div><canvas id="condSpx" height="300"></canvas></div>
-    <div class="chart-card"><div class="title">Brent Return | VIX Regime</div><canvas id="condVix" height="300"></canvas></div>
-    <div class="chart-card"><div class="title">Correlation Matrix</div><canvas id="corrMat" height="400"></canvas></div>
-  </div>
-  <h3>Macro State Distribution</h3>
-  <div id="macroTable"></div>
-</div>
-
-<div class="tab-content" id="tab-daytype">
-  <h2>📊 Day-Type Buckets — Archetype Mix by Phase</h2>
-  <div class="chart-card"><div class="title">Day-Type Stacked % (Brent)</div><canvas id="daytypeBrent" height="350"></canvas></div>
-  <div class="chart-card"><div class="title">Day-Type Stacked % (WTI)</div><canvas id="daytypeWti" height="350"></canvas></div>
-  <h3>Detail Table</h3>
-  <div id="daytypeTable"></div>
-</div>
-
-<div class="tab-content" id="tab-triplets">
-  <h2>🔗 Triplet Sequential Patterns — 3-Leg Sequences</h2>
-  <p>Top ranked by composite score = support × consistency × sample_conf. n ≥ 3 required.</p>
-  <div class="chart-card"><div class="title">Top 15 Triplets by Composite Score</div><canvas id="tripChart" height="400"></canvas></div>
-  <h3>Catalog</h3>
-  <div id="tripletTable"></div>
-</div>
-
-<div class="tab-content" id="tab-bayes">
-  <h2>🧮 Bayesian Posteriors — Direction Probabilities with Uncertainty</h2>
-  <p>Beta-binomial posterior for P(UP/DOWN/FLAT) with 95% HDI. Shrunken expectancy pulls toward phase mean.</p>
-  <div class="chart-card"><div class="title">Posterior P(UP) vs Frequentist %UP</div><canvas id="bayesChart" height="400"></canvas></div>
-  <h3>Posterior Table</h3>
-  <div id="bayesTable"></div>
-</div>
-
-<div class="tab-content" id="tab-anomalies">
-  <h2>⚠️ Anomalies — Rolling |z| > 2.5</h2>
-  <p>Days where vol/move/excursion/volume was statistically anomalous. Heuristic only — not claims of intent.</p>
-  <div class="chart-card"><div class="title">Anomaly Timeline (|z|)</div><canvas id="anomTimeline" height="300"></canvas></div>
-  <div class="chart-card"><div class="title">Anomalies by Phase</div><canvas id="anomPhase" height="300"></canvas></div>
-  <h3>Flagged Dates</h3>
-  <div id="anomTable"></div>
-</div>
-
-<div class="tab-content" id="tab-review">
-  <h2>📝 Critical Review — Honest Assessment</h2>
-  <div class="note"><strong>Bottom Line:</strong> Historical pattern library is solid (75%). Trading system is incomplete (20%). Overall readiness: ~55%. Do not trade on this alone.</div>
-  <h3>✅ What's Solid</h3>
-  <ul style="font-size:12px;line-height:1.8;color:var(--text);">
-    <li>Pipeline architecture — 16 scripts, vectorized, reproducible, compact artifacts</li>
-    <li>Statistical hygiene — n disclosed, LOW-CONFIDENCE flags, ≥3-repetition rule, regime-relative tiers</li>
-    <li>Phase tagging — 6 war-regime phases grounded in web research + changepoint cross-check</li>
-    <li>Specific tradable findings: Brent-WTI corr 0.725 daily, Wed EIA negative bias, Mon +1.5% bias, Phase 4 = 60% whipsaw</li>
-    <li>FDR correction kills 99% of "significant" patterns — only 1 window survives q<0.05</li>
-    <li>Bayesian posteriors + hierarchical shrinkage prevent overconfidence on small n</li>
-    <li>Backtester validates marginal edge (Phase 6 whipsaw, Phase 2 gap-and-hold)</li>
-  </ul>
-  <h3>🔴 Critical Gaps</h3>
-  <ul style="font-size:12px;line-height:1.8;color:var(--text);">
-    <li><strong>NO live regime classifier</strong> — cannot answer "what phase are we in TODAY?"</li>
-    <li><strong>NO MCX CRUDEOILM data</strong> — only WTI/Brent; Indian trader can't directly trade</li>
-    <li><strong>NO backtest validation</strong> of risk-adjusted returns (Sharpe 0.36, CI includes zero)</li>
-    <li><strong>NO risk management</strong> — no position sizing, stop/target optimization, DD controls</li>
-    <li>Small sample: Phase 3 (4 days), Phase 4 (5 days) — all stats LOW-CONFIDENCE</li>
-    <li>No walk-forward / out-of-sample validation — backtest is in-sample</li>
-    <li>No news/event feed integration — phase changes driven by news</li>
-  </ul>
-  <h3>🎯 Required for Live Trading (Priority Order)</h3>
-  <ol style="font-size:12px;line-height:1.8;color:var(--text);">
-    <li>MCX CRUDEOILM data ingest + FX overlay</li>
-    <li>Live regime classifier with daily retraining + alerting</li>
-    <li>Walk-forward backtester with transaction costs + slippage</li>
-    <li>Risk management: Kelly sizing, ATR stops, max DD limits</li>
-    <li>Real-time news feed → phase change alerts</li>
-    <li>Paper trade 4 weeks → evaluate</li>
-  </ol>
-  <h3>🎯 Honest Verdict</h3>
-  <div class="note">
-    <strong>Do not trade on this as-is.</strong> The historical pattern library is well-built research infrastructure. Converting research → trading system requires ~10-12 more weeks of engineering (live data, execution, risk, monitoring). Use this to <em>inform discretionary decisions</em> (e.g., "Phase 2 + whipsaw day → avoid trend bets, size smaller"), not to generate automatic signals.
-  </div>
-</div>
-
+<script src="dashboard_data.js"></script>
 <script>
-// ============ DATA INJECTION ============
-const STRONG_PATTERNS = {js_strong_patterns};
-const BT_SIGNALS = {js_bt_signals};
-const BT_PHASE = {js_bt_phase};
-const BT_ARCH = {js_bt_arch};
-const ANOMALIES = {js_anomalies};
-const DAY_SHARE = {js_day_share};
-const CROSS_FACTOR = {js_cross_factor};
-const PHASES = {js_phase};
-const ANOMALIES_JS = {js_anomalies};
-const WS_FDR = {js_ws};
-const BAYES = {js_bayes};
-const REGIME_DIAG = {regime_json};
-const BT_SUMMARY = {json.dumps(bt_summary, default=str)};
-const MC_CI = {json.dumps(mc_ci, default=str)};
+// ─── Tab Switching (FIRST, protected) ───
+try {
+document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){
+  document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('a');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('a');});
+  this.classList.add('a');
+  var tab = document.getElementById('t-'+this.dataset.t);
+  if(tab) tab.classList.add('a');
+  if(window.onresize) window.dispatchEvent(new Event('resize'));
+};})}catch(e){}
+function f(v,d){d=d||2;if(v==null)return'-';if(typeof v!=='number')return String(v);return v.toFixed(d);}
+function pv(id){if(!D.phases)return'P'+id;var x=D.phases.find(function(p){return p.phase_id==id;});return x?'P'+x.phase_id+' '+x.phase_label:'P'+id;}
+// ─── OVERVIEW ───
+try{
+if(D.latest){
+  var l=D.latest,r=D.current_regime||{},bt=D.backtest||{},m=bt.metrics||{};
+  document.getElementById('kpi').innerHTML=
+    '<div class=\"m\"><div class=\"l\">Latest Data</div><div class=\"v\">'+(l.date||'-')+'</div><div class=\"s\">WTI $'+f(l.wti,2)+' / Brent $'+f(l.brent,2)+'</div></div>'+
+    '<div class=\"m '+(r.confidence>0.8?'g':'w')+'\"><div class=\"l\">Phase</div><div class=\"v\">'+pv(r.phase)+'</div><div class=\"s\">'+(r.confidence?Math.round(r.confidence*100)+'%':'-')+' confidence</div></div>'+
+    '<div class=\"m\"><div class=\"l\">Win Rate</div><div class=\"v\">'+f(m.win_rate,1)+'%</div><div class=\"s\">'+(m.total_trades||0)+' trades</div></div>'+
+    '<div class=\"m '+(m.sharpe>1?'g':'w')+'\"><div class=\"l\">Sharpe</div><div class=\"v\">'+f(m.sharpe)+'</div><div class=\"s\">walk-forward</div></div>'+
+    '<div class=\"m '+( (m.mc_expectancy_ci||[0])[0]>0?'g':'b')+'\"><div class=\"l\">Expectancy</div><div class=\"v\">'+f(m.expectancy_pct,3)+'%</div><div class=\"s\">MC 95% CI ['+f((m.mc_expectancy_ci||[0])[0],3)+', '+f((m.mc_expectancy_ci||[1])[1],3)+'%]</div></div>'+
+    '<div class=\"m \"><div class=\"l\">Pipeline</div><div class=\"v\">15 Stages</div><div class=\"s\">--signals-only for daily</div></div>';
+}
+var tg=document.getElementById('ht');
+tg.innerHTML=(D.phases?'<s>'+D.phases.length+' phases</s>':'')+(D.signals?'<s>'+D.signals.length+' signals</s>':'')+(D.anomalies?'<s>'+D.anomalies.length+' anomalies</s>':'');
+if(D.strong_patterns&&D.strong_patterns.length){
+  document.getElementById('topPat').innerHTML=D.strong_patterns.slice(0,8).map(function(s){
+    var up=s.pct_up_next>s.pct_down_next;
+    return '<div class=\"sc '+(up?'u':'d')+'\"><div class=\"h\">'+s.stream.replace('_session','')+' / '+(s.phase_label||'').substring(0,20)+' / '+s.day_archetype+'</div><div class=\"a\"><span class=\"b '+(up?'u':'d')+'\">'+(up?'UP '+f(s.pct_up_next,0):'DOWN '+f(s.pct_down_next,0))+'%</span> n='+s.n_observations+(s.low_confidence_flag?' <span class=\"b w\">LOW</span>':'')+'</div></div>';
+  }).join('');
+}
+}catch(e){}
 
-// ============ UTIL ============
-function fmtPct(v) {{ return v === null || v === undefined ? '-' : v.toFixed(2) + '%'; }}
-function fmtNum(v, d=2) {{ return v === null || v === undefined ? '-' : v.toFixed(d); }}
-function badge(text, cls) {{ return '<span class="badge ' + cls + '">' + text + '</span>'; }}
-function fmt(v) {{ return v === null || v === undefined ? '-' : (typeof v === 'number' ? v.toFixed(2) : v); }}
+// Price chart
+try{if(D.prices&&typeof Chart!=='undefined'){
+  new Chart(document.getElementById('ovPrice'),{type:'line',data:{labels:D.prices.map(function(p){return p.trade_date_ist;}),datasets:[
+    {label:'WTI',data:D.prices.map(function(p){return p.cum_wti;}),borderColor:'#f7b733',tension:0.2,pointRadius:0,fill:false},
+    {label:'Brent',data:D.prices.map(function(p){return p.cum_brent;}),borderColor:'#e94560',tension:0.2,pointRadius:0,fill:false}
+  ]},options:{plugins:{legend:{position:'bottom'}},interaction:{mode:'index',intersect:false}}});
+}}catch(e){}
 
-// ============ TAB SWITCHING ============
-document.querySelectorAll('nav.tabs button').forEach(btn => {{
-  btn.onclick = () => {{
-    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-    window.dispatchEvent(new Event('resize')); // resize charts
-  }};
-}});
+// ─── REGIME ───
+try{
+if(D.current_regime){
+  var r=D.current_regime;
+  document.getElementById('rp').innerHTML=
+    '<div class=\"m g\"><div class=\"l\">Current Phase</div><div class=\"v\">P'+r.phase+'</div><div class=\"s\">'+(r.confidence?Math.round(r.confidence*100)+'%':'')+'</div></div>'+
+    '<div class=\"m\"><div class=\"l\">As of Date</div><div class=\"v\">'+(r.date||'-')+'</div><div class=\"s\">last classified</div></div>'+
+    '<div class=\"m\"><div class=\"l\">Classifier</div><div class=\"v\">RF + Calibration</div><div class=\"s\">isotonic, adaptive CV</div></div>';
+}
+if(D.phases){
+  document.getElementById('ptab').innerHTML='<table><tr><th>P</th><th>Label</th><th>Start</th><th>End</th><th>Days</th></tr>'+
+  D.phases.map(function(p){return'<tr><td>P'+p.phase_id+'</td><td>'+(p.phase_label||'').substring(0,35)+'</td><td>'+(p.start_datetime_ist||'').substring(0,10)+'</td><td>'+(p.end_datetime_ist||'').substring(0,10)+'</td><td>'+(p.n_trading_days||'-')+'</td></tr>';}).join('')+'</table>';
+}
+if(D.regime&&D.regime.length&&typeof Chart!=='undefined'){
+  new Chart(document.getElementById('patChart'),{type:'bar',data:{
+    labels:[...new Set((D.window_stats||[]).map(function(w){return w.session_window_ist;}))],
+    datasets:[1,2,3,4,5,6,7,8,9,10].filter(function(p){return (D.phases||[]).find(function(x){return x.phase_id==p;});}).map(function(p,i){
+      return {label:'P'+p,data:[...new Set((D.window_stats||[]).map(function(w){return w.session_window_ist;}))].map(function(wn){
+        var r=D.window_stats.find(function(x){return x.phase_id==p&&x.session_window_ist==wn;});return r?r.pct_up:null;}),
+        backgroundColor:['#e94560','#f7b733','#fc5c65','#3c6382','#38ada9','#e77f67','#a29bfe','#fd79a8','#00cec9','#fdcb6e'][i]||'#888'};
+    })},options:{plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true,max:100}}}});
+}
+}catch(e){}
 
-// ============ KPI BAR ============
-function renderKPIs() {{
-  const overall = BT_SUMMARY || {{}};
-  const mc = MC_CI || {{}};
-  const nSignals = BT_SIGNALS ? BT_SIGNALS.length : 0;
-  const nTrades = overall.total_trades || 0;
-  const wr = overall.win_rate || 0;
-  const exp = overall.expectancy || 0;
-  const sharpe = overall.sharpe || 0;
-  const maxDD = overall.max_drawdown || 0;
-  document.getElementById('kpiBar').innerHTML = `
-    <div class="kpi"><div class="label">Signals</div><div class="value">${{nSignals}}</div><div class="sub">from playbook</div></div>
-    <div class="kpi good"><div class="label">Win Rate</div><div class="value">${{fmtPct(wr)}}</div><div class="sub">CI: ${{fmtPct(mc.win_rate_ci_lower)}}–${{fmtPct(mc.win_rate_ci_upper)}}</div></div>
-    <div class="kpi ${{exp >= 0 ? 'good' : 'bad'}}"><div class="label">Expectancy</div><div class="value">${{fmtPct(exp)}}</div><div class="sub">CI: ${{fmtPct(mc.expectancy_ci_lower)}}–${{fmtPct(mc.expectancy_ci_upper)}}</div></div>
-    <div class="kpi ${{sharpe >= 1 ? 'good' : (sharpe > 0 ? 'warn' : 'bad')}}"><div class="label">Sharpe</div><div class="value">${{fmtNum(sharpe)}}</div><div class="sub">CI: ${{fmtNum(mc.sharpe_ci_lower)}}–${{fmtNum(mc.sharpe_ci_upper)}}</div></div>
-    <div class="kpi bad"><div class="label">Max DD</div><div class="value">${{fmtNum(maxDD)}}%</div><div class="sub">CI: ${{fmtNum(mc.max_dd_ci_lower)}}–${{fmtNum(mc.max_dd_ci_upper)}}</div></div>
-    <div class="kpi"><div class="label">Trades</div><div class="value">${{nTrades}}</div><div class="sub">across ${{nSignals}} signals</div></div>
-  `;
-}}
+// ─── PATTERNS TAB ───
+try{
+if(D.window_stats&&D.window_stats.length){
+  var p10=D.window_stats.filter(function(w){return w.phase_id==10;});
+  var wl=[].concat(D.window_stats||[]);
+  document.getElementById('wintab').innerHTML='<table><tr><th>Window</th><th>n</th><th>%UP</th><th>%DOWN</th><th>Mean%</th><th>Conf</th></tr>'+
+  p10.map(function(w){return'<tr><td>'+w.session_window_ist+'</td><td>'+(w.n_valid||0)+'</td><td style=\"color:'+(w.pct_up>50?'var(--green)':'var(--dim)')+'\">'+f(w.pct_up,1)+'</td><td style=\"color:'+(w.pct_down>50?'var(--accent)':'var(--dim)')+'\">'+f(w.pct_down,1)+'</td><td>'+f(w.mean_return_pct,3)+'</td><td>'+(w.low_confidence_flag?'<span class=\"b w\">LOW</span>':'<span class=\"b u\">OK</span>')+'</td></tr>';}).join('')+
+  '</table>';
+}
+}catch(e){}
 
-// ============ SIGNAL CARDS ============
-function renderSignalCards() {{
-  const phase = document.getElementById('filterPhase').value;
-  const stream = document.getElementById('filterStream').value;
-  const archetype = document.getElementById('filterArchetype').value;
-  const window = document.getElementById('filterWindow').value;
-  const hideLow = document.getElementById('hideLowConf').checked;
+// ─── SIGNALS TAB ───
+try{
+if(D.signals&&D.signals.length){
+  document.getElementById('sigCards').innerHTML=D.signals.map(function(s){
+    var dir=String(s.direction||'').toLowerCase();var isU=dir=='up';
+    return '<div class=\"sc '+(isU?'u':'d')+'\"><div class=\"h\">'+s.stream.replace('_session','')+' / P'+s.phase_id+' / '+s.day_archetype+' / '+s.current_window+'->'+s.next_window+'</div><div class=\"a\"><span class=\"b '+(isU?'u':'d')+'\">'+(s.direction||'')+'</span></div><div class=\"m\">Entry '+f(s.entry_price,2)+' / SL '+f(s.stop_price,2)+' / TP '+f(s.target_price,2)+(s.final_position_fraction?' / Size '+(s.final_position_fraction*100).toFixed(0)+'%':'')+'</div></div>';
+  }).join('');
+} else document.getElementById('sigCards').innerHTML='<div class=\"n\">No active signals for current phase/window.</div>';
 
-  let cards = STRONG_PATTERNS.filter(p => {{
-    if (hideLow && p.low_confidence_flag) return false;
-    if (phase !== 'all' && p.phase_label !== phase) return false;
-    if (stream !== 'all' && !p.stream.includes(stream)) return false;
-    if (archetype !== 'all' && p.day_archetype !== archetype) return false;
-    if (window !== 'all' && p.current_window !== window) return false;
-    return true;
-  }});
+if(D.strong_patterns&&D.strong_patterns.length){
+  document.getElementById('sigt').innerHTML='<table><tr><th>Stream</th><th>Phase</th><th>Day Type</th><th>Window</th><th>n</th><th>%UP</th><th>%DN</th></tr>'+
+  D.strong_patterns.slice(0,25).map(function(s){return'<tr><td>'+(s.stream||'').replace('_session','')+'</td><td>'+(s.phase_label||'').substring(0,18)+'</td><td>'+s.day_archetype+'</td><td>'+s.current_window+'</td><td>'+s.n_observations+'</td><td>'+f(s.pct_up_next,1)+'</td><td>'+f(s.pct_down_next,1)+'</td></tr>';}).join('')+
+  '</table>';
+}
+}catch(e){}
 
-  // Sort by expectancy desc
-  cards.sort((a,b) => b.expectancy - a.expectancy);
+// ─── BACKTEST ───
+try{
+var mt=(D.backtest||{}).metrics||{};
+if(mt.total_trades){
+  document.getElementById('btm').innerHTML=
+    '<div class=\"m '+(mt.win_rate>55?'g':'')+'\"><div class=\"l\">Win Rate</div><div class=\"v\">'+f(mt.win_rate,1)+'%</div><div class=\"s\">'+mt.total_trades+' trades</div></div>'+
+    '<div class=\"m g\"><div class=\"l\">Profit Factor</div><div class=\"v\">'+f(mt.profit_factor,2)+'</div></div>'+
+    '<div class=\"m g\"><div class=\"l\">Sharpe</div><div class=\"v\">'+f(mt.sharpe,2)+'</div></div>'+
+    '<div class=\"m g\"><div class=\"l\">Sortino</div><div class=\"v\">'+f(mt.sortino,1)+'</div></div>'+
+    '<div class=\"m b\"><div class=\"l\">Max DD</div><div class=\"v\">'+f(mt.max_drawdown_pct,1)+'%</div></div>'+
+    '<div class=\"m '+( (mt.mc_expectancy_ci||[0])[0]>0?'g':'w')+'\"><div class=\"l\">Expectancy</div><div class=\"v\">'+f(mt.expectancy_pct,3)+'%</div></div>';
+  var eci=mt.mc_expectancy_ci||[0,0];
+  document.getElementById('btmc').innerHTML='<strong>Monte Carlo 95% CI:</strong> Expectancy ['+f(eci[0],3)+'%, '+f(eci[1],3)+'%] - '+(eci[0]>0?'<span style=\"color:var(--green)\">POSITIVE</span>':'<span style=\"color:var(--accent)\">includes zero</span>');
+}
+}catch(e){}
 
-  const container = document.getElementById('signalCards');
-  container.innerHTML = cards.map(p => {{
-    const dir = p.pct_up_next >= p.pct_down_next ? 'UP' : 'DOWN';
-    const bias = Math.max(p.pct_up_next, p.pct_down_next);
-    const isUp = dir === 'UP';
-    const cardClass = 'signal-card ' + (isUp ? 'up' : 'down') + (p.low_confidence_flag ? ' low-conf' : '');
-    const n = p.n_observations;
-    const nextWin = p.top_next_window;
-    return `
-      <div class="signal-card ${{cardClass}}">
-        <div class="header">
-          <span><strong>${{p.stream.replace('_session','')}}</strong> • Phase ${{p.phase_id}} (${{p.phase_label}})</span>
-          <span class="badge ${{isUp ? 'up' : 'down'}}">${{dir}} ${{bias.toFixed(1)}}%</span>
-        </div>
-        <div class="condition">
-          📍 Day type: <strong>${{p.day_archetype}}</strong> • ⏰ Window: <strong>${{p.current_window}}</strong>
-        </div>
-        <div class="action">
-          ${{isUp ? '📈 LONG' : '📉 SHORT'}} next window (<strong>${{nextWin}}</strong>) — Hist: ${{fmtPct(p.pct_up_next)}} UP / ${{fmtPct(p.pct_down_next)}} DOWN / ${{fmtPct(p.pct_flat_next)}} FLAT
-        </div>
-        <div class="meta">
-          📊 n=${{n}} • Expectancy: <strong>${{p.expectancy.toFixed(3)}}%</strong> • Win Rate: ${{fmtPct(p.pct_up_next > p.pct_down_next ? p.pct_up_next : p.pct_down_next)}}
-          ${{p.low_confidence_flag ? ' ⚠️ LOW-CONFIDENCE (n<5)' : ''}}
-        </div>
-      </div>
-    `;
-  }}).join('');
+// ─── ANOMALIES ───
+try{
+if(D.anomalies&&D.anomalies.length){
+  document.getElementById('anomt').innerHTML='<table><tr><th>Date</th><th>Stream</th><th>Phase</th><th>Metric</th><th>z-score</th></tr>'+
+  D.anomalies.slice(0,15).map(function(a){return'<tr><td>'+(a.trade_date_ist||'')+'</td><td>'+(a.__stream||'').replace('_daily','')+'</td><td>'+(a.phase_label||'').substring(0,18)+'</td><td>'+(a.anomaly_metric||'').replace('_rolling_z','')+'</td><td style=\"font-weight:bold;color:'+(a.z_value>0?'var(--accent)':'var(--green)')+'\">'+f(a.z_value,2)+'</td></tr>';}).join('')+
+  '</table>';
+} else document.getElementById('anomt').innerHTML='<div class=\"n\">No anomalies flagged.</div>';
+}catch(e){}
 
-  // Populate filter options
-  const phases = [...new Set(STRONG_PATTERNS.map(p => p.phase_label))].sort();
-  document.getElementById('filterPhase').innerHTML = '<option value="all">All</option>' + phases.map(p => `<option value="${{p}}">${{p}}</option>`).join('');
-  const streams = [...new Set(STRONG_PATTERNS.map(p => p.stream.replace('_session','')))].sort();
-  document.getElementById('filterStream').innerHTML = '<option value="all">All</option>' + streams.map(s => `<option value="${{s}}_session">${{s}}</option>`).join('');
-  const arches = [...new Set(STRONG_PATTERNS.map(p => p.day_archetype))].sort();
-  document.getElementById('filterArchetype').innerHTML = '<option value="all">All</option>' + arches.map(a => `<option value="${{a}}">${{a}}</option>`).join('');
-  const windows = [...new Set(STRONG_PATTERNS.map(p => p.current_window))].sort();
-  document.getElementById('filterWindow').innerHTML = '<option value="all">All</option>' + windows.map(w => `<option value="${{w}}">${{w}}</option>`).join('');
-}}
-
-['filterPhase','filterStream','filterArchetype','filterWindow','hideLowConf'].forEach(id => {{
-  document.getElementById(id).onchange = renderSignalCards;
-}});
-
-// ============ BACKTEST TABLES ============
-function renderBtSignalTable() {{
-  const df = BT_SIGNALS.sort((a,b) => b.expectancy - a.expectancy);
-  document.getElementById('btSignalTable').innerHTML = `
-    <table>
-      <tr><th>Signal</th><th>Stream</th><th>Phase</th><th>Archetype</th><th>Window</th><th>Next</th><th>n</th><th>WR%</th><th>Avg Win</th><th>Avg Loss</th><th>PF</th><th>Exp%</th><th>Sharpe</th></tr>
-      ${{df.map(r => `<tr><td>${{r.signal}}</td><td>${{r.stream.replace('_session','')}}</td><td>${{r.phase_label}}</td><td>${{r.day_archetype}}</td><td>${{r.current_window}}</td><td>${{r.top_next_window}}</td><td>${{r.n_observations}}</td><td>${{fmtPct(r.win_rate)}}</td><td>${{fmtNum(r.avg_win)}}</td><td>${{fmtNum(r.avg_loss)}}</td><td>${{fmtNum(r.profit_factor)}}</td><td>${{fmtPct(r.expectancy)}}</td><td>${{fmtNum(r.sharpe)}}</td></tr>`).join('')}}
-    </table>
-  `;
-}}
-
-function renderBtPhaseTable() {{
-  const df = BT_PHASE;
-  document.getElementById('btPhaseTable').innerHTML = `
-    <table>
-      <tr><th>Phase</th><th>n</th><th>WR%</th><th>PF</th><th>Exp%</th><th>Sharpe</th></tr>
-      ${{df.map(r => `<tr><td>P${{r.phase}} (${{r.phase_label || ''}})</td><td>${{r.n_trades}}</td><td>${{fmtPct(r.win_rate)}}</td><td>${{fmtNum(r.profit_factor)}}</td><td>${{fmtPct(r.expectancy)}}</td><td>${{fmtNum(r.sharpe)}}</td></tr>`).join('')}}
-    </table>
-  `;
-}}
-
-function renderBtArchTable() {{
-  const df = BT_ARCH;
-  document.getElementById('btArchTable').innerHTML = `
-    <table>
-      <tr><th>Archetype</th><th>n</th><th>WR%</th><th>PF</th><th>Exp%</th><th>Sharpe</th></tr>
-      ${{df.map(r => `<tr><td>${{r.archetype}}</td><td>${{r.n_trades}}</td><td>${{fmtPct(r.win_rate)}}</td><td>${{fmtNum(r.profit_factor)}}</td><td>${{fmtPct(r.expectancy)}}</td><td>${{fmtNum(r.sharpe)}}</td></tr>`).join('')}}
-    </table>
-  `;
-}}
-
-// ============ CHARTS ============
-let equityChart, ddChart, expChart, wrExpChart, featChart, confChart, condDxyChart, condSpxChart, condVixChart, corrChart, daytypeBrentChart, daytypeWtiChart, tripChart, bayesChart, anomTimelineChart, anomPhaseChart, confMatChart, corrChart;
-
-function newChart(ctx, config) {{
-  return new Chart(ctx, {{...config, responsive: true, maintainAspectRatio: false}});
-}}
-
-function renderCharts() {{
-  // Equity curve
-  if (bt_trades && bt_trades.length) {{
-    const trades = bt_trades.sort((a,b) => new Date(a.trade_date) - new Date(b.trade_date));
-    const dates = trades.map(t => t.trade_date);
-    const cum = trades.map((t,i) => (i===0? t.pnl_pct : trades[i-1].cum_pnl + t.pnl_pct));
-    trades.forEach((t,i) => t.cum_pnl = cum[i]);
-    const eqData = trades.map(t => ({x: t.trade_date, y: t.cum_pnl}));
-    const dd = trades.map(t => ({x: t.trade_date, y: (t.cum_pnl - Math.max(...cum.slice(0, trades.indexOf(t)+1)))}));
-
-    equityChart = newChart(document.getElementById('equityCurve'), {{
-      type: 'line', data: {{ datasets: [{label: 'Cumulative %', data: eqData, borderColor: '#3fb950', fill: false, tension: 0.1, pointRadius: 0}] }},
-      options: {{ plugins: {{ legend: {{display:false}} }}, scales: {{ x: {{type: 'time', time: {{unit: 'day'}}}}}}}}
-    }});
-    ddChart = newChart(document.getElementById('ddCurve'), {{
-      type: 'line', data: {{ datasets: [{label: 'Drawdown %', data: dd, borderColor: '#f85149', fill: true, backgroundColor: 'rgba(248,81,73,0.1)', tension: 0.1, pointRadius: 0}] }},
-      options: {{ plugins: {{ legend: {{display:false}} }}, scales: {{ x: {{type: 'time', time: {{unit: 'day'}}}}}}}}
-    }});
+// ─── CROSS-PHASE SIMILARITY ───
+try{
+if(D.cross_phase_sim&&D.cross_phase_sim.length){
+  var sim10=D.cross_phase_sim.filter(function(s){return s['Unnamed: 0']==10;});
+  if(sim10.length){
+    var ht='<table><tr><th>Phase</th><th>Character</th><th>Similarity</th><th>Days</th></tr>';
+    var ph=D.phases||[];
+    var sim10_vals=Object.entries(sim10[0]).filter(function(kv){return kv[0]!=='Unnamed: 0'&&kv[0]!=='10.0';}).sort(function(a,b){return b[1]-a[1];});
+    sim10_vals.forEach(function(kv){
+      var pid=parseFloat(kv[0]);var simVal=kv[1];
+      var phName=pid?('P'+pid):'?';
+      var phDesc=ph?((ph.find(function(p){return p.phase_id==pid;})||{}).phase_label||'').substring(0,35):'';
+      ht+='<tr><td><strong>'+phName+'</strong></td><td>'+phDesc+'</td><td>'+(simVal.toFixed(3))+'</td><td>'+(D.cross_phase_features?((D.cross_phase_features.find(function(f){return f.phase_id==pid;})||{}).n_trading_days||'-'):'-')+'</td></tr>';
+    });
+    ht+='</table>';
+    document.getElementById('simt').innerHTML=ht;
   }}
-
-  // Expectancy by signal
-  const top20 = STRONG_PATTERNS.slice(0,20).reverse();
-  expChart = newChart(document.getElementById('expBySignal'), {{
-    type: 'bar', data: {{ labels: top20.map(p => p.signal || '{p.stream}|{p.phase_id}|{p.day_archetype}|{p.current_window}'), datasets: [{label: 'Expectancy %', data: top20.map(p => p.expectancy), backgroundColor: top20.map(p => p.expectancy > 0 ? '#3fb950' : '#f85149')}] }},
-    options: {{ indexAxis: 'y', plugins: {{legend: {{display:false}}}}, scales: {{ x: {{title: {{display:true, text:'Expectancy %'}}}}}}
-  }});
-
-  // WR vs Expectancy scatter
-  wrExpChart = newChart(document.getElementById('wrVsExp'), {{
-    type: 'scatter', data: {{ datasets: [{label: 'Signals', data: STRONG_PATTERNS.map(p => ({x: p.win_rate || (Math.max(p.pct_up_next, p.pct_down_next)), y: p.expectancy})), backgroundColor: '#f78166', pointRadius: 6}] }},
-    options: {{ plugins: {{legend: {{display:false}}}}, scales: {{ x: {{title: {{display:true, text:'Win Rate %'}}}}, y: {{title: {{display:true, text:'Expectancy %'}}}}}}
-  }});
-
-  // Feature importance
-  if (REGIME_DIAG && REGIME_DIAG.feature_cols) {{
-    // we'll populate from regime_importance.csv
-  }}
-
-  // Confusion matrix
-  if (REGIME_DIAG && REGIME_DIAG.confusion_matrix) {{
-    const cm = REGIME_DIAG.confusion_matrix;
-    const classes = REGIME_DIAG.classes || [2,3,4,5,6];
-    confChart = newChart(document.getElementById('confMat'), {{
-      type: 'matrix', data: {{
-        labels: classes.map(c => 'P'+c),
-        datasets: [{label: 'Count', data: cm.flat(), backgroundColor: (ctx) => {{
-          const v = ctx.parsed.v;
-          const max = Math.max(...cm.flat());
-          const intensity = v / max;
-          return `rgba(247,129,102,${{intensity}})`;
-        }}]
-      }},
-      options: {{ plugins: {{legend: {{display:false}}, tooltip: {{callbacks: {{label: ctx => 'Count: ' + ctx.parsed.v}}}}}}}
-    }});
-  }}
-
-  // Cross-asset conditional charts
-  const condDxy = CROSS_FACTOR.filter(c => c.test === 'brent_cond_dxy');
-  if (condDxy.length) {{
-    condDxyChart = newChart(document.getElementById('condDxy'), {{
-      type: 'bar', data: {{ labels: condDxy.map(c => c.DXY_dir), datasets: [{label: 'Brent mean ret %', data: condDxy.map(c => c.mean), backgroundColor: condDxy.map(c => c.DXY_dir === 'UP' ? '#3fb950' : '#f85149')}] }},
-      options: {{ plugins: {{legend: {display:false}}}}}});
-  }}
-
-  const condSpx = CROSS_FACTOR.filter(c => c.test === 'brent_cond_spx');
-  if (condSpx.length) {{
-    condSpxChart = newChart(document.getElementById('condSpx'), {{
-      type: 'bar', data: {{ labels: condSpx.map(c => c.SPX_dir), datasets: [{label: 'Brent mean ret %', data: condSpx.map(c => c.mean), backgroundColor: condSpx.map(c => c.SPX_dir === 'UP' ? '#f85149' : '#3fb950')}] }},
-      options: {{ plugins: {{legend: {display:false}}}}}});
-  }}
-
-  const condVix = CROSS_FACTOR.filter(c => c.test === 'brent_cond_vix');
-  if (condVix.length) {{
-    condVixChart = newChart(document.getElementById('condVix'), {{
-      type: 'bar', data: {{ labels: condVix.map(c => c.VIX_regime), datasets: [{label: 'Brent mean ret %', data: condVix.map(c => c.mean), backgroundColor: condVix.map(c => c.VIX_regime === 'HIGH' ? '#f85149' : '#3fb950')}] }},
-      options: {{ plugins: {{legend: {display:false}}}}}});
-  }}
-
-  // Correlation matrix heatmap (using bar chart approximation)
-  const corr = CROSS_FACTOR.find(c => c.test === 'cross_asset_correlation');
-  if (corr && corr.data) {{
-    corrChart = newChart(document.getElementById('corrMat'), {{
-      type: 'bar', data: {{
-        labels: Object.keys(corr.data[0]).filter(k => k !== 'brent_ret'),
-        datasets: Object.keys(corr.data[0]).filter(k => k !== 'brent_ret').map(k => ({
-          label: k, data: corr.data.map(row => row[k]), backgroundColor: '#f78166'
-        }))
-      }},
-      options: {{ plugins: {{legend: {display:false}}}, scales: {{x: {{stacked:true}}, y: {{stacked:true}}}}}});
-  }}
-
-  // Day type stacked
-  const dtsBrent = DAY_SHARE.filter(d => d.stream === 'BRENT_daily');
-  const dtsWti = DAY_SHARE.filter(d => d.stream === 'WTI_daily');
-  const arches = [...new Set(DAY_SHARE.map(d => d.day_archetype))];
-  const phases = [...new Set(DAY_SHARE.map(d => d.phase_id))].sort();
-  const phaseLabels = {{1:'P1',2:'P2',3:'P3',4:'P4',5:'P5',6:'P6'}};
-  const colors = ['#e94560','#f7b733','#38ada9','#3c6382','#888','#e77f67','#fc5c65','#0f3460'];
-
-  daytypeBrentChart = newChart(document.getElementById('daytypeBrent'), {{
-    type: 'bar', data: {{
-      labels: phases.map(p => phaseLabels[p]),
-      datasets: arches.map((a,i) => ({{
-        label: a, data: phases.map(p => {{
-          const row = dtsBrent.find(d => d.phase_id === p && d.day_archetype === a);
-          return row ? row.pct : 0;
-        }}), backgroundColor: colors[i % colors.length]
-      }}))
-    }}, options: {{ plugins: {{legend: {position:'bottom'}}}, scales: {{ x: {{stacked:true}}, y: {{stacked:true, title: {display:true, text:'%'}}}}}});
-  }});
-
-  daytypeWtiChart = newChart(document.getElementById('daytypeWti'), {{
-    type: 'bar', data: {{
-      labels: phases.map(p => phaseLabels[p]),
-      datasets: arches.map((a,i) => ({{
-        label: a, data: phases.map(p => {{
-          const row = dtsWti.find(d => d.phase_id === p && d.day_archetype === a);
-          return row ? row.pct : 0;
-        }}), backgroundColor: colors[i % colors.length]
-      }}))
-    }}, options: {{ plugins: {{legend: {position:'bottom'}}}, scales: {{ x: {{stacked:true}}, y: {{stacked:true, title: {display:true, text:'%'}}}}}});
-  }});
-
-  // Triplet chart
-  const topTrips = TRIPLETS.slice(0,15).reverse();
-  tripChart = newChart(document.getElementById('tripChart'), {{
-    type: 'bar', data: {{
-      labels: topTrips.map(t => t.leg_triplet?.substring(0,40) + '...'),
-      datasets: [
-        {{ label: 'n', data: topTrips.map(t => t.n_occurrences), backgroundColor: '#3c6382', yAxisID: 'y' }},
-        {{ label: 'Score', data: topTrips.map(t => t.composite_score), backgroundColor: '#e94560', yAxisID: 'y1' }}
-      ]}
-    }}, options: {{ indexAxis: 'y', plugins: {{legend: {position:'bottom'}}}, scales: {{ y: {{type:'linear', position:'left'}}, y1: {{type:'linear', position:'right', grid: {drawOnChartArea:false}}}}}});
-  }});
-
-  // Bayes scatter
-  bayesChart = newChart(document.getElementById('bayesChart'), {{
-    type: 'scatter', data: {{
-      datasets: [{{
-        label: 'Signals',
-        data: BAYES.map(b => ({x: b.freq_up, y: b.bayes_mean_up * 100})),
-        backgroundColor: '#f78166', pointRadius: 5
-      }]
-    }},
-    options: {{
-      plugins: {{
-        tooltip: {{
-          callbacks: {{
-            label: ctx => `Freq: ${ctx.parsed.x.toFixed(1)}% | Posterior: ${ctx.parsed.y.toFixed(1)}% | HDI: [${ctx.parsed.hdi_up_lower*100.toFixed(1)}, ${ctx.parsed.hdi_up_upper*100.toFixed(1)}]`
-          }}
-        }}
-      }},
-      scales: {{ x: {{title: {display:true, text:'Frequentist %UP'}}}, y: {{title: {display:true, text:'Bayesian Posterior Mean %UP'}}}}}
-  }});
-
-  // Anomaly timeline
-  anomTimelineChart = newChart(document.getElementById('anomTimeline'), {{
-    type: 'bar', data: {{
-      labels: ANOMALIES_JS.map(a => a.trade_date_ist),
-      datasets: [{{
-        label: '|z|',
-        data: ANOMALIES_JS.map(a => Math.abs(a.z_value)),
-        backgroundColor: ANOMALIES_JS.map(a => a.z_value > 0 ? '#e94560' : '#38ada9')
-      }}]
-    }},
-    options: {{ plugins: {{legend: {display:false}}}}}
-  ));
-
-  anomPhaseChart = newChart(document.getElementById('anomPhase'), {{
-    type: 'bar', data: {{
-      labels: ['P1','P2','P3','P4','P5','P6'],
-      datasets: [{{
-        label: 'Count',
-        data: [1,2,3,4,5,6].map(p => ANOMALIES_JS.filter(a => a.phase_id === p).length),
-        backgroundColor: ['#e94560','#f7b733','#fc5c65','#3c6382','#38ada9','#e77f67']
-      }}]
-    }}, options: {{ plugins: {{legend: {display:false}}}}}
-  ));
-
-  // Confusion matrix for regime
-  if (REGIME_DIAG.confusion_matrix) {{
-    const cm = REGIME_DIAG.confusion_matrix;
-    const classes = REGIME_DIAG.classes || [2,3,4,5,6];
-    confMatChart = newChart(document.getElementById('confMat'), {{
-      type: 'matrix', data: {{
-        labels: classes.map(c => 'P'+c),
-        datasets: [{{
-          label: 'Count', data: cm.flat(),
-          backgroundColor: (ctx) => {{
-            const v = ctx.parsed.v;
-            const max = Math.max(...cm.flat());
-            return `rgba(247,129,102,${v/max})`;
-          }}
-        }]
-      }},
-      options: {{ plugins: {{tooltip: {{callbacks: {{label: ctx => 'Count: ' + ctx.parsed.v}}}}}}}
-    }});
-  }}
-
-  // Feature importance
-  // We'll load from regime_importance.csv via a separate fetch or inline
-}}
-
-// ============ TABLE RENDERERS ============
-function tableFromArray(arr, cols, formatters = {}) {{
-  if (!arr || !arr.length) return '<p><em>No data</em></p>';
-  const headers = cols.map(c => c.header || c.key);
-  const keys = cols.map(c => c.key);
-  let html = '<table><thead><tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr></thead><tbody>';
-  arr.forEach(row => {{
-    html += '<tr>';
-    keys.forEach(k => {{
-      let v = row[k];
-      if (formatters[k]) v = formatters[k](v, row);
-      else if (typeof v === 'number') v = fmtNum(v);
-      html += `<td>${v}</td>`;
-    }});
-    html += '</tr>';
-  }});
-  html += '</tbody></table>';
-  return html;
-}}
-
-function renderAllTables() {{
-  // Regime table
-  document.getElementById('regimeTable').innerHTML = tableFromArray(
-    (REGIME_DIAG && REGIME_DIAG.feature_importance) ? REGIME_DIAG.feature_importance : [],
-    [{key:'feature', header:'Feature'}, {key:'importance', header:'Importance', fmt: v => fmtNum(v,4)}]
-  );
-
-  // Day type table
-  document.getElementById('daytypeTable').innerHTML = tableFromArray(
-    DAY_SHARE,
-    [
-      {key:'stream', header:'Stream', fmt: v => v.replace('_daily','')},
-      {key:'phase_id', header:'Phase', fmt: v => 'P'+v},
-      {key:'day_archetype', header:'Archetype'},
-      {key:'count', header:'Count'},
-      {key:'pct', header:'%', fmt: v => fmtPct(v)}
-    ]
-  );
-
-  // Triplet table
-  document.getElementById('tripletTable').innerHTML = tableFromArray(
-    TRIPLETS.slice(0,50),
-    [
-      {key:'stream', header:'Stream', fmt: v => v.replace('_session','')},
-      {key:'phase_id', header:'Phase', fmt: v => 'P'+v},
-      {key:'phase_label', header:'Phase Label'},
-      {key:'leg_triplet', header:'Triplet', fmt: v => v?.substring(0,60)},
-      {key:'n_occurrences', header:'n'},
-      {key:'support', header:'Support', fmt: v => fmtNum(v,3)},
-      {key:'confidence', header:'Conf', fmt: v => fmtPct(v*100)},
-      {key:'composite_score', header:'Score', fmt: v => fmtNum(v,4)},
-      {key:'low_confidence_flag', header:'Low Conf', fmt: v => v ? '⚠️' : ''}
-    ]
-  );
-
-  // Bayes table
-  document.getElementById('bayesTable').innerHTML = tableFromArray(
-    BAYES.slice(0,50),
-    [
-      {key:'stream', header:'Stream', fmt: v => v.replace('_session','')},
-      {key:'phase_id', header:'Phase', fmt: v => 'P'+v},
-      {key:'day_archetype', header:'Archetype'},
-      {key:'current_window', header:'Window'},
-      {key:'n_observations', header:'n'},
-      {key:'freq_up', header:'Freq UP', fmt: v => fmtPct(v)},
-      {key:'freq_down', header:'Freq DOWN', fmt: v => fmtPct(v)},
-      {key:'bayes_mean_up', header:'Post UP', fmt: v => fmtPct(v*100)},
-      {key:'bayes_mean_down', header:'Post DOWN', fmt: v => fmtPct(v*100)},
-      {key:'hdi_up_lower', header:'HDI Lo', fmt: v => fmtPct(v*100)},
-      {key:'hdi_up_upper', header:'HDI Hi', fmt: v => fmtPct(v*100)}
-    ]
-  );
-
-  // Anomalies table
-  document.getElementById('anomTable').innerHTML = tableFromArray(
-    ANOMALIES_JS,
-    [
-      {key:'__stream', header:'Stream', fmt: v => v.replace('_daily','')},
-      {key:'trade_date_ist', header:'Date'},
-      {key:'phase_label', header:'Phase'},
-      {key:'anomaly_metric', header:'Metric', fmt: v => v?.replace('_rolling_z','')},
-      {key:'z_value', header:'z', fmt: v => fmtNum(v,2)}
-    ]
-  );
-
-  // Macro table
-  const macroSummary = (typeof MACRO_STATE_SUMMARY !== 'undefined') ? MACRO_STATE_SUMMARY : [];
-  document.getElementById('macroTable').innerHTML = tableFromArray(
-    macroSummary,
-    [{key:'macro_state', header:'State'}, {key:'n_days', header:'Days'}]
-  );
-}}
-
-// ============ INIT ============
-document.addEventListener('DOMContentLoaded', () => {{
-  renderKPIs();
-  renderSignalCards();
-  renderBtSignalTable();
-  renderBtPhaseTable();
-  renderBtArchTable();
-  renderCharts();
-  renderAllTables();
-
-  // Update last update
-  document.getElementById('lastUpdate').textContent = 'Updated: 2026-07-20 | Data: 2026-03-02 to 2026-07-17 (98 trading days)';
-}});
-
-// bt_trades for equity curve
-const bt_trades = {json.dumps(bt_trades.to_dict(orient='records') if 'bt_trades' in data and not data['backtest_trades'].empty else [], default=str)};
+if(D.cross_phase_borrowed&&D.cross_phase_borrowed.length){
+  document.getElementById('borrowedt').innerHTML='<table><tr><th>Window</th><th>Stream</th><th>Own UP%</th><th>Blended UP%</th><th>Own DN%</th><th>Blended DN%</th><th>Borrowed From</th></tr>'+
+  D.cross_phase_borrowed.map(function(b){return'<tr><td>'+b.session_window_ist+'</td><td>'+(b.stream||'').replace('_session','')+'</td><td>'+b.p_up_own+'%</td><td style="font-weight:bold;color:'+(b.p_up_blended>b.p_up_own?'var(--green)':'var(--accent)')+'">'+b.p_up_blended+'%</td><td>'+b.p_dn_own+'%</td><td>'+b.p_dn_blended+'%</td><td>'+('P'+(b.borrowed_from_phase||''))+'</td></tr>';}).join('')+
+  '</table>';
+}}catch(e){}
+console.log('Dashboard loaded');
 </script>
 </body>
 </html>
