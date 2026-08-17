@@ -19,12 +19,13 @@
 
 ## 🔥 Highlights
 
-- **15-stage agentic pipeline** — from raw OHLCV CSVs to an interactive, self-contained dashboard & a news-conditioned daily trading plan. One command re-runs everything.
+- **17-stage agentic pipeline** — from raw OHLCV CSVs to an interactive React/Vite SPA dashboard & a news-conditioned daily trading plan. One command re-runs everything.
 - **Regime-conditional intelligence** across 10 war phases (full-scale war → ceasefire → Hormuz war → de-escalation/negotiation) — every pattern is tagged to the regime it applies in.
 - **Statistically honest by construction** — Bayesian Dirichlet posteriors with 95% HDI, Benjamini–Hochberg FDR multiple-comparison correction, hierarchical shrinkage, and `n<5 → LOW-CONFIDENCE` flags baked into every output column.
 - **Self-correcting Prediction Scorecard (P1)** — resolves every emitted signal against the actual next-window outcome, tracks rolling hit-rate & edge-decay, and auto-down-weights stale patterns. It *learns from its own mistakes*.
 - **News-conditioned daily plan** — fetches Al Jazeera / CNN Iran-live / Hormuz Letter headlines, flags escalation vs de-escalation, and forecasts *deviations* from the price-only plan.
-- **Walk-forward validated** — 290-signal backtest: 63.4% win rate, profit factor 2.74, Sharpe 2.09, **positive expectancy at 95% Monte-Carlo confidence [CI +0.21%, +1.11%].**
+- **Cross-phase pattern borrowing** — when the current phase has limited data, computes cosine similarity across all 10 phases (volatility/direction/return/magnitude) and borrows patterns from the most similar historical phase (Phase 10 α-borrows from Phase 7, similarity 0.886).
+- **Walk-forward validated** — 297-trade backtest: 63.6% win rate, profit factor 2.10, Sharpe 4.29, **positive expectancy at 95% Monte-Carlo confidence [CI +0.20%, +0.48%].**
 
 ---
 
@@ -53,7 +54,7 @@ python scripts/enhanced_update_all.py --signals-only
 python scripts/enhanced_update_all.py --skip news_events
 
 # 3. Output
-#    • dashboard_v3.html  → open in any browser (13 tabs, no build step)
+#    • dashboard_app/     → React + Vite SPA (serve: bash start_dashboard.sh → localhost:8080)
 #    • TODAYS_PLAN.md     → next trading day's window-by-window, news-conditioned plan
 #    • artifacts/*.csv    → playbook, scorecard, window stats, triplets, anomalies, …
 ```
@@ -78,12 +79,14 @@ python scripts/enhanced_update_all.py --skip news_events
 10 statistical_rigor         FDR + Bayesian posteriors + hierarchical shrinkage
 11 live_regime_classifier    calibrated RF → current phase + confidence
 12 probabilistic_signal_engine  P(UP|conditions), Kelly×vol sizing, ATR stops
-13 walkforward_backtest      expanding-window, Monte-Carlo CI, realistic fills
-14 enhanced_cross_asset      DXY/SPX/VIX/Gold regimes, spread signals, rolling corr
-15 daily_report + scorecard  news-conditioned plan + self-correcting scorecard
+13 prediction_scorecard        signal→outcome hit-rate, edge-decay, stale-flag
+14 daily_report                news-conditioned next-day window-by-window plan
+15 walkforward_backtest        expanding-window, Monte-Carlo CI, realistic fills
+16 cross_phase_engine          phase similarity matrix + pattern borrowing (P10←P7)
+17 enhanced_cross_asset        DXY/SPX/VIX/Gold regimes, spread signals, rolling corr
         │
         ▼
-dashboard_v3.html  ·  TODAYS_PLAN.md  ·  artifacts/* (parquet/csv/json)
+dashboard_app (React SPA)  ·  TODAYS_PLAN.md  ·  artifacts/* (parquet/csv/json)
 ```
 
 **Design principle:** all heavy lifting happens in vectorized pandas/numpy/scipy inside scripts; the reasoning layer only ever reads **compact artifacts** (CSV/JSON/parquet), never raw rows — this is what makes 80k+ rows rigorous and auditable, not just fast.
@@ -137,9 +140,18 @@ Hormuz control · Israeli strikes in south Lebanon
 | Predictive layer | `live_regime_classifier.py`, `probabilistic_signal_engine.py` |
 | Validation | `walkforward_backtester.py`, `backtester.py`, `risk_management.py` |
 | Intelligence overlays | `enhanced_cross_asset.py`, `cross_asset.py`, `news_event_engine.py` |
+| Cross-phase similarity | `scripts/cross_phase_engine.py` — Phase 10 borrows from Phase 7 (0.886 similarity) |
 | Self-correction | `scripts/prediction_scorecard.py` |
+### Dashboard
+```bash
+# Serve the React SPA (production build):
+bash start_dashboard.sh   # → http://localhost:8080
+
+# Development mode (hot reload):
+cd dashboard && npm run dev   # → http://localhost:5173
+```
 | Auto-plan | `scripts/daily_report_generator.py` |
-| Orchestration & viz | `enhanced_update_all.py`, `update_all.py`, `dashboard_engine_v3_fixed.py` → `dashboard_v3.html` |
+| Orchestration & viz | `enhanced_update_all.py`, `update_all.py`, `build_react_dashboard.py` → `dashboard_app/` (React/Vite SPA) |
 | Docs | `README.md` (full directive), `AGENT_INSTRUCTIONS.md`, `CONVERSATION_LOG.md` (single-source handoff), `PROJECT_DOCUMENTATION.md`, `CRITICAL_REVIEW.md`, `LINKEDIN_POST.md` |
 
 Data is stored as **XLSX-under-.csv** (Excel format with `.csv` suffix) across WTI/Brent daily + 5m/15m/60m intraday + session summaries + spot references. `scripts/_xlsx_helper.py` is the canonical reader.

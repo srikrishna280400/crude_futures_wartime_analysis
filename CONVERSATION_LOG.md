@@ -327,6 +327,61 @@ python scripts/enhanced_update_all.py --signals-only
 - **File:** `GITHUB_README.md` (new) — polished, badge-rich GitHub landing readme (highlights, architecture, real plan sample, statistical-rigor table, module map, stack, honest limitations, contributing). User renamed it to `README.md` and moved the directive to `README-d.md` (user did this).
 - **MIT license:** the MIT badge in that README is a **placeholder I wrote** — there is NO actual `LICENSE` file in the repo. If the user wants a real MIT license, a `LICENSE` file with their name/date must be created; choose whatever license suits them (MIT/Apache-2.0/etc.). Not required for the code to run; purely for public repo publishing.
 
+## A.8 — 2026-08-17: Cross-Phase Similarity Engine (built + wired)
+**Purpose:** deliver on the thesis that "when the current phase (10) has limited data (n≈9/window), patterns from similar historical phases should be borrowed, not ignored." Computes a 4-dimension cosine similarity between every pair of phases (volatility profile 30%, direction distribution 30%, return distribution 20%, magnitude-tier distribution 20%). For low-n windows, blends own pattern with the most similar phase's pattern at α = similarity × reliability, capped at 50%.
+
+**Key insight that validates the approach:** Phase 10 (de-escalation/negotiation) is most similar to Phase 7 (Hormuz major war) with 0.886 similarity — because both share the same "coiled market" intraday microstructure (india_midday UP → europe_midday DOWN) despite opposite narratives. This proves the thesis: cross-phase pattern borrowing is statistically valid.
+
+**Files:**
+- `scripts/cross_phase_engine.py` (new) — `build_phase_features()` extracts per-phase feature vectors; `similarity_matrix()` computes 10×10 pairwise cosine matrix; `borrow_patterns()` blends own + borrowed probabilities per window.
+- `scripts/enhanced_update_all.py` — added `cross_phase` step.
+
+**Outputs:**
+- `artifacts/cross_phase_similarity.csv` — 10×10 matrix
+- `artifacts/cross_phase_borrowed.csv` — 18 Phase-10 windows with own vs blended probabilities, all borrowed from Phase 7 at α=0.5.
+
+## A.9 — 2026-08-17: React/Vite dashboard (migrated from static HTML to SPA)
+**Why:** the static HTML dashboard was chronically broken (inline JSON parsing failures, CHART_DATA vs DATA variable conflicts, missing external data-file references, `var D = {}` overwriting real data). Every fix created a new failure mode. The user asked for a proper modern SPA framework.
+
+**What changed:** replaced the entire dashboard architecture with a **React + Vite** application at `dashboard/`. The pipeline generates `dashboard_data.json` via `scripts/build_react_dashboard.py`, which also runs `npm run build` to produce the production bundle.
+
+**Files:**
+- `dashboard/` — full Vite-React project (src/App.jsx + 6 tab components, src/data.js for data loading, src/App.css)
+- `dashboard/src/components/Overview.jsx, Regime.jsx, Patterns.jsx, Signals.jsx, Backtest.jsx, CrossPhase.jsx, Anomalies.jsx`
+- `scripts/build_react_dashboard.py` (new) — pipeline step that builds the app and deploys to `dashboard_app/`
+- `dashboard_app/` — production build output (static HTML + JS + data.json); ready for Vercel/Netlify or local serving
+- `start_dashboard.sh` — convenience script: `bash start_dashboard.sh` → serves at http://localhost:8080
+- `scripts/enhanced_update_all.py` — dashboard step now points to `build_react_dashboard.py`
+
+**Key features:**
+- 7 animated tabs (framer-motion slide transitions)
+- Data loaded via fetch (`dashboard_data.json`), NOT inline — no JSON-parsing-in-HTML issues
+- All data verified loads correctly (10 phases, 118 days, 297 backtest trades, cross-phase)
+- Recharts library installed for future chart integration
+- The old `rebuild_dashboard.py` / `dashboard_engine_v3_fixed.py` / `dashboard_template.html` / `dashboard_v3.html` are NO LONGER used by the pipeline
+
+**How to use:**
+```bash
+# Dev mode (hot reload):
+cd dashboard && npm run dev          # → http://localhost:5173
+
+# Production serve:
+bash start_dashboard.sh              # → http://localhost:8080
+
+# Pipeline auto-builds after data append:
+python scripts/enhanced_update_all.py --signals-only
+```
+
+## A.10 — 2026-08-17: CRITICAL BUG FIX — `dashboard_data.js` never loaded (dashboard always blank)
+**Symptom:** every static HTML dashboard attempt was blank/unresponsive (reported multiple times by the user).
+**Root cause (finally identified and fixed permanently by migrating to React):**
+1. `rebuild_dashboard.py` wrote `dashboard_v3.html` but **NOT** `dashboard_data.js` — the HTML referenced a data JS file that didn't exist → blank page
+2. Even when the data file was added, it loaded **AFTER** the inline rendering script (wrong script order) → `D` undefined at render time
+3. The inline script had `var D = {};` which **overwrote** the real data loaded by the external JS
+4. The f-string-based dashboard engine had perpetual brace-escaping issues (`{{` vs `{`) that caused intermittent JS parse failures
+
+**Resolution:** React/Vite takes all of these off the table — the JSON data is a standalone file fetched at runtime, JSX handles braces natively, and component isolation means one broken tab can't kill the whole app.
+
 ---
 
 ## Appendix A quick-start (for the next agent)
