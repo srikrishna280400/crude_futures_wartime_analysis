@@ -1,9 +1,9 @@
 day_archetype,0.0,1.0,2.0,3.0
-all_day_trend_down,6,0,34,1
-all_day_trend_up,7,0,0,33
-gap_and_fade,0,2,4,2
-gap_and_hold_up,0,10,4,4
-late_session_decisive_down,0,0,2,0
-late_session_decisive_up,1,0,0,2
-mixed_regime,2,0,8,7
-whipsaw_two_sided,1,56,0,0
+all_day_trend_down,35,0,0,6
+all_day_trend_up,0,36,0,5
+gap_and_fade,4,2,2,0
+gap_and_hold_up,4,4,10,0
+late_session_decisive_down,2,0,0,0
+late_session_decisive_up,0,3,0,0
+mixed_regime,9,4,1,2
+whipsaw_two_sided,0,0,56,1

@@ -26,17 +26,17 @@ except Exception:
 # CONFIG
 # ============================================================
 
-START_DATE = os.getenv("START_DATE", "2026-08-13")
-END_DATE = os.getenv("END_DATE", "2026-08-14")
+START_DATE = os.getenv("START_DATE")
+END_DATE = os.getenv("END_DATE")
 TZ_NAME = os.getenv("TZ", "Asia/Kolkata")
 
 SELECTIVE_REPAIR_MODE = os.getenv("SELECTIVE_REPAIR_MODE", "1").strip() == "1"
 
-HISTORICAL_PATCH_START_DATE = os.getenv("HISTORICAL_PATCH_START_DATE", "2026-08-13").strip()
-HISTORICAL_PATCH_END_DATE = os.getenv("HISTORICAL_PATCH_END_DATE", "2026-08-14").strip()
+HISTORICAL_PATCH_START_DATE = os.getenv("START_DATE")
+HISTORICAL_PATCH_END_DATE = os.getenv("END_DATE")
 
-FORWARD_FULL_START_DATE = os.getenv("FORWARD_FULL_START_DATE", "2026-08-13").strip()
-FORWARD_FULL_END_DATE = os.getenv("FORWARD_FULL_END_DATE", "2026-08-14").strip()
+FORWARD_FULL_START_DATE = os.getenv("START_DATE")
+FORWARD_FULL_END_DATE = os.getenv("END_DATE")
 
 OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "output r"))
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -1202,13 +1202,13 @@ def sync_csv_xlsx(df: pd.DataFrame, stem: str, key_cols: List[str]) -> pd.DataFr
 
     historical_incoming = _filter_to_window(
         incoming_full,
-        HISTORICAL_PATCH_START_DATE,
-        HISTORICAL_PATCH_END_DATE,
+        "START_DATE",
+        "END_DATE",
     )
     forward_incoming = _filter_to_window(
         incoming_full,
-        FORWARD_FULL_START_DATE,
-        FORWARD_FULL_END_DATE,
+        "START_DATE",
+        "END_DATE",
     )
 
     # CRITICAL:
@@ -1479,7 +1479,7 @@ def eia_route(route: str, facets: Optional[dict] = None, frequency: str = "daily
     df["trade_date_ist"] = pd.to_datetime(df[period_col], errors="coerce").dt.date
     df["value"] = pd.to_numeric(df[value_col], errors="coerce")
     df = df[["trade_date_ist", "value"]].dropna()
-    return filter_to_window(df, START_DATE, END_DATE, "trade_date_ist")
+    return filter_to_window(df, "START_DATE", "END_DATE", "trade_date_ist")
 
 def get_eia_brent_reference() -> pd.DataFrame:
     facets = parse_json_env_dict(EIA_BRENT_FACETS_JSON)
@@ -1655,8 +1655,8 @@ def get_daily_bars(product_key: str) -> pd.DataFrame:
 
     ticker = yahoo_ticker(product_key)
     raw = ticker.history(
-        start=START_DATE,
-        end=(pd.Timestamp(END_DATE) + pd.Timedelta(days=1)).strftime("%Y-%m-%d"),
+        start="START_DATE",
+        end=(pd.Timestamp("END_DATE") + pd.Timedelta(days=1)).strftime("%Y-%m-%d"),
         interval="1d",
         auto_adjust=False,
         actions=False,
@@ -1830,8 +1830,8 @@ def _fetch_yf_intraday_interval(
     cfg = PRODUCTS[product_key]
     ticker = yahoo_ticker(product_key)
 
-    start_ist = pd.Timestamp(START_DATE, tz=TZ_NAME)
-    end_ist = pd.Timestamp(END_DATE, tz=TZ_NAME) + pd.Timedelta(days=1)
+    start_ist = pd.Timestamp("START_DATE", tz=TZ_NAME)
+    end_ist = pd.Timestamp("END_DATE", tz=TZ_NAME) + pd.Timedelta(days=1)
 
     now_utc = pd.Timestamp.now("UTC")
     min_allowed_utc = pd.Timestamp.now("UTC") - pd.Timedelta(days=YF_LT1D_LOOKBACK_DAYS)
@@ -2998,7 +2998,7 @@ def main():
     coverage_notes = {}
 
     ensure_input_templates()
-    if pd.Timestamp(FORWARD_FULL_END_DATE) > pd.Timestamp(END_DATE):
+    if pd.Timestamp("END_DATE") > pd.Timestamp("END_DATE"):
         raise RuntimeError(
             f"FORWARD_FULL_END_DATE ({FORWARD_FULL_END_DATE}) cannot be greater than END_DATE ({END_DATE})"
         )
@@ -3015,7 +3015,7 @@ def main():
         "trade_date_ist", "close_native", "symbol", "source_name", "source_url"
     ])
         
-    wti_spot = filter_to_window(wti_spot, START_DATE, END_DATE, "trade_date_ist")
+    wti_spot = filter_to_window(wti_spot, "START_DATE", "END_DATE", "trade_date_ist")
     
     write_output_table(wti_spot, "wti_spot_daily_reference_ist.csv")
     write_output_table(wti_spot, "wti_spot_daily_reference_ist.xlsx")
@@ -3042,7 +3042,7 @@ def main():
         "trade_date_ist", "close_native", "symbol", "source_name", "source_url"
     ])
     else:
-        brentspot = filter_to_window(brentspot, START_DATE, END_DATE, "trade_date_ist")
+        brentspot = filter_to_window(brentspot, "START_DATE", "END_DATE", "trade_date_ist")
         brentspot = brentspot.sort_values("trade_date_ist").drop_duplicates(
         subset=["trade_date_ist"], keep="first"
     ).reset_index(drop=True)
