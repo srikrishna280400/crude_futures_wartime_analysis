@@ -1,0 +1,159 @@
+{
+  "generated_at": "2026-08-20T09:25:15.582607",
+  "regime": {
+    "phase_id": 10,
+    "phase_label": "second_deescalation_active_negotiation_hormuz_deal",
+    "confidence": 1.0,
+    "as_of_date": "2026-08-13"
+  },
+  "latest_appended_data_date": "2026-08-19",
+  "plan_date": "2026-08-20",
+  "instructions": {
+    "duration": "09:00\u201323:30 IST",
+    "disclaimer": "Conditional-probability lookup, NOT a forecast. Phase sample small \u2192 size 50% max on LOW_CONF cells. Risk: \u22641% equity/trade, stop at -2% day, flatten on any Hormuz/nuclear headline."
+  },
+  "latest_closes": {
+    "wti": 84.26999664,
+    "brent": 91.52999878,
+    "as_of": "2026-08-19"
+  },
+  "window_plan": [
+    {
+      "window": "global_reopen_pre_mcx",
+      "time_ist": "03:30\u201309:00",
+      "bias": "DOWN",
+      "p_up": 23.5,
+      "p_down": 41.2,
+      "n": 17,
+      "mean_brent": 0.0737303401933992,
+      "mean_wti": -0.1306035677341605,
+      "low_conf": false
+    },
+    {
+      "window": "mcx_open_drive",
+      "time_ist": "09:00\u201310:30",
+      "bias": "UP",
+      "p_up": 47.1,
+      "p_down": 35.3,
+      "n": 17,
+      "mean_brent": 0.1121428778028788,
+      "mean_wti": 0.0377760129102045,
+      "low_conf": false
+    },
+    {
+      "window": "india_morning",
+      "time_ist": "10:30\u201312:30",
+      "bias": "DOWN",
+      "p_up": 23.5,
+      "p_down": 52.9,
+      "n": 17,
+      "mean_brent": -0.0338678255458146,
+      "mean_wti": -0.1254821577751178,
+      "low_conf": false
+    },
+    {
+      "window": "india_midday",
+      "time_ist": "12:30\u201315:30",
+      "bias": "UP",
+      "p_up": 55.6,
+      "p_down": 33.3,
+      "n": 18,
+      "mean_brent": 0.3661223549993203,
+      "mean_wti": 0.4826042801709517,
+      "low_conf": false
+    },
+    {
+      "window": "europe_midday",
+      "time_ist": "15:30\u201318:00",
+      "bias": "DOWN",
+      "p_up": 33.3,
+      "p_down": 61.1,
+      "n": 18,
+      "mean_brent": -1.039913701653933,
+      "mean_wti": -1.0277834077856547,
+      "low_conf": false
+    },
+    {
+      "window": "us_pre_open",
+      "time_ist": "18:00\u201320:00",
+      "bias": "FLAT",
+      "p_up": 38.9,
+      "p_down": 38.9,
+      "n": 18,
+      "mean_brent": 0.0401798528702588,
+      "mean_wti": -0.0255913939840706,
+      "low_conf": false
+    },
+    {
+      "window": "us_open",
+      "time_ist": "20:00\u201323:00",
+      "bias": "UP",
+      "p_up": 50.0,
+      "p_down": 19.4,
+      "n": 36,
+      "mean_brent": 0.3055773650665248,
+      "mean_wti": 0.3245908104854349,
+      "low_conf": false
+    },
+    {
+      "window": "mcx_tail",
+      "time_ist": "23:00\u201323:30",
+      "bias": "UP",
+      "p_up": 38.9,
+      "p_down": 16.7,
+      "n": 18,
+      "mean_brent": 0.1825176383372003,
+      "mean_wti": 0.1132125790411328,
+      "low_conf": false
+    }
+  ],
+  "signal_cards": [
+    {
+      "stream": "WTI_session",
+      "day_archetype": "whipsaw_two_sided",
+      "current_window": "us_open",
+      "next_window": "mcx_tail",
+      "direction": "UP",
+      "entry": null,
+      "stop": null,
+      "target": null,
+      "p_up": 62.5,
+      "p_down": 12.5,
+      "size_frac": null,
+      "low_conf": false
+    },
+    {
+      "stream": "BRENT_session",
+      "day_archetype": "whipsaw_two_sided",
+      "current_window": "us_open",
+      "next_window": "mcx_tail",
+      "direction": "DOWN",
+      "entry": null,
+      "stop": null,
+      "target": null,
+      "p_up": 33.33333333333333,
+      "p_down": 33.33333333333333,
+      "size_frac": null,
+      "low_conf": false
+    }
+  ],
+  "live_news": {
+    "had_news": true,
+    "n_escalatory": 1,
+    "n_deescalatory": 1,
+    "n_neutral": 9,
+    "top_escalatory": [
+      "Published On 19 Aug 2026 19 Aug 2026 play video play video Video Duration 01 minutes 07 seconds play-arrow 01:07 Video Duration 01 minutes 07 seconds play-arrow 01:07 From: NewsFeed Israeli strike on Gaza City police hea"
+    ],
+    "top_deescalatory": [
+      "Published On 19 Aug 2026 19 Aug 2026 Iran war updates: Trump to reopen talks \u2018at some point\u2019; Israel pounds Gaza list 1 of 10 live-orange Published 9 hours ago 9h ago Our coverage continues list 2 of 10 live-orange Publi"
+    ],
+    "top_neutral": [
+      "Iran | Iran | Today&#x27;s latest from Al Jazeera {\"@context\":\"https://schema.",
+      "Event(otReady) } Skip links Skip to Featured Content Skip to Content Feed play Live Sign up Show navigation menu Navigation menu News Show more news sections Africa Asia US & Canada Latin America Europe Asia Pacific Midd",
+      "Published On 20 Aug 2026 20 Aug 2026 From: NewsFeed Trump vows \u2018economic warfare\u2019 on countries helping Iran Published On 20 Aug 2026 20 Aug 2026 Video Duration 01 minutes 17 seconds play-arrow 01:17 Alarm in South Korea ",
+      "OnetrustActiveGroups || '') ? 0 : 1 usrPersonaAds = isNonPersonalizedAds; // Update freestar config for non personalized ads when setNonPersonalizedAds is available (non EU and non US) if(window && window."
+    ]
+  },
+  "scorecard_verdict": {}
+}

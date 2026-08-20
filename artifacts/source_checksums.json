@@ -1,15 +1,15 @@
 {
-  "wti_daily_ist.csv": "a977131ca5b346e33aede3494ef25c724b55fce182c073e25087a3fa6eb9c8c7",
-  "brent_daily_ist.csv": "f114a49d48dc15662759cad97a04904d3b74c860003df64d097161b864e7f02d",
-  "wti_5m_ist.csv": "ae8d2091c9c19afeaba746804fdbca30e86c13b450e189107e10af94dccd359d",
-  "brent_5m_ist.csv": "4cbd4f7dffc6df2e10bbd4aebd7d33110464d67454a70fc56e4de3ca3d4c9f27",
-  "wti_15m_ist.csv": "c8a7a764c80ae644c42f060d6fd7fd6cf5a35ca8ee9f4e165d941481a34addb8",
-  "brent_15m_ist.csv": "f702968fc23c838947ddc1e4ba515bb248a99da8fc5afe3850c2e78c36e04f2b",
-  "wti_60m_ist.csv": "6e27a3082c983a572be29b870bbe549cebd8504ccbdeb62e175568b9d2447402",
-  "brent_60m_ist.csv": "5e7a9ba4bdfcbbecb743f87d49f67daeb5ba6b9135785f40a9648b4895556b30",
-  "wti_session_windows_summary.csv": "bd189c177b8c40a01fbcbfec2ffbaff208a10ee36af7b76aa51033bee2134e70",
-  "brent_session_windows_summary.csv": "a200058e849ff10b9eb7bd6b6b9c4e53906f296a269466999b56e04bb4140983",
-  "daily_master_summary.csv": "fd659890a00dfb4e5f55fd4461f5895da18d8ecf561049ae98e1c2cb4dd4ef0d",
-  "wti_spot_daily_reference_ist.csv": "937859aedb769d3feaf3d1f9886764ffa3605d5e3aaba9c9830e105f8273f384",
-  "brent_spot_daily_reference_ist.csv": "19132ce8ad41ef98b1ba68a9bc5c83d0a3db0919e81cbbdbceee14cf781a194e"
+  "wti_daily_ist.csv": "3efbacae6cb3db21d6ec0c0ab766c130028bfa9b89b415a33efd1895e6063106",
+  "brent_daily_ist.csv": "c91a5eb485cb71cbc55dba79b1c645fb001c20b281d4e78101a171a53af4127b",
+  "wti_5m_ist.csv": "e5670f652a059b6dd8ea6c0ab3dabc41b4015f541c81f22184ae14b27d10b1d6",
+  "brent_5m_ist.csv": "e75653c3f6bb2cf706ac22284be057ea09d6ccb0008df78a9a7b5fc60fa6dc83",
+  "wti_15m_ist.csv": "051f52176f2450938c5ac84f2685377032028b6afeedf2ef8bdeb37a4117b613",
+  "brent_15m_ist.csv": "bf5479f2786891426f8132c851711dbbc6810bb0a4746f9b8310c9bbdcc5afc5",
+  "wti_60m_ist.csv": "7b17b904503dfab38cd173039ff6c0f7f0f4e556df09d79f44c9da616bc3d3c3",
+  "brent_60m_ist.csv": "5a6fb4b1a09f844c1c539cdee629646f9ff4122a1417a621567c4d6c520e8037",
+  "wti_session_windows_summary.csv": "47a5c9bcd3b7c95600e5232a17b57494bb974394ec8ea4d8fab7adea38601e6a",
+  "brent_session_windows_summary.csv": "5c91ff9c025c99003b55fbfa1d513707da6da46dbb04456c124bfd14a0fdef3e",
+  "daily_master_summary.csv": "afd6ab374c69ff675f0fd8c1673e7f8c71deca8bf3762a39486a5090ca9ca368",
+  "wti_spot_daily_reference_ist.csv": "f7d017d162350d8915e6385c0746ccd28e0afe86c106ca8db7205c0a4b1f2124",
+  "brent_spot_daily_reference_ist.csv": "b396b87f80ac56338b515380ef80e0bc7cf557455bff361d304d6490742dac3f"
 }

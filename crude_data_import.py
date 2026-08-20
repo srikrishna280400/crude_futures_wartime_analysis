@@ -1,4 +1,4 @@
-#crude_data_import_new.py
+#crcude_data_import.py
 #phase1_analysis
 
 from __future__ import annotations
@@ -26,8 +26,8 @@ except Exception:
 # CONFIG
 # ============================================================
 
-START_DATE = os.getenv("START_DATE", "2026-08-18")
-END_DATE = os.getenv("END_DATE", "2026-08-19")
+START_DATE = os.getenv("START_DATE", "2026-06-02")
+END_DATE = os.getenv("END_DATE", "2026-06-04")
 TZ_NAME = os.getenv("TZ", "Asia/Kolkata")
 
 SELECTIVE_REPAIR_MODE = os.getenv("SELECTIVE_REPAIR_MODE", "1").strip() == "1"
@@ -35,8 +35,8 @@ SELECTIVE_REPAIR_MODE = os.getenv("SELECTIVE_REPAIR_MODE", "1").strip() == "1"
 HISTORICAL_PATCH_START_DATE = os.getenv("START_DATE")
 HISTORICAL_PATCH_END_DATE = os.getenv("END_DATE")
 
-FORWARD_FULL_START_DATE = os.getenv("START_DATE")
-FORWARD_FULL_END_DATE = os.getenv("END_DATE")
+FORWARD_FULL_START_DATE = os.getenv("FORWARD_FULL_START_DATE", "2026-06-02").strip()
+FORWARD_FULL_END_DATE = os.getenv("FORWARD_FULL_END_DATE", "2026-06-04").strip()
 
 OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "output r"))
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -1096,15 +1096,13 @@ def upsert_table(existing: pd.DataFrame, incoming: pd.DataFrame, key_cols: List[
         return out.reset_index(drop=True)
 
     all_cols = list(dict.fromkeys(list(existing.columns) + list(incoming.columns)))
-    left = _ensure_cols(existing, all_cols).reset_index(drop=True)
-    right = _ensure_cols(incoming, all_cols).reset_index(drop=True)
+    left = _ensure_cols(existing, all_cols)
+    right = _ensure_cols(incoming, all_cols)
 
     left_keys = _row_key(left, key_cols)
     right_keys = _row_key(right, key_cols)
 
     left = left.loc[~left_keys.isin(set(right_keys.tolist()))].copy()
-    left = left.reset_index(drop=True)
-    right = right.reset_index(drop=True)
     out = pd.concat([left, right], ignore_index=True, sort=False)
     return out[all_cols].reset_index(drop=True)
 
@@ -1133,8 +1131,8 @@ def _filter_to_window(
     if parsed.isna().all():
         parsed = pd.to_datetime(out[col], errors="coerce")
 
-    start_d = pd.Timestamp(START_DATE).date()
-    end_d = pd.Timestamp(END_DATE).date()
+    start_d = pd.Timestamp(start_date).date()
+    end_d = pd.Timestamp(end_date).date()
 
     mask = parsed.dt.date.between(start_d, end_d, inclusive="both")
     return out.loc[mask.fillna(False)].copy()
@@ -1207,8 +1205,8 @@ def sync_csv_xlsx(df: pd.DataFrame, stem: str, key_cols: List[str]) -> pd.DataFr
     )
     forward_incoming = _filter_to_window(
         incoming_full,
-        START_DATE,
-        END_DATE,
+        FORWARD_FULL_START_DATE,
+        FORWARD_FULL_END_DATE,
     )
 
     # CRITICAL:
@@ -1440,8 +1438,8 @@ def filter_to_window(
     if parsed.isna().all():
         parsed = pd.to_datetime(out[col], errors="coerce")
 
-    startd = pd.Timestamp(START_DATE).date()
-    endd = pd.Timestamp(END_DATE).date()
+    startd = pd.Timestamp(startdate).date()
+    endd = pd.Timestamp(enddate).date()
     mask = parsed.dt.date.between(startd, endd, inclusive="both")
 
     return out.loc[mask.fillna(False)].copy()
@@ -1479,7 +1477,7 @@ def eia_route(route: str, facets: Optional[dict] = None, frequency: str = "daily
     df["trade_date_ist"] = pd.to_datetime(df[period_col], errors="coerce").dt.date
     df["value"] = pd.to_numeric(df[value_col], errors="coerce")
     df = df[["trade_date_ist", "value"]].dropna()
-    return filter_to_window(df, "START_DATE", "END_DATE", "trade_date_ist")
+    return filter_to_window(df, START_DATE, END_DATE, "trade_date_ist")
 
 def get_eia_brent_reference() -> pd.DataFrame:
     facets = parse_json_env_dict(EIA_BRENT_FACETS_JSON)
@@ -2357,8 +2355,10 @@ def add_daily_features(daily: pd.DataFrame, intraday_1m: pd.DataFrame, session_s
         for c in [
             "intraday_reversal_flag","reversal_strength_score_1_to_5","follow_through_vs_gap_flag",
             "max_favorable_excursion_pct","max_adverse_excursion_pct","realized_vol_proxy","day_efficiency_ratio",
-            "max_up_move_from_open_pct","max_down_move_from_open_pct","close_from_open_pct",
-            "mfe_pct","mae_pct"
+            "first_hour_range_inr","europe_open_hour_range_inr","us_open_hour_range_inr","full_day_range_inr",
+            "25pct_range_inr","50pct_range_inr","75pct_range_inr","max_up_move_from_open_inr","max_down_move_from_open_inr",
+            "max_up_move_from_open_pct","max_down_move_from_open_pct","close_from_open_inr","close_from_open_pct",
+            "mfe_inr","mae_inr","mfe_pct","mae_pct"
         ]:
             df[c] = np.nan
 
@@ -2380,13 +2380,18 @@ def session_summary(intraday: pd.DataFrame, symbol: str, timeframe_used: str) ->
     if intraday.empty:
         return pd.DataFrame(columns=[
             "trade_date_ist","symbol","timeframe_used","session_window_ist","open_native","high_native","low_native","close_native",
-            "session_return_pct","session_range_pct","session_body_direction",
-            "session_close_location_pct","session_trend_strength_score_1_to_5","session_whipsaw_score_1_to_5"
+            "open_inr","high_inr","low_inr","close_inr","session_return_pct","session_range_pct","session_body_direction",
+            "session_close_location_pct","session_reversal_flag","session_breakout_flag","session_failed_breakout_flag",
+            "session_trend_strength_score_1_to_5","session_whipsaw_score_1_to_5","session_notes_short","data_quality_flags"
         ])
     rows = []
     for (d, win), g in intraday.groupby(["trade_date_ist", "session_window_ist"]):
         g = g.sort_values("timestamp_ist")
         o, h, l, c = g["open_native"].iloc[0], g["high_native"].max(), g["low_native"].min(), g["close_native"].iloc[-1]
+        oi = g["open_inr"].iloc[0] if "open_inr" in g.columns else np.nan
+        hi = g["high_inr"].max() if "high_inr" in g.columns else np.nan
+        li = g["low_inr"].min() if "low_inr" in g.columns else np.nan
+        ci = g["close_inr"].iloc[-1] if "close_inr" in g.columns else np.nan
         rng = h - l
         eff = abs(c - o) / rng if rng else np.nan
         rows.append({
@@ -2398,12 +2403,21 @@ def session_summary(intraday: pd.DataFrame, symbol: str, timeframe_used: str) ->
             "high_native": h,
             "low_native": l,
             "close_native": c,
+            "open_inr": oi,
+            "high_inr": hi,
+            "low_inr": li,
+            "close_inr": ci,
             "session_return_pct": ((c - o) / o * 100.0) if o else np.nan,
             "session_range_pct": ((h - l) / o * 100.0) if o else np.nan,
             "session_body_direction": "UP" if c > o else ("DOWN" if c < o else "FLAT"),
             "session_close_location_pct": ((c - l) / rng * 100.0) if rng else np.nan,
+            "session_reversal_flag": False,
+            "session_breakout_flag": False,
+            "session_failed_breakout_flag": False,
             "session_trend_strength_score_1_to_5": 5 if pd.notna(eff) and eff >= 0.75 else 3 if pd.notna(eff) and eff >= 0.4 else 2,
             "session_whipsaw_score_1_to_5": 5 if pd.notna(eff) and eff < 0.2 else 2,
+            "session_notes_short": "",
+            "data_quality_flags": ""
         })
     return _sort_session_rows(pd.DataFrame(rows))
 
@@ -2432,77 +2446,52 @@ def day_master_summary(
     for next_df in frames[1:]:
         out = pd.merge(out, next_df, how="outer", on="trade_date_ist")
 
-    # Remove INR columns and alias columns that don't exist in target format
-    inr_cols = [c for c in out.columns if c.endswith("_inr") or c.endswith("_inr_alias") or c.endswith("_close_native_alias") or c.endswith("_close_inr_alias") or c.endswith("_gap_pct") or c.endswith("_gap_pct_native") or c.endswith("_gap_pct_inr") or c.endswith("_abs_inr") or c.endswith("_pct_inr")]
-    out = out.drop(columns=inr_cols, errors="ignore")
-
-    # Ensure all required columns exist with correct names (NO INR, NO ALIAS, NO _gap_pct, NO source_timezone)
-    required_cols = [
-        "trade_date_ist",
-        # MCX
-        "mcx_instrument_name", "mcx_source_resolution_used", "mcx_source_resolution_minutes",
-        "mcx_open_native", "mcx_high_native", "mcx_low_native", "mcx_close_native", "mcx_volume", "mcx_currency_native",
-        "mcx_open_time_original", "mcx_open_time_ist", "mcx_close_time_original", "mcx_close_time_ist",
-        "mcx_prior_trading_day_close_native", "mcx_did_gap_up", "mcx_did_gap_down",
-        "mcx_gap_abs_native", "mcx_gap_pct_native", "mcx_extreme_gap_flag",
-        "mcx_day_range_abs_native", "mcx_day_range_pct_native", "mcx_body_abs_native", "mcx_body_pct_native",
-        "mcx_body_direction", "mcx_upper_wick_abs_native", "mcx_lower_wick_abs_native",
-        "mcx_close_location_in_range_pct", "mcx_closed_green", "mcx_closed_red",
-        "mcx_inside_day_flag", "mcx_outside_day_flag", "mcx_doji_like_flag",
-        "mcx_intraday_reversal_flag", "mcx_reversal_strength_score_1_to_5",
-        "mcx_follow_through_vs_gap_flag", "mcx_net_day_return_pct", "mcx_overnight_to_close_return_pct",
-        "mcx_europe_to_us_return_pct", "mcx_extreme_gap_flag", "mcx_follow_through_vs_gap_flag",
-        "mcx_max_favorable_excursion_pct", "mcx_max_adverse_excursion_pct",
-        "mcx_max_up_move_from_open_pct", "mcx_max_down_move_from_open_pct",
-        "mcx_close_from_open_pct", "mcx_mfe_pct", "mcx_mae_pct",
-        # WTI
-        "wti_instrument_name", "wti_source_resolution_used", "wti_source_resolution_minutes",
-        "wti_open_native", "wti_high_native", "wti_low_native", "wti_close_native", "wti_volume", "wti_currency_native",
-        "wti_open_time_original", "wti_open_time_ist", "wti_close_time_original", "wti_close_time_ist",
-        "wti_prior_trading_day_close_native", "wti_did_gap_up", "wti_did_gap_down",
-        "wti_gap_abs_native", "wti_gap_pct_native", "wti_extreme_gap_flag",
-        "wti_day_range_abs_native", "wti_day_range_pct_native", "wti_body_abs_native", "wti_body_pct_native",
-        "wti_body_direction", "wti_upper_wick_abs_native", "wti_lower_wick_abs_native",
-        "wti_close_location_in_range_pct", "wti_closed_green", "wti_closed_red",
-        "wti_inside_day_flag", "wti_outside_day_flag", "wti_doji_like_flag",
-        "wti_intraday_reversal_flag", "wti_reversal_strength_score_1_to_5",
-        "wti_follow_through_vs_gap_flag", "wti_net_day_return_pct", "wti_overnight_to_close_return_pct",
-        "wti_europe_to_us_return_pct", "wti_extreme_gap_flag", "wti_follow_through_vs_gap_flag",
-        "wti_max_favorable_excursion_pct", "wti_max_adverse_excursion_pct",
-        "wti_max_up_move_from_open_pct", "wti_max_down_move_from_open_pct",
-        "wti_close_from_open_pct", "wti_mfe_pct", "wti_mae_pct",
-        "wti_source_resolution_minutes", "wti_source_resolution_used",
-        "wti_trendiness_score_1_to_5", "wti_upper_wick_abs_native",
-        "wti_us_to_settlement_return_pct", "wti_volume", "wti_whipsaw_score_1_to_5",
-        "wti_source_resolution_minutes.1", "wti_source_resolution_used.1",
-        # Brent
-        "brent_instrument_name", "wti_source_resolution_used.1", "wti_source_resolution_minutes.1",
-        "brent_open_native", "brent_high_native", "brent_low_native", "brent_close_native", "brent_volume", "brent_currency_native",
-        "brent_open_time_original", "brent_open_time_ist", "brent_close_time_original", "brent_close_time_ist",
-        "brent_prior_trading_day_close_native", "brent_did_gap_up", "brent_did_gap_down",
-        "brent_gap_abs_native", "brent_gap_pct_native", "brent_extreme_gap_flag",
-        "brent_day_range_abs_native", "brent_day_range_pct_native", "brent_body_abs_native", "brent_body_pct_native",
-        "brent_body_direction", "brent_upper_wick_abs_native", "brent_lower_wick_abs_native",
-        "brent_close_location_in_range_pct", "brent_closed_green", "brent_closed_red",
-        "brent_inside_day_flag", "brent_outside_day_flag", "brent_doji_like_flag",
-        "brent_intraday_reversal_flag", "brent_reversal_strength_score_1_to_5",
-        "brent_follow_through_vs_gap_flag", "brent_net_day_return_pct", "brent_overnight_to_close_return_pct",
-        "brent_europe_to_us_return_pct", "brent_extreme_gap_flag", "brent_follow_through_vs_gap_flag",
-        "brent_max_favorable_excursion_pct", "brent_max_adverse_excursion_pct",
-        "brent_max_up_move_from_open_pct", "brent_max_down_move_from_open_pct",
-        "brent_close_from_open_pct", "brent_mfe_pct", "brent_mae_pct",
-        "brent_trendiness_score_1_to_5", "brent_upper_wick_abs_native",
-        "brent_us_to_settlement_return_pct", "brent_volume", "brent_whipsaw_score_1_to_5",
-        "brent/wti_source_timezone",
-    ]
-
-    # Add missing columns as NaN
-    for col in required_cols:
+    for col in [
+        "mcx_close_native",
+        "mcx_close_inr",
+        "mcx_gap_pct_native",
+        "wti_close_native",
+        "wti_close_inr",
+        "wti_gap_pct_native",
+        "brent_close_native",
+        "brent_close_inr",
+        "brent_gap_pct_native",
+    ]:
         if col not in out.columns:
             out[col] = np.nan
 
-    # Reorder columns
-    out = out[required_cols]
+    out["mcx_close_inr_alias"] = out["mcx_close_inr"]
+    out["wti_close_native_alias"] = out["wti_close_native"]
+    out["brent_close_native_alias"] = out["brent_close_native"]
+    out["wti_close_inr_alias"] = out["wti_close_inr"]
+    out["brent_close_inr_alias"] = out["brent_close_inr"]
+
+    out["brent_minus_wti_close_spread_native"] = (
+        out["brent_close_native"] - out["wti_close_native"]
+    )
+    out["brent_minus_wti_close_spread_inr"] = (
+        out["brent_close_inr"] - out["wti_close_inr"]
+    )
+    out["mcx_vs_wti_close_diff_inr"] = (
+        out["mcx_close_inr"] - out["wti_close_inr"]
+    )
+    out["mcx_vs_brent_close_diff_inr"] = (
+        out["mcx_close_inr"] - out["brent_close_inr"]
+    )
+
+    out["mcx_gap_pct"] = out["mcx_gap_pct_native"]
+    out["wti_gap_pct"] = out["wti_gap_pct_native"]
+    out["brent_gap_pct"] = out["brent_gap_pct_native"]
+
+    out["lead_lag_hint_short"] = np.where(
+        out["mcx_gap_pct_native"].notna() & out["wti_gap_pct_native"].notna(),
+        np.where(
+            (out["mcx_gap_pct_native"] - out["wti_gap_pct_native"]).abs() > 0.75,
+            "mcx_diverged_from_wti",
+            "mcx_tracked_wti",
+        ),
+        "",
+    )
 
     return out.sort_values("trade_date_ist").reset_index(drop=True)
 
@@ -2837,113 +2826,49 @@ def build_intraday_excursions(intraday_1m: pd.DataFrame, symbol: str) -> pd.Data
 # ============================================================
 
 def finalize_intraday(df: pd.DataFrame) -> pd.DataFrame:
-    # Match exact 14-column format from current files
     cols = [
-        "timestamp_original", "timestamp_ist", "trade_date_ist",
-        "instrument_name", "timeframe", "source_resolution_used",
-        "source_resolution_minutes", "open_native", "high_native",
-        "low_native", "close_native", "volume", "currency_native",
-        "source_timezone"
+        "timestamp_original","timestamp_ist","trade_date_ist","symbol","instrument_name","market","timeframe", "source_resolution_used","source_resolution_minutes","coverage_method",
+        "contract_logic","contract_symbol","source_name","source_url","source_timezone","open_native","high_native",
+        "low_native","close_native","volume","currency_native","open_inr","high_inr","low_inr","close_inr","fx_rate_used",
+        "session_window_ist","sub_window_label","notes_data_quality","data_quality_flags"
     ]
     if df.empty:
         return pd.DataFrame(columns=cols)
     out = df.copy()
-    # Format timestamps without timezone suffixes
-    if "timestamp_original" in out.columns:
-        out["timestamp_original"] = pd.to_datetime(out["timestamp_original"], errors="coerce").dt.strftime("%Y-%m-%d %H:%M:%S")
-    if "timestamp_ist" in out.columns:
-        out["timestamp_ist"] = pd.to_datetime(out["timestamp_ist"], errors="coerce").dt.strftime("%Y-%m-%d %H:%M:%S")
-    if "trade_date_ist" in out.columns:
-        out["trade_date_ist"] = pd.to_datetime(out["trade_date_ist"], errors="coerce").dt.strftime("%Y-%m-%d")
-    # Remove INR columns and extra columns not in target format
-    drop_cols = [c for c in out.columns if c.endswith("_inr") or c in [
-        "symbol", "market", "contract_logic", "contract_symbol", "contract_expiry_date",
-        "rolled_flag", "roll_reference", "source_name", "source_url",
-        "source_resolution_used", "source_resolution_minutes", "coverage_method",
-        "fx_rate_used", "open_inr", "high_inr", "low_inr", "close_inr",
-        "fx_rate_used", "session_window_ist", "sub_window_label",
-        "notes_data_quality", "data_quality_flags", "contract_logic",
-        "contract_symbol", "contract_expiry_date", "rolled_flag", "roll_reference",
-        "instrument_id", "source_resolution_used", "source_resolution_minutes",
-        "coverage_method", "source_name", "source_url", "source_timezone"
-    ]]
-    out = out.drop(columns=[c for c in drop_cols if c in out.columns], errors="ignore")
-    # Ensure all required columns exist
-    required_cols = [
-        "timestamp_original", "timestamp_ist", "trade_date_ist",
-        "instrument_name", "timeframe", "source_resolution_used",
-        "source_resolution_minutes", "open_native", "high_native",
-        "low_native", "close_native", "volume", "currency_native",
-        "source_timezone"
-    ]
-    for c in required_cols:
+    out["timestamp_original"] = out["timestamp_original"].astype(str)
+    out["timestamp_ist"] = out["timestamp_ist"].astype(str)
+    for c in cols:
         if c not in out.columns:
             out[c] = np.nan
-    return out[required_cols]
+    return out[cols]
 
 def finalize_daily(df: pd.DataFrame) -> pd.DataFrame:
-    # Match exact 51-52 column format (no INR columns, no _alias columns)
     cols = [
-        "trade_date_ist", "instrument_name", "source_resolution_used", "source_resolution_minutes",
-        "open_native", "high_native", "low_native", "close_native", "volume",
-        "currency_native", "open_time_original", "open_time_ist", "close_time_original",
-        "close_time_ist", "prior_trading_day_close_native", "did_gap_up", "did_gap_down",
-        "gap_abs_native", "gap_pct_native", "extreme_gap_flag",
-        "day_range_abs_native", "day_range_pct_native", "body_abs_native", "body_pct_native",
-        "body_direction", "upper_wick_abs_native", "lower_wick_abs_native",
-        "close_location_in_range_pct", "closed_green", "closed_red", "inside_day_flag",
-        "outside_day_flag", "doji_like_flag", "intraday_reversal_flag",
-        "reversal_strength_score_1_to_5", "follow_through_vs_gap_flag",
-        "net_day_return_pct", "overnight_to_close_return_pct",
-        "europe_to_us_return_pct", "us_to_settlement_return_pct",
-        "max_favorable_excursion_pct", "max_adverse_excursion_pct",
-        "realized_vol_proxy", "day_efficiency_ratio",
-        "trendiness_score_1_to_5", "whipsaw_score_1_to_5",
-        "max_up_move_from_open_pct", "max_down_move_from_open_pct",
-        "close_from_open_pct", "mfe_pct", "mae_pct"
+        "trade_date_ist","symbol","instrument_name","market","contract_logic","contract_symbol","contract_expiry_date",
+        "rolled_flag","roll_reference","source_name","source_url","source_timezone", "source_resolution_used","source_resolution_minutes","coverage_method",
+        "open_native","high_native","low_native",
+        "close_native","volume","currency_native","open_inr","high_inr","low_inr","close_inr","fx_rate_used","open_time_original",
+        "open_time_ist","close_time_original","close_time_ist","prior_trading_day_close_native","prior_trading_day_close_inr",
+        "notes_data_quality","data_quality_flags","did_gap_up","did_gap_down","gap_abs_native","gap_pct_native","gap_abs_inr",
+        "gap_pct_inr","extreme_gap_flag","extreme_gap_threshold_method","day_range_abs_native","day_range_pct_native",
+        "day_range_abs_inr","day_range_pct_inr","body_abs_native","body_pct_native","body_direction","upper_wick_abs_native",
+        "lower_wick_abs_native","close_location_in_range_pct","closed_green","closed_red","inside_day_flag","outside_day_flag",
+        "doji_like_flag","intraday_reversal_flag","reversal_strength_score_1_to_5","follow_through_vs_gap_flag","net_day_return_pct",
+        "overnight_to_close_return_pct","europe_to_us_return_pct","us_to_settlement_return_pct","max_favorable_excursion_pct",
+        "max_adverse_excursion_pct","realized_vol_proxy","day_efficiency_ratio","trendiness_score_1_to_5","whipsaw_score_1_to_5",
+        "first_hour_range_inr","europe_open_hour_range_inr","us_open_hour_range_inr","full_day_range_inr","25pct_range_inr",
+        "50pct_range_inr","75pct_range_inr","max_up_move_from_open_inr","max_down_move_from_open_inr","max_up_move_from_open_pct",
+        "max_down_move_from_open_pct","close_from_open_inr","close_from_open_pct","mfe_inr","mae_inr","mfe_pct","mae_pct"
     ]
     if df.empty:
         return pd.DataFrame(columns=cols)
     out = df.copy()
-    # Remove INR columns and alias columns
-    drop_cols = [c for c in out.columns if c.endswith("_inr") or c.endswith("_inr_alias") or c.endswith("_close_native_alias") or c.endswith("_close_inr_alias") or c.endswith("_gap_pct") or c.endswith("_gap_pct_inr") or c.endswith("_abs_inr") or c.endswith("_pct_inr") or c.endswith("_inr")]
-    out = out.drop(columns=[c for c in drop_cols if c in out.columns], errors="ignore")
-    # Format timestamps without timezone suffixes
-    for c in ["open_time_original", "open_time_ist", "close_time_original", "close_time_ist"]:
-        if c in out.columns:
-            out[c] = pd.to_datetime(out[c], errors="coerce").dt.strftime("%Y-%m-%d %H:%M:%S")
-    if "trade_date_ist" in out.columns:
-        out["trade_date_ist"] = pd.to_datetime(out["trade_date_ist"], errors="coerce").dt.strftime("%Y-%m-%d")
-    # Add missing columns as NaN
-    required_cols = [
-        "trade_date_ist", "instrument_name", "source_resolution_used", "source_resolution_minutes",
-        "open_native", "high_native", "low_native", "close_native", "volume",
-        "currency_native", "open_time_original", "open_time_ist", "close_time_original",
-        "close_time_ist", "prior_trading_day_close_native", "did_gap_up", "did_gap_down",
-        "gap_abs_native", "gap_pct_native", "extreme_gap_flag",
-        "day_range_abs_native", "day_range_pct_native", "body_abs_native", "body_pct_native",
-        "body_direction", "upper_wick_abs_native", "lower_wick_abs_native",
-        "close_location_in_range_pct", "closed_green", "closed_red", "inside_day_flag",
-        "outside_day_flag", "doji_like_flag", "intraday_reversal_flag",
-        "reversal_strength_score_1_to_5", "follow_through_vs_gap_flag",
-        "net_day_return_pct", "overnight_to_close_return_pct",
-        "europe_to_us_return_pct", "us_to_settlement_return_pct",
-        "max_favorable_excursion_pct", "max_adverse_excursion_pct",
-        "realized_vol_proxy", "day_efficiency_ratio",
-        "trendiness_score_1_to_5", "whipsaw_score_1_to_5",
-        "max_up_move_from_open_pct", "max_down_move_from_open_pct",
-        "close_from_open_pct", "mfe_pct", "mae_pct"
-    ]
-    for c in required_cols:
+    for c in cols:
         if c not in out.columns:
             out[c] = np.nan
-    # Format timestamps
-    for c in ["open_time_original", "open_time_ist", "close_time_original", "close_time_ist"]:
-        if c in out.columns:
-            out[c] = pd.to_datetime(out[c], errors="coerce").dt.strftime("%Y-%m-%d %H:%M:%S")
-    if "trade_date_ist" in out.columns:
-        out["trade_date_ist"] = pd.to_datetime(out["trade_date_ist"], errors="coerce").dt.strftime("%Y-%m-%d")
-    return out[required_cols]
+    for c in ["open_time_original","open_time_ist","close_time_original","close_time_ist"]:
+        out[c] = out[c].astype(str)
+    return out[cols]
 
 # ============================================================
 # METHODOLOGY + MAIN
@@ -2997,11 +2922,11 @@ def main():
     file_rows = []
     coverage_notes = {}
 
-    # ensure_input_templates()
-    # if pd.Timestamp("FORWARD_FULL_END_DATE") > pd.Timestamp("END_DATE"):
-    #     raise RuntimeError(
-    #         f"FORWARD_FULL_END_DATE ({FORWARD_FULL_END_DATE}) cannot be greater than END_DATE ({END_DATE})"
-    #     )
+    ensure_input_templates()
+    if pd.Timestamp(FORWARD_FULL_END_DATE) > pd.Timestamp(END_DATE):
+        raise RuntimeError(
+            f"FORWARD_FULL_END_DATE ({FORWARD_FULL_END_DATE}) cannot be greater than END_DATE ({END_DATE})"
+        )
 
     # Reference layers
     wti_spot = fred_series(FRED_WTI_SERIES_ID).rename(columns={"value": "closenative"})
@@ -3015,7 +2940,7 @@ def main():
         "trade_date_ist", "close_native", "symbol", "source_name", "source_url"
     ])
         
-    wti_spot = filter_to_window(wti_spot, "START_DATE", "END_DATE", "trade_date_ist")
+    wti_spot = filter_to_window(wti_spot, START_DATE, END_DATE, "trade_date_ist")
     
     write_output_table(wti_spot, "wti_spot_daily_reference_ist.csv")
     write_output_table(wti_spot, "wti_spot_daily_reference_ist.xlsx")
@@ -3042,7 +2967,7 @@ def main():
         "trade_date_ist", "close_native", "symbol", "source_name", "source_url"
     ])
     else:
-        brentspot = filter_to_window(brentspot, "START_DATE", "END_DATE", "trade_date_ist")
+        brentspot = filter_to_window(brentspot, START_DATE, END_DATE, "trade_date_ist")
         brentspot = brentspot.sort_values("trade_date_ist").drop_duplicates(
         subset=["trade_date_ist"], keep="first"
     ).reset_index(drop=True)

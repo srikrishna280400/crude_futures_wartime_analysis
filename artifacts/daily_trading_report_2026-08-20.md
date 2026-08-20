@@ -3,7 +3,7 @@
 Generated 2026-08-20T09:25 · Data through 2026-08-19
 
 ## 1) Regime
-- Phase 10: **second_deescalation_active_negotiation_hormuz_deal** 
+- Phase 10: **second_deescalation_active_negotiation_hormuz_deal** (conf 100%, as of 2026-08-13)
 - Last close (WTI $84.27 · BRENT $91.53) as of 2026-08-19
 
 > Conditional-probability lookup, NOT a forecast. Phase sample small → size 50% max on LOW_CONF cells. Risk: ≤1% equity/trade, stop at -2% day, flatten on any Hormuz/nuclear headline.

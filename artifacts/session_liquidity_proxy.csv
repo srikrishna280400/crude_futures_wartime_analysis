@@ -50,7 +50,7 @@ BRENT_session,10.0,second_deescalation_active_negotiation_hormuz_deal,india_morn
 BRENT_session,10.0,second_deescalation_active_negotiation_hormuz_deal,mcx_open_drive,8,0.44985588139896854,0.39535323436530256,2.2229341470210082,session_overlap_liquidity_proxy,False
 BRENT_session,10.0,second_deescalation_active_negotiation_hormuz_deal,mcx_tail,9,0.522247736664552,0.4249423062609741,1.9148000647867158,session_overlap_liquidity_proxy,False
 BRENT_session,10.0,second_deescalation_active_negotiation_hormuz_deal,other_valid_hours,8,0.37875117553220583,0.28988886048541,2.6402558317999687,session_overlap_liquidity_proxy,False
-BRENT_session,10.0,second_deescalation_active_negotiation_hormuz_deal,us_open,18,0.8232429394209599,0.6984805216392734,1.2147082618204594,session_overlap_liquidity_proxy,False
+BRENT_session,10.0,second_deescalation_active_negotiation_hormuz_deal,us_open,18,0.8232429394209599,0.6984805216392733,1.2147082618204594,session_overlap_liquidity_proxy,False
 BRENT_session,10.0,second_deescalation_active_negotiation_hormuz_deal,us_pre_open,9,0.9738454925443072,0.8205621226877079,1.0268569374258338,session_overlap_liquidity_proxy,False
 WTI_session,1.0,full_scale_war,asia_early,11,1.6681286093248566,1.2889146108867708,0.59947416189015,session_overlap_liquidity_proxy,False
 WTI_session,1.0,full_scale_war,europe_midday,18,2.1550657549730867,1.615806206265586,0.4640229643538131,session_overlap_liquidity_proxy,False
@@ -61,7 +61,7 @@ WTI_session,1.0,full_scale_war,mcx_open_drive,6,0.6078399852090719,0.56822146640
 WTI_session,1.0,full_scale_war,mcx_tail,6,1.0325543796124417,0.7923434165086434,0.9684719950297818,session_overlap_liquidity_proxy,False
 WTI_session,1.0,full_scale_war,other_valid_hours,18,4.326343562051092,3.308416022178431,0.23114206850597557,session_overlap_liquidity_proxy,False
 WTI_session,1.0,full_scale_war,us_late,12,1.8500974097300678,1.3242126061956068,0.5405120804671045,session_overlap_liquidity_proxy,False
-WTI_session,1.0,full_scale_war,us_open,36,1.2628869802338378,1.1038488260845813,0.7918364949924804,session_overlap_liquidity_proxy,False
+WTI_session,1.0,full_scale_war,us_open,36,1.262886980233838,1.1038488260845813,0.7918364949924802,session_overlap_liquidity_proxy,False
 WTI_session,1.0,full_scale_war,us_pre_open,18,1.914505976330109,1.535037184991032,0.522327959464972,session_overlap_liquidity_proxy,False
 WTI_session,2.0,post_ceasefire_complex,europe_midday,43,1.2566152343484336,0.9762335476139996,0.7957885378641849,session_overlap_liquidity_proxy,False
 WTI_session,2.0,post_ceasefire_complex,global_reopen_pre_mcx,41,2.107529860355872,1.0425885162693556,0.4744891253076446,session_overlap_liquidity_proxy,False
