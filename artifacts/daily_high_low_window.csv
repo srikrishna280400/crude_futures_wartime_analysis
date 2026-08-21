@@ -112,6 +112,7 @@ BRENT_session,2026-08-14,,,other_valid_hours,global_reopen_pre_mcx,88.79000092,8
 BRENT_session,2026-08-17,,,mcx_tail,global_reopen_pre_mcx,91.19000244,88.02999878
 BRENT_session,2026-08-18,,,us_open,europe_midday,92.01000214,90.62000275
 BRENT_session,2026-08-19,,,us_open,us_pre_open,92.80000305,90.41999817
+BRENT_session,2026-08-20,,,us_pre_open,global_reopen_pre_mcx,94.72000122,91.34999847
 WTI_session,2026-03-12,1.0,full_scale_war,us_open,other_valid_hours,97.19000244,89.87999725
 WTI_session,2026-03-13,1.0,full_scale_war,us_late,us_pre_open,99.31999969,92.04000092
 WTI_session,2026-03-16,1.0,full_scale_war,asia_early,us_late,101.7600021,92.93000031
@@ -225,3 +226,4 @@ WTI_session,2026-08-14,,,india_midday,global_reopen_pre_mcx,82.98999786,80.70999
 WTI_session,2026-08-17,,,other_valid_hours,india_midday,85.04000092,81.5
 WTI_session,2026-08-18,,,india_morning,us_open,85.68000031,83.77999878
 WTI_session,2026-08-19,,,us_open,us_pre_open,85.83999634,83.44999695
+WTI_session,2026-08-20,,,us_pre_open,global_reopen_pre_mcx,87.69000244,84.23000336

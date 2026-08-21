@@ -45,9 +45,9 @@ BRENT_session,other_valid_hours,10.0,non_wednesday,6,Q1_0_25,33.33333333333333,-
 BRENT_session,us_late,1.0,non_wednesday,10,Q2_25_50,40.0,0.04577873807036013
 BRENT_session,us_open,1.0,non_wednesday,30,Q1_0_25,40.0,0.1852258923102899
 BRENT_session,us_open,1.0,is_wednesday_eia_day,6,Q1_0_25,33.33333333333333,-0.7134401300780765
-BRENT_session,us_open,2.0,non_wednesday,68,Q1_0_25,26.47058823529412,0.08656862743175879
+BRENT_session,us_open,2.0,non_wednesday,68,Q1_0_25,26.47058823529412,0.08656862743175878
 BRENT_session,us_open,2.0,is_wednesday_eia_day,18,Q3_50_75,27.77777777777778,0.4306253648792576
-BRENT_session,us_open,3.0,non_wednesday,6,Q1_0_25,33.33333333333333,-0.6199430601189572
+BRENT_session,us_open,3.0,non_wednesday,6,Q1_0_25,33.33333333333333,-0.6199430601189571
 BRENT_session,us_open,4.0,non_wednesday,6,Q1_0_25,50.0,0.11288655874681186
 BRENT_session,us_open,5.0,non_wednesday,18,Q3_50_75,33.33333333333333,0.08683974142505796
 BRENT_session,us_open,7.0,non_wednesday,16,Q2_25_50,25.0,1.0109543225065287
@@ -105,12 +105,12 @@ WTI_session,other_valid_hours,10.0,non_wednesday,7,Q3_50_75,42.857142857142854,0
 WTI_session,us_late,1.0,non_wednesday,10,Q1_0_25,40.0,-0.1995412211630124
 WTI_session,us_open,1.0,non_wednesday,30,Q2_25_50,30.0,0.2578012328757031
 WTI_session,us_open,1.0,is_wednesday_eia_day,6,Q3_50_75,66.66666666666666,0.25794000286407387
-WTI_session,us_open,2.0,non_wednesday,68,Q1_0_25,27.941176470588236,0.11250045796284247
+WTI_session,us_open,2.0,non_wednesday,68,Q1_0_25,27.941176470588236,0.11250045796284251
 WTI_session,us_open,2.0,is_wednesday_eia_day,18,Q3_50_75,55.55555555555556,0.14641071355150773
 WTI_session,us_open,3.0,non_wednesday,6,Q2_25_50,33.33333333333333,-0.6874525214248485
 WTI_session,us_open,4.0,non_wednesday,6,Q2_25_50,33.33333333333333,0.07634037077494672
 WTI_session,us_open,5.0,non_wednesday,18,Q1_0_25,33.33333333333333,0.07862539848635991
-WTI_session,us_open,7.0,non_wednesday,16,Q2_25_50,31.25,-0.0011010039219717799
+WTI_session,us_open,7.0,non_wednesday,16,Q2_25_50,31.25,-0.001101003921971766
 WTI_session,us_open,9.0,non_wednesday,6,Q2_25_50,33.33333333333333,-0.5147152688119048
 WTI_session,us_open,10.0,non_wednesday,14,Q2_25_50,28.57142857142857,0.46089893505277413
 WTI_session,us_pre_open,1.0,non_wednesday,15,Q2_25_50,33.33333333333333,0.15087307801723054

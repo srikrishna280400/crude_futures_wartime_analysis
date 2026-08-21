@@ -1,12 +1,12 @@
 # Pruning log — data_validator.py
 
-Total input rows after vertical union: 85,791
+Total input rows after vertical union: 86,587
 Total input columns before pruning: 66
 Columns pruned: 4
 
 ## Dropped columns
-  - currency_native: only 1 unique non-null value(s) across 85791 rows → DROP
-  - source_timezone: only 1 unique non-null value(s) across 85791 rows → DROP
+  - currency_native: only 1 unique non-null value(s) across 86587 rows → DROP
+  - source_timezone: only 1 unique non-null value(s) across 86587 rows → DROP
   - reversal_strength_score_1_to_5: 100% NaN → DROP
   - follow_through_vs_gap_flag: 100% NaN → DROP
 
