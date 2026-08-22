@@ -1,9 +1,9 @@
 # Daily Trading Plan — 2026-08-21 (09:00–23:30 IST)
 
-Generated 2026-08-21T14:05 · Data through 2026-08-20
+Generated 2026-08-21T15:42 · Data through 2026-08-20
 
 ## 1) Regime
-- Phase 10: **second_deescalation_active_negotiation_hormuz_deal** (conf 100%, as of 2026-08-13)
+- Phase 10: **second_deescalation_active_negotiation_hormuz_deal** (conf nan%, as of nan)
 - Last close (WTI $86.94 · BRENT $93.88) as of 2026-08-20
 
 > Conditional-probability lookup, NOT a forecast. Phase sample small → size 50% max on LOW_CONF cells. Risk: ≤1% equity/trade, stop at -2% day, flatten on any Hormuz/nuclear headline.
@@ -29,14 +29,14 @@ Generated 2026-08-21T14:05 · Data through 2026-08-20
 ## 4) Live News (Al Jazeera / CNN Iran live / Hormuz Letter)
 
 **Escalatory signals (1):**
-- Published On 19 Aug 2026 19 Aug 2026 NATO ‘prepared’ to defend allies amid report of Iranian strike plans NATO says it will ‘do what is necessary’ amid media report Iran considered strikes against US targets in Europe.
+- Published On 21 Aug 2026 21 Aug 2026 blinking-dot Live updates Live updates, China calls for Iran-US dialogue amid sanctions threat; Israel hits Lebanon list 1 of 10 live-orange Published 10 minutes ago 10m ago Israeli m
 
 **De-escalatory signals (0):**
 
 **Neutral/other (8):**
 - Iran | Iran | Today&#x27;s latest from Al Jazeera {"@context":"https://schema.
-- Published On 21 Aug 2026 21 Aug 2026 blinking-dot Live updates Live updates, China rejects US sanctions on Iran; Israel hits southern Lebanon Published On 21 Aug 2026 21 Aug 2026 US Treasury secretary says new economic m
-- OnetrustActiveGroups || '') ? 0 : 1 usrPersonaAds = isNonPersonalizedAds; // Update freestar config for non personalized ads when setNonPersonalizedAds is available (non EU and non US) if(window && window.
+- Published On 21 Aug 2026 21 Aug 2026 Video Duration 02 minutes 59 seconds play-arrow 02:59 EXPLAINER Trump’s ‘economic D-Day’ claims first victim: Not Iran, but US markets Published On 21 Aug 2026 21 Aug 2026 US designat
+- Published On 20 Aug 2026 20 Aug 2026 play video play video Video Duration 02 minutes 01 seconds play-arrow 02:01 Video Duration 02 minutes 01 seconds play-arrow 02:01 From: NewsFeed How conflict is making life more expen
 
 ## 5) Scenario Speculation — Deviations from the base plan
 - Base plan net bias: **LONG** (price-only patterns).

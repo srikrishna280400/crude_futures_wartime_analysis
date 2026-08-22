@@ -1,6 +1,6 @@
 {
-  "trained_at": "2026-08-21T14:04:16.679495",
-  "n_samples": 106,
+  "trained_at": "2026-08-22T11:12:12.248903",
+  "n_samples": 111,
   "n_features": 99,
   "classes": [
     1,
@@ -16,16 +16,16 @@
   "class_distribution": {
     "2": 43,
     "1": 18,
+    "10": 14,
     "5": 11,
     "7": 10,
-    "10": 9,
     "3": 4,
     "4": 4,
     "9": 4,
     "6": 3
   },
-  "cv_accuracy": 0.4235294117647059,
-  "cv_accuracy_std": 0.30542952907640397,
+  "cv_accuracy": 0.3333333333333333,
+  "cv_accuracy_std": 0.3460535889421653,
   "feature_names": [
     "brent_ret",
     "wti_ret",

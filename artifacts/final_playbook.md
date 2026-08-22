@@ -69,50 +69,50 @@ Every number traces to a specific script + output file. No predictions — only 
 - Trading days: 5
 
 ### Phase 10: second_deescalation_active_negotiation_hormuz_deal
-- Window: 2026-08-02 00:00:00 → 2026-08-13 23:59:59 IST
+- Window: 2026-08-02 00:00:00 → 2026-08-20 23:59:59 IST
 - Confidence: 4/5 — Web: Second de-escalation; strike cancellation; negotiation attempt; Trump cancels planned major attack; renewed diplomatic effort over nuclear + Hormuz
 - Defining characteristic: Second de-escalation; strike cancellation; negotiation attempt; Hormuz deal formation
 - Key events: Trump cancels planned major attack; renewed diplomatic effort over nuclear issue + Hormuz; possible deal to be announced
-- Trading days: 9
+- Trading days: 13
 
 ## Top 15 Conditional Patterns (by sample size, |direction bias| ≥ 60%)
 
-| stream        | phase_label            | day_archetype      | current_window   | top_next_window   |   n_observations |   pct_up_next |   pct_down_next |   pct_flat_next |
-|:--------------|:-----------------------|:-------------------|:-----------------|:------------------|-----------------:|--------------:|----------------:|----------------:|
-| BRENT_session | post_ceasefire_complex | all_day_trend_down | india_morning    | india_midday      |               12 |       16.6667 |         66.6667 |        16.6667  |
-| BRENT_session | post_ceasefire_complex | whipsaw_two_sided  | india_morning    | india_midday      |               12 |       25      |         66.6667 |         8.33333 |
-| WTI_session   | post_ceasefire_complex | whipsaw_two_sided  | india_midday     | europe_midday     |               11 |       27.2727 |         63.6364 |         9.09091 |
-| BRENT_session | post_ceasefire_complex | all_day_trend_up   | us_pre_open      | us_open           |               10 |       60      |         10      |        30       |
-| WTI_session   | post_ceasefire_complex | all_day_trend_down | europe_midday    | us_pre_open       |               10 |       30      |         60      |        10       |
-| WTI_session   | post_ceasefire_complex | all_day_trend_down | india_morning    | india_midday      |               10 |        0      |         70      |        30       |
-| BRENT_session | post_ceasefire_complex | all_day_trend_up   | india_morning    | india_midday      |                9 |       88.8889 |         11.1111 |         0       |
-| BRENT_session | post_ceasefire_complex | all_day_trend_up   | mcx_open_drive   | india_morning     |                9 |       77.7778 |         11.1111 |        11.1111  |
-| WTI_session   | post_ceasefire_complex | all_day_trend_up   | us_pre_open      | us_open           |                9 |       66.6667 |          0      |        33.3333  |
-| WTI_session   | post_ceasefire_complex | all_day_trend_up   | india_morning    | india_midday      |                8 |       75      |         12.5    |        12.5     |
-| WTI_session   | full_scale_war         | mixed_regime       | us_open          | us_open           |                8 |       62.5    |         25      |        12.5     |
-| WTI_session   | full_scale_war         | all_day_trend_up   | us_open          | us_open           |                8 |       62.5    |         25      |        12.5     |
-| WTI_session   | post_ceasefire_complex | all_day_trend_up   | mcx_open_drive   | india_morning     |                8 |      100      |          0      |         0       |
-| WTI_session   | full_scale_war         | whipsaw_two_sided  | europe_midday    | us_pre_open       |                6 |       83.3333 |         16.6667 |         0       |
-| WTI_session   | full_scale_war         | whipsaw_two_sided  | us_pre_open      | us_open           |                6 |       66.6667 |         33.3333 |         0       |
+| stream        | phase_label                                        | day_archetype      | current_window   | top_next_window   |   n_observations |   pct_up_next |   pct_down_next |   pct_flat_next |
+|:--------------|:---------------------------------------------------|:-------------------|:-----------------|:------------------|-----------------:|--------------:|----------------:|----------------:|
+| BRENT_session | post_ceasefire_complex                             | all_day_trend_down | india_morning    | india_midday      |               12 |       16.6667 |         66.6667 |        16.6667  |
+| BRENT_session | post_ceasefire_complex                             | whipsaw_two_sided  | india_morning    | india_midday      |               12 |       25      |         66.6667 |         8.33333 |
+| WTI_session   | post_ceasefire_complex                             | whipsaw_two_sided  | india_midday     | europe_midday     |               11 |       27.2727 |         63.6364 |         9.09091 |
+| WTI_session   | post_ceasefire_complex                             | whipsaw_two_sided  | us_pre_open      | us_open           |               11 |       63.6364 |         18.1818 |        18.1818  |
+| WTI_session   | post_ceasefire_complex                             | all_day_trend_down | india_morning    | india_midday      |               10 |        0      |         70      |        30       |
+| WTI_session   | post_ceasefire_complex                             | all_day_trend_down | europe_midday    | us_pre_open       |               10 |       30      |         60      |        10       |
+| WTI_session   | second_deescalation_active_negotiation_hormuz_deal | all_day_trend_up   | us_open          | mcx_tail          |               10 |       80      |         10      |        10       |
+| BRENT_session | post_ceasefire_complex                             | all_day_trend_up   | india_morning    | india_midday      |                9 |       88.8889 |         11.1111 |         0       |
+| BRENT_session | post_ceasefire_complex                             | all_day_trend_up   | mcx_open_drive   | india_morning     |                9 |       77.7778 |         11.1111 |        11.1111  |
+| WTI_session   | post_ceasefire_complex                             | all_day_trend_up   | us_pre_open      | us_open           |                9 |       66.6667 |          0      |        33.3333  |
+| WTI_session   | full_scale_war                                     | all_day_trend_up   | us_open          | us_open           |                8 |       62.5    |         25      |        12.5     |
+| BRENT_session | second_deescalation_active_negotiation_hormuz_deal | all_day_trend_up   | us_open          | mcx_tail          |                8 |       87.5    |          0      |        12.5     |
+| WTI_session   | post_ceasefire_complex                             | all_day_trend_up   | mcx_open_drive   | india_morning     |                8 |      100      |          0      |         0       |
+| WTI_session   | full_scale_war                                     | mixed_regime       | us_open          | us_open           |                8 |       62.5    |         25      |        12.5     |
+| WTI_session   | post_ceasefire_complex                             | all_day_trend_up   | india_morning    | india_midday      |                8 |       75      |         12.5    |        12.5     |
 
 ## Top 10 Triplet Signatures (composite score)
 
-| stream        | phase_label                                  | leg_triplet                              |   n_occurrences |   support |   confidence |   composite_score |
-|:--------------|:---------------------------------------------|:-----------------------------------------|----------------:|----------:|-------------:|------------------:|
-| WTI_session   | ceasefire_collapse_renewed_escalation        | FLAT_Q1_0_25|FLAT_Q1_0_25|FLAT_Q1_0_25   |               2 |  0.666667 |     0.666667 |         0.266667  |
-| BRENT_session | ceasefire_collapse_renewed_escalation        | FLAT_Q1_0_25|DOWN_Q3_50_75|FLAT_Q2_25_50 |               2 |  0.666667 |     1        |         0.2       |
-| BRENT_session | ceasefire_collapse_renewed_escalation        | FLAT_Q1_0_25|UP_Q3_50_75|DOWN_Q1_0_25    |               2 |  0.666667 |     1        |         0.2       |
-| BRENT_session | post_ceasefire_complex                       | FLAT_Q1_0_25|FLAT_Q1_0_25|FLAT_Q1_0_25   |               8 |  0.186047 |     0.4      |         0.153257  |
-| WTI_session   | ceasefire_pause_breakdown_renewed_escalation | DOWN_Q3_50_75|FLAT_Q1_0_25|FLAT_Q1_0_25  |               2 |  0.5      |     1        |         0.133333  |
-| WTI_session   | post_ceasefire_complex                       | FLAT_Q1_0_25|FLAT_Q1_0_25|FLAT_Q1_0_25   |               5 |  0.116279 |     0.333333 |         0.0955414 |
-| BRENT_session | full_scale_war                               | FLAT_Q1_0_25|FLAT_Q1_0_25|FLAT_Q1_0_25   |               3 |  0.166667 |     0.3      |         0.0882353 |
-| BRENT_session | full_scale_war                               | FLAT_Q1_0_25|FLAT_Q1_0_25|UP_Q2_25_50    |               3 |  0.166667 |     0.3      |         0.0882353 |
-| WTI_session   | ceasefire_collapse_renewed_escalation        | FLAT_Q1_0_25|FLAT_Q1_0_25|UP_Q2_25_50    |               1 |  0.333333 |     0.333333 |         0.0666667 |
-| BRENT_session | full_scale_war                               | UP_Q2_25_50|FLAT_Q1_0_25|FLAT_Q1_0_25    |               3 |  0.166667 |     0.75     |         0.0631579 |
+| stream        | phase_label                                  | leg_triplet                                 |   n_occurrences |   support |   confidence |   composite_score |
+|:--------------|:---------------------------------------------|:--------------------------------------------|----------------:|----------:|-------------:|------------------:|
+| WTI_session   | ceasefire_collapse_renewed_escalation        | DOWN_Q4_75_90|DOWN_Q5_90_100|UP_Q4_75_90    |               2 |  0.666667 |     0.666667 |         0.266667  |
+| WTI_session   | ceasefire_collapse_renewed_escalation        | DOWN_Q5_90_100|DOWN_Q4_75_90|DOWN_Q5_90_100 |               2 |  0.666667 |     1        |         0.2       |
+| BRENT_session | ceasefire_collapse_renewed_escalation        | FLAT_Q1_0_25|UP_Q3_50_75|DOWN_Q1_0_25       |               2 |  0.666667 |     1        |         0.2       |
+| BRENT_session | post_ceasefire_complex                       | FLAT_Q1_0_25|FLAT_Q1_0_25|FLAT_Q1_0_25      |               7 |  0.162791 |     0.368421 |         0.135025  |
+| WTI_session   | ceasefire_pause_breakdown_renewed_escalation | DOWN_Q3_50_75|FLAT_Q1_0_25|FLAT_Q1_0_25     |               2 |  0.5      |     1        |         0.133333  |
+| WTI_session   | post_ceasefire_complex                       | FLAT_Q1_0_25|FLAT_Q1_0_25|FLAT_Q1_0_25      |               5 |  0.116279 |     0.3125   |         0.0972053 |
+| BRENT_session | full_scale_war                               | FLAT_Q1_0_25|FLAT_Q1_0_25|FLAT_Q1_0_25      |               3 |  0.166667 |     0.3      |         0.0882353 |
+| BRENT_session | full_scale_war                               | FLAT_Q1_0_25|FLAT_Q1_0_25|UP_Q2_25_50       |               3 |  0.166667 |     0.3      |         0.0882353 |
+| WTI_session   | ceasefire_collapse_renewed_escalation        | DOWN_Q4_75_90|DOWN_Q5_90_100|DOWN_Q4_75_90  |               1 |  0.333333 |     0.333333 |         0.0666667 |
+| WTI_session   | ceasefire_collapse_renewed_escalation        | DOWN_Q5_90_100|UP_Q4_75_90|DOWN_Q3_50_75    |               1 |  0.333333 |     0.333333 |         0.0666667 |
 
 ## Cross-Factor Highlights
 
-- Brent-WTI contemporaneous daily correlation: 0.751 (very strong)
+- Brent-WTI contemporaneous daily correlation: 0.750 (very strong)
 - Lead-lag: No significant lead-lag at daily or window level between Brent and WTI
 - EIA Wednesday: Wednesday EIA days show systematically lower (or more negative) returns in war-regime phases
 - Weekly structure: Monday positive bias (+1.5% WTI, +1.66% Brent), Friday negative bias (-0.43% WTI)
@@ -141,14 +141,14 @@ Every number traces to a specific script + output file. No predictions — only 
 
 | day_archetype              |   ceasefire_collapse_renewed_escalation |   ceasefire_pause_breakdown_renewed_escalation |   full_scale_war |   naval_blockade_removed |   operational_pause_renewed_diplomacy |   post_ceasefire_complex |   second_deescalation_active_negotiation_hormuz_deal |   slight_escalation_strait_closure |   strong_escalation_op_rising_lion |   sustained_major_reescalation_hormuz_war |
 |:---------------------------|----------------------------------------:|-----------------------------------------------:|-----------------:|-------------------------:|--------------------------------------:|-------------------------:|-----------------------------------------------------:|-----------------------------------:|-----------------------------------:|------------------------------------------:|
-| all_day_trend_down         |                                 33.3333 |                                             25 |          7.69231 |                       20 |                                     0 |                 27.907   |                                              11.1111 |                           25       |                                 50 |                                         0 |
-| all_day_trend_up           |                                  0      |                                             25 |         26.9231  |                        0 |                                     0 |                 23.2558  |                                              11.1111 |                           16.6667  |                                 25 |                                        20 |
-| gap_and_fade               |                                  0      |                                              0 |          3.84615 |                       20 |                                   100 |                  2.32558 |                                               0      |                            8.33333 |                                  0 |                                         0 |
-| gap_and_hold_up            |                                  0      |                                              0 |          7.69231 |                        0 |                                     0 |                 11.6279  |                                              11.1111 |                            8.33333 |                                  0 |                                        10 |
-| late_session_decisive_down |                                  0      |                                              0 |          0       |                        0 |                                     0 |                  2.32558 |                                              11.1111 |                            0       |                                  0 |                                         0 |
-| late_session_decisive_up   |                                  0      |                                              0 |          7.69231 |                        0 |                                     0 |                  2.32558 |                                               0      |                            0       |                                  0 |                                         0 |
-| mixed_regime               |                                  0      |                                              0 |         23.0769  |                        0 |                                     0 |                  2.32558 |                                              22.2222 |                            8.33333 |                                  0 |                                        30 |
-| whipsaw_two_sided          |                                 66.6667 |                                             50 |         23.0769  |                       60 |                                     0 |                 27.907   |                                              33.3333 |                           33.3333  |                                 25 |                                        40 |
+| all_day_trend_down         |                                 33.3333 |                                             25 |          7.69231 |                       20 |                                     0 |                 27.907   |                                              7.14286 |                           25       |                                 50 |                                         0 |
+| all_day_trend_up           |                                  0      |                                             25 |         26.9231  |                        0 |                                     0 |                 23.2558  |                                             28.5714  |                           16.6667  |                                 25 |                                        20 |
+| gap_and_fade               |                                  0      |                                              0 |          3.84615 |                       20 |                                   100 |                  2.32558 |                                              0       |                            8.33333 |                                  0 |                                         0 |
+| gap_and_hold_up            |                                  0      |                                              0 |          7.69231 |                        0 |                                     0 |                 11.6279  |                                              7.14286 |                            8.33333 |                                  0 |                                        10 |
+| late_session_decisive_down |                                  0      |                                              0 |          0       |                        0 |                                     0 |                  2.32558 |                                              7.14286 |                            0       |                                  0 |                                         0 |
+| late_session_decisive_up   |                                  0      |                                              0 |          7.69231 |                        0 |                                     0 |                  2.32558 |                                              0       |                            0       |                                  0 |                                         0 |
+| mixed_regime               |                                  0      |                                              0 |         23.0769  |                        0 |                                     0 |                  2.32558 |                                             14.2857  |                            8.33333 |                                  0 |                                        30 |
+| whipsaw_two_sided          |                                 66.6667 |                                             50 |         23.0769  |                       60 |                                     0 |                 27.907   |                                             35.7143  |                           33.3333  |                                 25 |                                        40 |
 
 ## Coverage & Limitations
 

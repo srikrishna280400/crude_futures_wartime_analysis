@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-21T14:05:36.376129",
+  "generated_at": "2026-08-21T15:42:47.631556",
   "regime": {
     "phase_id": 10,
     "phase_label": "second_deescalation_active_negotiation_hormuz_deal",
-    "confidence": 1.0,
-    "as_of_date": "2026-08-13"
+    "confidence": NaN,
+    "as_of_date": "nan"
   },
   "latest_appended_data_date": "2026-08-20",
   "plan_date": "2026-08-21",
@@ -143,14 +143,14 @@
     "n_deescalatory": 0,
     "n_neutral": 8,
     "top_escalatory": [
-      "Published On 19 Aug 2026 19 Aug 2026 NATO \u2018prepared\u2019 to defend allies amid report of Iranian strike plans NATO says it will \u2018do what is necessary\u2019 amid media report Iran considered strikes against US targets in Europe."
+      "Published On 21 Aug 2026 21 Aug 2026 blinking-dot Live updates Live updates, China calls for Iran-US dialogue amid sanctions threat; Israel hits Lebanon list 1 of 10 live-orange Published 10 minutes ago 10m ago Israeli m"
     ],
     "top_deescalatory": [],
     "top_neutral": [
       "Iran | Iran | Today&#x27;s latest from Al Jazeera {\"@context\":\"https://schema.",
-      "Published On 21 Aug 2026 21 Aug 2026 blinking-dot Live updates Live updates, China rejects US sanctions on Iran; Israel hits southern Lebanon Published On 21 Aug 2026 21 Aug 2026 US Treasury secretary says new economic m",
-      "OnetrustActiveGroups || '') ? 0 : 1 usrPersonaAds = isNonPersonalizedAds; // Update freestar config for non personalized ads when setNonPersonalizedAds is available (non EU and non US) if(window && window.",
-      "Published On 21 Aug 2026 21 Aug 2026 Video Duration 02 minutes 51 seconds play-arrow 02:51 From: NewsFeed Israeli soldiers throw belongings from besieged Palestinian home Published On 21 Aug 2026 21 Aug 2026 Video Durati"
+      "Published On 21 Aug 2026 21 Aug 2026 Video Duration 02 minutes 59 seconds play-arrow 02:59 EXPLAINER Trump\u2019s \u2018economic D-Day\u2019 claims first victim: Not Iran, but US markets Published On 21 Aug 2026 21 Aug 2026 US designat",
+      "Published On 20 Aug 2026 20 Aug 2026 play video play video Video Duration 02 minutes 01 seconds play-arrow 02:01 Video Duration 02 minutes 01 seconds play-arrow 02:01 From: NewsFeed How conflict is making life more expen",
+      "OnetrustActiveGroups || '') ? 0 : 1 usrPersonaAds = isNonPersonalizedAds; // Update freestar config for non personalized ads when setNonPersonalizedAds is available (non EU and non US) if(window && window."
     ]
   },
   "scorecard_verdict": {}
