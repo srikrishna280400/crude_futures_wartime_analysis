@@ -66,6 +66,32 @@ NEWS_SOURCES = {
 RETRY_BACKOFF = [2, 4, 8]
 
 
+EXPECTED_WINDOWS = [
+    "global_reopen_pre_mcx",
+    "mcx_open_drive",
+    "india_morning",
+    "india_midday",
+    "europe_midday",
+    "us_pre_open",
+    "us_open",
+    "mcx_tail",
+]
+
+
+def is_session_complete(prim: pd.DataFrame, date: pd.Timestamp) -> Tuple[bool, List[str]]:
+    """Check if a trading day has all expected session windows."""
+    date_str = date.date().isoformat()
+    session_data = prim[
+        (prim['__stream'].isin(['WTI_session', 'BRENT_session'])) &
+        (pd.to_datetime(prim['trade_date_ist']).dt.date == date.date())
+    ]
+    if session_data.empty:
+        return False, EXPECTED_WINDOWS.copy()
+    present = session_data['session_window_ist'].unique().tolist()
+    missing = [w for w in EXPECTED_WINDOWS if w not in present]
+    return len(missing) == 0, missing
+
+
 def next_trading_day(after_dates: List[str]) -> str:
     """First IST trading day strictly after the latest appended data date."""
     latest = max(pd.to_datetime(after_dates))
@@ -73,6 +99,26 @@ def next_trading_day(after_dates: List[str]) -> str:
     while d.weekday() >= 5:  # Sat/Sun → next Mon
         d += timedelta(days=1)
     return d.date().isoformat()
+
+
+def plan_target_date(prim: pd.DataFrame, dates: List[str]) -> Tuple[str, str, List[str], bool]:
+    """
+    Determine the target date for the trading plan.
+    Returns: (plan_date, latest_appended_date, missing_windows_today, is_intraday)
+    - If latest day is complete → plan for next trading day
+    - If latest day is incomplete → plan for today's remaining windows
+    """
+    latest_dt = max(pd.to_datetime(dates))
+    latest_date_str = latest_dt.date().isoformat()
+    complete, missing = is_session_complete(prim, latest_dt)
+
+    if complete:
+        # Day is done → plan for tomorrow
+        plan_date = next_trading_day(dates)
+        return plan_date, latest_date_str, [], False
+    else:
+        # Day in progress → plan for TODAY's remaining windows
+        return latest_date_str, latest_date_str, missing, True
 
 
 # ----------------------------------------------------------------------
@@ -197,8 +243,9 @@ def build_report() -> Dict:
 
     # Latest appended data date from primitives (session frames)
     dates = pd.to_datetime(prim[prim['__stream'].isin(['WTI_session', 'BRENT_session'])]['trade_date_ist'])
-    latest_data_date = dates.max().date().isoformat()
-    plan_date = next_trading_day(dates.dt.date.astype(str).tolist())
+
+    # Determine plan target: if today's session is incomplete, plan for today's remaining windows
+    plan_date, latest_data_date, missing_windows_today, is_intraday = plan_target_date(prim, dates.dt.date.astype(str).tolist())
 
     # News
     news = fetch_live_news()
@@ -288,6 +335,8 @@ def build_report() -> Dict:
                    "as_of_date": str(latest_reg["trade_date_ist"])[:10]},
         "latest_appended_data_date": latest_data_date,
         "plan_date": plan_date,
+        "is_intraday": is_intraday,
+        "missing_windows_today": missing_windows_today,
         "instructions": {
             "duration": "09:00–23:30 IST",
             "disclaimer": "Conditional-probability lookup, NOT a forecast. Phase sample small → size 50% max on LOW_CONF cells. Risk: ≤1% equity/trade, stop at -2% day, flatten on any Hormuz/nuclear headline.",
@@ -304,8 +353,16 @@ def build_report() -> Dict:
 
 def render_markdown(r: Dict) -> str:
     L = []
-    L.append(f"# Daily Trading Plan — {r['plan_date']} (09:00–23:30 IST)")
+    session_tag = " (intraday — remaining windows)" if r.get("is_intraday") else ""
+    L.append(f"# Daily Trading Plan — {r['plan_date']} (09:00–23:30 IST){session_tag}")
     L.append(f"\nGenerated {r['generated_at'][:16]} · Data through {r['latest_appended_data_date']}")
+    if r.get("is_intraday"):
+        missing = r.get("missing_windows_today", [])
+        completed = [w["window"] for w in r["window_plan"] if w["window"] not in missing]
+        L.append(f"\n⚠️ **INTRADAY UPDATE** — Only {len(completed)} of 8 windows available for {r['plan_date']}.")
+        L.append(f"  Completed windows: {', '.join(completed) if completed else 'none yet'}")
+        L.append(f"  Remaining windows to monitor: {', '.join(missing) if missing else 'all (session just started)'}")
+        L.append(f"  _Plan shows probabilities from historical patterns, but only reflects what the model has seen so far today._")
     reg = r["regime"]
     L.append(f"\n## 1) Regime\n- Phase {reg['phase_id']}: **{reg['phase_label']}** "
              f"(conf {reg['confidence']*100:.0f}%, as of {reg['as_of_date']})")

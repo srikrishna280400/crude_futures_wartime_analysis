@@ -41,7 +41,10 @@
       "Bash(timeout 1800 python scripts/enhanced_update_all.py --signals-only)",
       "Bash(bash -c 'source /home/srikrishna/.venv-wsl-new/bin/activate && cd \"/mnt/d/My Docs/Investing/Crude Analysis Agentic\" && timeout 1800 python scripts/enhanced_update_all.py --signals-only')",
       "Bash(bash -c 'source /home/srikrishna/.venv-wsl-new/bin/activate && python -c \" *)",
-      "Bash(bash -c 'source /home/srikrishna/.venv-wsl-new/bin/activate && cd \"/mnt/d/My Docs/Investing/Crude Analysis Agentic\" && python /tmp/check_csv.py')"
+      "Bash(bash -c 'source /home/srikrishna/.venv-wsl-new/bin/activate && cd \"/mnt/d/My Docs/Investing/Crude Analysis Agentic\" && python /tmp/check_csv.py')",
+      "Bash(bash -c 'source /home/srikrishna/.venv-wsl-new/bin/activate && cd \"/mnt/d/My Docs/Investing/Crude Analysis Agentic\" && python /tmp/check_dates.py')",
+      "Bash(bash -c 'source /home/srikrishna/.venv-wsl-new/bin/activate && cd \"/mnt/d/My Docs/Investing/Crude Analysis Agentic\" && python /tmp/check_primitive_date.py')",
+      "Bash(bash -c 'source /home/srikrishna/.venv-wsl-new/bin/activate && cd \"/mnt/d/My Docs/Investing/Crude Analysis Agentic\" && timeout 1800 python scripts/enhanced_update_all.py --signals-only 2>&1 | tail -40')"
     ]
   }
 }
