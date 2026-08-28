@@ -44,7 +44,7 @@ BRENT_session,other_valid_hours,7.0,non_wednesday,8,Q1_0_25,50.0,0.1477181016341
 BRENT_session,other_valid_hours,10.0,non_wednesday,10,Q3_50_75,30.0,-0.11585058038494896
 BRENT_session,us_late,1.0,non_wednesday,10,Q2_25_50,40.0,0.04577873807036013
 BRENT_session,us_open,1.0,non_wednesday,30,Q1_0_25,40.0,0.1852258923102899
-BRENT_session,us_open,1.0,is_wednesday_eia_day,6,Q1_0_25,33.33333333333333,-0.7134401300780765
+BRENT_session,us_open,1.0,is_wednesday_eia_day,6,Q1_0_25,33.33333333333333,-0.7134401300780763
 BRENT_session,us_open,2.0,non_wednesday,68,Q1_0_25,26.47058823529412,0.08656862743175879
 BRENT_session,us_open,2.0,is_wednesday_eia_day,18,Q3_50_75,27.77777777777778,0.4306253648792576
 BRENT_session,us_open,3.0,non_wednesday,6,Q1_0_25,33.33333333333333,-0.6199430601189572
@@ -52,7 +52,7 @@ BRENT_session,us_open,4.0,non_wednesday,6,Q1_0_25,50.0,0.11288655874681186
 BRENT_session,us_open,5.0,non_wednesday,18,Q3_50_75,33.33333333333333,0.08683974142505796
 BRENT_session,us_open,7.0,non_wednesday,16,Q2_25_50,25.0,1.010954322506529
 BRENT_session,us_open,9.0,non_wednesday,6,Q1_0_25,33.33333333333333,-0.5704076968947681
-BRENT_session,us_open,10.0,non_wednesday,22,Q2_25_50,31.818181818181817,0.41531530021618807
+BRENT_session,us_open,10.0,non_wednesday,22,Q2_25_50,31.818181818181817,0.4153153002161881
 BRENT_session,us_open,10.0,is_wednesday_eia_day,6,Q1_0_25,66.66666666666666,0.05560659655705122
 BRENT_session,us_pre_open,1.0,non_wednesday,15,Q3_50_75,33.33333333333333,-0.07718318095872354
 BRENT_session,us_pre_open,2.0,non_wednesday,34,Q2_25_50,32.35294117647059,0.1689189014500744
@@ -104,7 +104,7 @@ WTI_session,other_valid_hours,5.0,non_wednesday,9,Q1_0_25,33.33333333333333,0.57
 WTI_session,other_valid_hours,7.0,non_wednesday,8,Q2_25_50,50.0,0.1928375694643857
 WTI_session,other_valid_hours,10.0,non_wednesday,11,Q3_50_75,27.27272727272727,0.055369378921746586
 WTI_session,us_late,1.0,non_wednesday,10,Q1_0_25,40.0,-0.1995412211630124
-WTI_session,us_open,1.0,non_wednesday,30,Q2_25_50,30.0,0.2578012328757031
+WTI_session,us_open,1.0,non_wednesday,30,Q2_25_50,30.0,0.25780123287570317
 WTI_session,us_open,1.0,is_wednesday_eia_day,6,Q3_50_75,66.66666666666666,0.25794000286407387
 WTI_session,us_open,2.0,non_wednesday,68,Q1_0_25,27.941176470588236,0.11250045796284251
 WTI_session,us_open,2.0,is_wednesday_eia_day,18,Q3_50_75,55.55555555555556,0.14641071355150773
@@ -113,7 +113,7 @@ WTI_session,us_open,4.0,non_wednesday,6,Q2_25_50,33.33333333333333,0.07634037077
 WTI_session,us_open,5.0,non_wednesday,18,Q1_0_25,33.33333333333333,0.07862539848635991
 WTI_session,us_open,7.0,non_wednesday,16,Q2_25_50,31.25,-0.001101003921971766
 WTI_session,us_open,9.0,non_wednesday,6,Q2_25_50,33.33333333333333,-0.5147152688119048
-WTI_session,us_open,10.0,non_wednesday,22,Q2_25_50,27.27272727272727,0.46507036332467866
+WTI_session,us_open,10.0,non_wednesday,22,Q2_25_50,27.27272727272727,0.4650703633246787
 WTI_session,us_open,10.0,is_wednesday_eia_day,6,Q1_0_25,66.66666666666666,0.004413583439404327
 WTI_session,us_pre_open,1.0,non_wednesday,15,Q2_25_50,33.33333333333333,0.15087307801723054
 WTI_session,us_pre_open,2.0,non_wednesday,34,Q1_0_25,29.411764705882355,-0.34295249867011274

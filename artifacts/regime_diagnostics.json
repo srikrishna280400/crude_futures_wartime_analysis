@@ -1,5 +1,5 @@
 {
-  "trained_at": "2026-08-25T05:20:26.115192",
+  "trained_at": "2026-08-27T18:36:37.177778",
   "n_samples": 111,
   "n_features": 99,
   "classes": [
@@ -24,8 +24,8 @@
     "9": 4,
     "6": 3
   },
-  "cv_accuracy": 0.3333333333333333,
-  "cv_accuracy_std": 0.3460535889421653,
+  "cv_accuracy": 0.34444444444444444,
+  "cv_accuracy_std": 0.341384255460827,
   "feature_names": [
     "brent_ret",
     "wti_ret",

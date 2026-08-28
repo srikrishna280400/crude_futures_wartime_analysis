@@ -1,0 +1,213 @@
+{
+  "generated_at": "2026-08-27T18:37:46.013629",
+  "regime": {
+    "phase_id": 10,
+    "phase_label": "second_deescalation_active_negotiation_hormuz_deal",
+    "confidence": 0.9393939393939394,
+    "as_of_date": "2026-08-20"
+  },
+  "latest_appended_data_date": "2026-08-27",
+  "plan_date": "2026-08-28",
+  "is_intraday": false,
+  "missing_windows_today": [],
+  "instructions": {
+    "duration": "09:00\u201323:30 IST",
+    "disclaimer": "Conditional-probability lookup, NOT a forecast. Phase sample small \u2192 size 50% max on LOW_CONF cells. Risk: \u22641% equity/trade, stop at -2% day, flatten on any Hormuz/nuclear headline."
+  },
+  "latest_closes": {
+    "wti": 84.08000183,
+    "brent": 88.91999817,
+    "as_of": "2026-08-27"
+  },
+  "window_plan": [
+    {
+      "window": "global_reopen_pre_mcx",
+      "time_ist": "03:30\u201309:00",
+      "bias": "DOWN",
+      "p_up": 25.9,
+      "p_down": 29.6,
+      "n": 27,
+      "mean_brent": 0.1247543893894406,
+      "mean_wti": -0.0648022484930915,
+      "low_conf": false
+    },
+    {
+      "window": "mcx_open_drive",
+      "time_ist": "09:00\u201310:30",
+      "bias": "DOWN",
+      "p_up": 29.6,
+      "p_down": 33.3,
+      "n": 27,
+      "mean_brent": 0.0260914170085548,
+      "mean_wti": 0.0079024874336185,
+      "low_conf": false
+    },
+    {
+      "window": "india_morning",
+      "time_ist": "10:30\u201312:30",
+      "bias": "DOWN",
+      "p_up": 29.6,
+      "p_down": 37.0,
+      "n": 27,
+      "mean_brent": 0.0706045006684973,
+      "mean_wti": -0.0052259913784816,
+      "low_conf": false
+    },
+    {
+      "window": "india_midday",
+      "time_ist": "12:30\u201315:30",
+      "bias": "UP",
+      "p_up": 57.1,
+      "p_down": 32.1,
+      "n": 28,
+      "mean_brent": 0.4173367195333128,
+      "mean_wti": 0.4998963496896894,
+      "low_conf": false
+    },
+    {
+      "window": "europe_midday",
+      "time_ist": "15:30\u201318:00",
+      "bias": "DOWN",
+      "p_up": 28.6,
+      "p_down": 60.7,
+      "n": 28,
+      "mean_brent": -0.7312598690473165,
+      "mean_wti": -0.7432030830920036,
+      "low_conf": false
+    },
+    {
+      "window": "us_pre_open",
+      "time_ist": "18:00\u201320:00",
+      "bias": "DOWN",
+      "p_up": 32.1,
+      "p_down": 39.3,
+      "n": 28,
+      "mean_brent": -0.0549653286986425,
+      "mean_wti": -0.1445626322554043,
+      "low_conf": false
+    },
+    {
+      "window": "us_open",
+      "time_ist": "20:00\u201323:00",
+      "bias": "UP",
+      "p_up": 55.4,
+      "p_down": 19.6,
+      "n": 56,
+      "mean_brent": 0.3382348637178016,
+      "mean_wti": 0.3663581962064057,
+      "low_conf": false
+    },
+    {
+      "window": "mcx_tail",
+      "time_ist": "23:00\u201323:30",
+      "bias": "UP",
+      "p_up": 53.6,
+      "p_down": 25.0,
+      "n": 28,
+      "mean_brent": 0.1300736376655504,
+      "mean_wti": 0.0702546484228757,
+      "low_conf": false
+    }
+  ],
+  "signal_cards": [
+    {
+      "stream": "WTI_session",
+      "day_archetype": "whipsaw_two_sided",
+      "current_window": "us_open",
+      "next_window": "mcx_tail",
+      "direction": "UP",
+      "entry": null,
+      "stop": null,
+      "target": null,
+      "p_up": 41.66666666666667,
+      "p_down": 25.0,
+      "size_frac": null,
+      "low_conf": false
+    },
+    {
+      "stream": "WTI_session",
+      "day_archetype": "all_day_trend_up",
+      "current_window": "us_open",
+      "next_window": "mcx_tail",
+      "direction": "UP",
+      "entry": null,
+      "stop": null,
+      "target": null,
+      "p_up": 80.0,
+      "p_down": 10.0,
+      "size_frac": null,
+      "low_conf": false
+    },
+    {
+      "stream": "BRENT_session",
+      "day_archetype": "whipsaw_two_sided",
+      "current_window": "us_open",
+      "next_window": "mcx_tail",
+      "direction": "DOWN",
+      "entry": null,
+      "stop": null,
+      "target": null,
+      "p_up": 30.0,
+      "p_down": 50.0,
+      "size_frac": null,
+      "low_conf": false
+    },
+    {
+      "stream": "BRENT_session",
+      "day_archetype": "all_day_trend_up",
+      "current_window": "us_open",
+      "next_window": "mcx_tail",
+      "direction": "UP",
+      "entry": null,
+      "stop": null,
+      "target": null,
+      "p_up": 87.5,
+      "p_down": 0.0,
+      "size_frac": null,
+      "low_conf": false
+    },
+    {
+      "stream": "WTI_session",
+      "day_archetype": "whipsaw_two_sided",
+      "current_window": "mcx_open_drive",
+      "next_window": "india_morning",
+      "direction": "DOWN",
+      "entry": null,
+      "stop": null,
+      "target": null,
+      "p_up": 16.666666666666664,
+      "p_down": 33.33333333333333,
+      "size_frac": null,
+      "low_conf": false
+    },
+    {
+      "stream": "WTI_session",
+      "day_archetype": "whipsaw_two_sided",
+      "current_window": "us_pre_open",
+      "next_window": "us_open",
+      "direction": "UP",
+      "entry": null,
+      "stop": null,
+      "target": null,
+      "p_up": 50.0,
+      "p_down": 0.0,
+      "size_frac": null,
+      "low_conf": false
+    }
+  ],
+  "live_news": {
+    "had_news": true,
+    "n_escalatory": 0,
+    "n_deescalatory": 0,
+    "n_neutral": 7,
+    "top_escalatory": [],
+    "top_deescalatory": [],
+    "top_neutral": [
+      "Iran | Iran | Today&#x27;s latest from Al Jazeera {\"@context\":\"https://schema.",
+      "Event(otReady) } Skip links Skip to Featured Content Skip to Content Feed play Live Sign up Show navigation menu Navigation menu News Show more news sections Africa Asia US & Canada Latin America Europe Asia Pacific Midd",
+      "OnetrustActiveGroups || '') ? 0 : 1 usrPersonaAds = isNonPersonalizedAds; // Update freestar config for non personalized ads when setNonPersonalizedAds is available (non EU and non US) if(window && window.",
+      "Event(otReady) } Skip links Skip to Featured Content Skip to Content Feed play Live Sign up Show navigation menu Navigation menu News Show more news sections Africa Asia US & Canada Latin America Europe Asia Pacific Midd"
+    ]
+  },
+  "scorecard_verdict": {}
+}

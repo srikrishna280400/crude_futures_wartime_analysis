@@ -1,10 +1,15 @@
-# Daily Trading Plan — 2026-08-28 (09:00–23:30 IST)
+# Daily Trading Plan — 2026-08-27 (09:00–23:30 IST) (intraday — remaining windows)
 
-Generated 2026-08-27T18:37 · Data through 2026-08-27
+Generated 2026-08-27T14:24 · Data through 2026-08-27
+
+⚠️ **INTRADAY UPDATE** — Only 6 of 8 windows available for 2026-08-27.
+  Completed windows: global_reopen_pre_mcx, mcx_open_drive, india_morning, india_midday, europe_midday, us_pre_open
+  Remaining windows to monitor: us_open, mcx_tail
+  _Plan shows probabilities from historical patterns, but only reflects what the model has seen so far today._
 
 ## 1) Regime
 - Phase 10: **second_deescalation_active_negotiation_hormuz_deal** (conf 94%, as of 2026-08-20)
-- Last close (WTI $84.08 · BRENT $88.92) as of 2026-08-27
+- Last close (WTI $82.73 · BRENT $87.75) as of 2026-08-27
 
 > Conditional-probability lookup, NOT a forecast. Phase sample small → size 50% max on LOW_CONF cells. Risk: ≤1% equity/trade, stop at -2% day, flatten on any Hormuz/nuclear headline.
 
@@ -23,23 +28,25 @@ Generated 2026-08-27T18:37 · Data through 2026-08-27
 | mcx_tail | 23:00–23:30 | UP | 53.6 | 25.0 | 28 | +0.13 | +0.07 |
 
 ## 3) Active Signal Cards
-- **WTI_session** P10 @ whipsaw_two_sided | us_open→mcx_tail **UP** · P(UP) 42% / P(DN) 25% 
-- **WTI_session** P10 @ all_day_trend_up | us_open→mcx_tail **UP** · P(UP) 80% / P(DN) 10% 
-- **BRENT_session** P10 @ whipsaw_two_sided | us_open→mcx_tail **DOWN** · P(UP) 30% / P(DN) 50% 
+- **WTI_session** P10 @ whipsaw_two_sided | us_open→mcx_tail **UP** · P(UP) 42% / P(DN) 17% 
+- **WTI_session** P10 @ all_day_trend_up | us_open→mcx_tail **UP** · P(UP) 90% / P(DN) 10% 
+- **BRENT_session** P10 @ whipsaw_two_sided | us_open→mcx_tail **UP** · P(UP) 50% / P(DN) 30% 
 - **BRENT_session** P10 @ all_day_trend_up | us_open→mcx_tail **UP** · P(UP) 88% / P(DN) 0% 
 - **WTI_session** P10 @ whipsaw_two_sided | mcx_open_drive→india_morning **DOWN** · P(UP) 17% / P(DN) 33% 
-- **WTI_session** P10 @ whipsaw_two_sided | us_pre_open→us_open **UP** · P(UP) 50% / P(DN) 0% 
+- **WTI_session** P10 @ whipsaw_two_sided | us_pre_open→us_open **UP** · P(UP) 50% / P(DN) 17% 
 
 ## 4) Live News (Al Jazeera / CNN Iran live / Hormuz Letter)
 
-**Escalatory signals (0):**
+**Escalatory signals (1):**
+- Published On 27 Aug 2026 27 Aug 2026 Video Duration 02 minutes 40 seconds play-arrow 02:40 Israeli settlers targeting Palestinian factories to force workers off land Published On 27 Aug 2026 27 Aug 2026 World Cup 2034 ho
 
-**De-escalatory signals (0):**
+**De-escalatory signals (1):**
+- Published On 27 Aug 2026 27 Aug 2026 Video Duration 02 minutes 40 seconds play-arrow 02:40 EXPLAINER Is Iran war diplomacy ramping up, as Qatar, Oman, Pakistan officials visit? Published On 27 Aug 2026 27 Aug 2026 ANALYS
 
-**Neutral/other (7):**
+**Neutral/other (8):**
 - Iran | Iran | Today&#x27;s latest from Al Jazeera {"@context":"https://schema.
+- Published On 26 Aug 2026 26 Aug 2026 EXPLAINER One US dollar now costs 2 million rials in Iran, and here’s what it can buy Sanctions and the US-Israel war on Iran have left the country’s people unable to keep pace with r
 - Event(otReady) } Skip links Skip to Featured Content Skip to Content Feed play Live Sign up Show navigation menu Navigation menu News Show more news sections Africa Asia US & Canada Latin America Europe Asia Pacific Midd
-- OnetrustActiveGroups || '') ? 0 : 1 usrPersonaAds = isNonPersonalizedAds; // Update freestar config for non personalized ads when setNonPersonalizedAds is available (non EU and non US) if(window && window.
 
 ## 5) Scenario Speculation — Deviations from the base plan
 - Base plan net bias: **SHORT** (price-only patterns).

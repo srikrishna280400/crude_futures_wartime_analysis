@@ -115,7 +115,9 @@ BRENT_session,2026-08-19,10.0,second_deescalation_active_negotiation_hormuz_deal
 BRENT_session,2026-08-20,10.0,second_deescalation_active_negotiation_hormuz_deal,us_pre_open,global_reopen_pre_mcx,94.72000122,91.34999847
 BRENT_session,2026-08-21,,,mcx_tail,india_midday,94.80999756,92.76999664
 BRENT_session,2026-08-24,,,us_pre_open,mcx_tail,93.79000092,91.77999878
-BRENT_session,2026-08-25,,,global_reopen_pre_mcx,global_reopen_pre_mcx,92.83999634,91.76999664
+BRENT_session,2026-08-25,,,global_reopen_pre_mcx,us_open,92.83999634,86.80999756
+BRENT_session,2026-08-26,,,us_open,india_midday,88.27999878,84.58999634
+BRENT_session,2026-08-27,,,mcx_tail,india_midday,89.15000153,85.33000183
 WTI_session,2026-03-12,1.0,full_scale_war,us_open,other_valid_hours,97.19000244,89.87999725
 WTI_session,2026-03-13,1.0,full_scale_war,us_late,us_pre_open,99.31999969,92.04000092
 WTI_session,2026-03-16,1.0,full_scale_war,asia_early,us_late,101.7600021,92.93000031
@@ -232,4 +234,6 @@ WTI_session,2026-08-19,10.0,second_deescalation_active_negotiation_hormuz_deal,u
 WTI_session,2026-08-20,10.0,second_deescalation_active_negotiation_hormuz_deal,us_pre_open,global_reopen_pre_mcx,87.69000244,84.23000336
 WTI_session,2026-08-21,,,europe_midday,india_midday,87.51000214,85.80000305
 WTI_session,2026-08-24,,,global_reopen_pre_mcx,us_open,86.45999908,84.36000061
-WTI_session,2026-08-25,,,global_reopen_pre_mcx,global_reopen_pre_mcx,85.83999634,84.73000336
+WTI_session,2026-08-25,,,global_reopen_pre_mcx,other_valid_hours,85.83999634,80.23000336
+WTI_session,2026-08-26,,,us_open,india_midday,83.30999756,79.62000275
+WTI_session,2026-08-27,,,mcx_tail,india_midday,84.26999664,80.65000153
