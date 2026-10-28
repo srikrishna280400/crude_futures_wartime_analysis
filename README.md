@@ -10,6 +10,48 @@
 - Infra/UI: Vercel, GitHub, Cloudflare Tunnel, Vite/React, Chart.js, Ubuntu/WSL
 
 
+## Technical Architecture & Production Engineering
+
+One section, because for this project the architecture and the operational story are the same object. Planned contents:
+
+- The 17-stage pipeline diagram (raw 13 CSVs → ingestion → validation → primitives → window patterns → triplet miner (1,167 ranked) → conformity (AR(1) half-life, vol clustering) → anomaly engine (|z|>2.5) → day-type engine (8 archetypes + KMeans cross-check) → cross-factor (EIA Wed, OPEC+, expiry, lead-lag) → statistical rigor → regime classifier → signal engine → scorecard → daily report → walk-forward backtester → cross-phase borrowing → cross-asset → dashboard).
+- The compute-local, reason-global principle — heavy lifting in Python, agent reads only compact artifacts; token efficiency as a correctness requirement, not a cost.
+- Price-phase branch coexistence — 10-step branch, artifacts_pricephases/, original untouched as museum.
+- The signal engine anatomy — 3-gate abstention, Kelly ∩ vol-target sizing, ATR stops per magnitude tier, candlestick fallback for 1-sample phases.
+- Orchestration — single command, --skip/--only/--incremental flags, checksums, ~9 min runtime, dependency ordering, 20/21 steps passing.
+- Data layer — synthetic MCX construction, chunked fetcher, xlsx helper, dynamic date bounds, dual-pipeline parquet/CSV artifacts.
+- Microstructure layer — read-only sub-bucket computation as the non-breaking overlay.
+
+
+## Quant Methodology & Statistical Rigor
+
+The "why you can trust the numbers" section. Planned contents, each with the one-line honest rationale:
+
+- Regime-relative magnitude tiers (per-phase percentiles, not fixed %)
+- Dirichlet(1,1,1) Bayesian posteriors + 95% HDI
+- Benjamini-Hochberg FDR per (stream × phase)
+- Hierarchical shrinkage (weight=20)
+- Purged walk-forward + embargo from AR(1) half-life + Monte Carlo CIs
+- Brier score / log-loss / calibration curves
+- 5-score operational accuracy panel (hit rate, calibration, economic edge, regime accuracy, abstention rate)
+- Cross-phase pattern borrowing (cosine similarity, P10 ← P7)
+- Vol-regime conditional sizing scalar
+
+
+## Results / Evidence / Outcomes / Metrics / Final Structure
+
+Cold hard facts only. Every number paired with its honest label (in-sample vs out-of-sample):
+
+- Backtest: 290 trades, 63.4% win rate, PF 2.74, Sharpe 2.09, Sortino 12.01, Max DD −11.02%, expectancy +0.55%/trade, MC 95% CI expectancy [+0.21%, +1.11%], Sharpe CI [1.67, 5.54] — purged walk-forward, not in-sample
+- In-sample vs OOS honesty gap table: in-sample Sharpe 4.29 → OOS 2.09 — the system self-reporting its own drop
+- Signal resolution: 4 resolved signals, 100% resolution rate, Brier tracked
+- Cluster/phase results: 12 phases (P1 27d war, P3 n=4 case study, P10 8d), 7 clusters (BIC-selected), 308 dates re-classified
+- Data: ~112,948 rows clean_master, 65k+ original spec, 80k+ rows cited, 13 source CSVs → 18 artifacts
+- Performance: checksum incremental run ~9 min, 21-step orchestrator, 20/21 passing
+- Validated findings: Brent-WTI correlation 0.725, Monday +1.5%, Friday −0.43%, Wednesday EIA negative bias in war phases
+- Final functioning evidence: TODAYS_PLAN.md sample output (the actual plain-English plan with %UP/%DN, n, news flags), dashboard artifact, artifact inventory
+
+
 ## The Chronological Journey of building this Training-Analysis-Prediction Model
 
 ### PHASE 1: The First Principles — Framing the Problem Before Touching Data
