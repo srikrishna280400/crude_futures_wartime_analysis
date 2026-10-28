@@ -7,10 +7,10 @@ The thinking, before any code: future price action is nothing but a repetition o
 The first execution was deliberately primitive — A minimum viable approach to test whether the pattern premise held at all:
   
   Day-type buckets: Categorise days from price movement alone:
-  (i) Full-day rallies
-  (ii) Full-day dips
-  (iii) Two-sided violent whipsaw
-  (iv) Flat days that still ended at the day's high/low
+  - Full-day rallies
+  - Full-day dips
+  - Two-sided violent whipsaw
+  - Flat days that still ended at the day's high/low
   
   News overlay: Tag each bucket as escalation / de-escalation / neutral. This surfaced the project's founding observation: price repeatedly failed to reflect breakout news — the first hard evidence of manipulation, and the reason "trust the tape, quantify the
   divergence" became a design principle.
@@ -18,16 +18,16 @@ The first execution was deliberately primitive — A minimum viable approach to 
   Session windows: Split buckets across Asian / European / US market hours, based on the reasoning that countries with different Hormuz exposure (Japan, Europe, India, US) move crude differently at their own market opens.
   
   Output structure: A two-tiered matrix — day-types × session windows × three news flags — built purely on WTI/Brent open-close prices via ChatGPT/Claude web search, over a short timeframe.
-	
-   Crucially, even this primitive stage was designed backwards from the questions the eventual model must answer. The dataset was structured so a later model could answer:
+  
+  Crucially, even this primitive stage was designed backwards from the questions the eventual model must answer. The dataset was structured so a later model could answer:
    
-   i) What past day is today most similar to?
-   ii) Which session windows drive the day, in which direction, and on what news type?
-   iii) When the normal pattern fails, what alternate repeatable pattern takes over?
-   iv) If pattern P occurred on day-type X in window Y, what Q preceded it and what R succeeded it?
-   v) How far does price travel in INR/MCX ticks on this kind of day?
-   vi) Which windows are safest for entry, and which are stop-hunt traps?
-   vii) Do manipulative bearish moves follow a signature pattern by time of day and news flag?
+  - What past day is today most similar to?
+  - Which session windows drive the day, in which direction, and on what news type?
+  - When the normal pattern fails, what alternate repeatable pattern takes over?
+  - If pattern P occurred on day-type X in window Y, what Q preceded it and what R succeeded it?
+  - How far does price travel in INR/MCX ticks on this kind of day?
+  - Which windows are safest for entry, and which are stop-hunt traps?
+  - Do manipulative bearish moves follow a signature pattern by time of day and news flag?
 
 
 
