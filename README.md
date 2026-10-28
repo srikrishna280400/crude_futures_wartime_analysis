@@ -1,6 +1,18 @@
 # CRUDE PRICES VOLATALITY ANALYSIS DURING THE IRAN WAR/HORMUZ CRISS OF 2026 
 
-## PHASE 1: The First Principles — Framing the Problem Before Touching Data
+## Tech Stack & Tools Used
+
+- Data: yfinance, FRED, EIA, Databento (dead end), GDELT/NewsAPI, Al Jazeera/CNN/Hormuz Letter RSS
+- Py libs: pandas, numpy, scipy, statsmodels, scikit-learn, pyarrow, joblib, openpyxl, yfinance, requests, matplotlib, ruptures (optional)
+- ML/quant: RandomForest, isotonic calibration, GMM, PCA, HDBSCAN, KMeans, SHAP
+- MCP servers (9): context7, filesystem, fetch, brave-search, playwright, sqlite/postgres, e2b sandbox, github, remember (context persistence)
+- Agentic tools: Claude Code, Codex, Antigravity, OpenRouter (model swapping), MCPM Manager, Wispr Flow, Whisper (CUDA) for lecture transcription
+- Infra/UI: Vercel, GitHub, Cloudflare Tunnel, Vite/React, Chart.js, Ubuntu/WSL
+
+
+## The Chronological Journey of building this Training-Analysis-Prediction Model
+
+### PHASE 1: The First Principles — Framing the Problem Before Touching Data
 
 The thinking, before any code: future price action is nothing but a repetition of patterns, and AI's real edge isn't chat — it's ingesting massive data, finding patterns, and telling the big-picture data story. So instead of asking a chatbot "will price go up?", the question was reframed: why not train a model on the price data itself, and let it fish for patterns? That single reframe set the entire project's shape — and the basis on which any later model would predict (which ideologies, which data points) was settled deliberately, through clarifying questions, not assumptions.
 
@@ -31,7 +43,7 @@ The first execution was deliberately primitive — A minimum viable approach to 
 
 
 
-## PHASE 2: The Data Wall (the dead-end graveyard) and the workarounds that stuck
+### PHASE 2: The Data Wall (the dead-end graveyard) and the workarounds that stuck
 
 Attempted MCX CRUDEOILM from 5 sources — Upstox, Fyers, Dhan, ICICI Breeze, AngelOne, Databento. Also dropped: USD→INR live conversion, MCX data entirely, live RSS news feeds. Pivoted to WTI/Brent via yfinance (no keys); 7-day chunked requests to bypass Yahoo limits; synthetic MCX built from WTI × USD/INR (labeled honestly as synthetic). FRED/EIA keys for FX and inventory. Hardcoded end dates pulling 1987 spot data → dynamic date bounds.
 
@@ -63,7 +75,7 @@ Every factor was translated into its own standalone engine, each writing version
 Competency: the core competency here is decomposition of an unstructured domain — converting a trader's gut vocabulary into measurable primitives, thresholds, and functions, each independently testable. Supporting it: systems thinking (independent engines, single artifacts, one orchestrator); edge-case discipline (roll-over normalization, low-sample guards, flag-only anomaly output); and intellectual honesty (features that can't be computed yet are labeled, not fabricated — the same "no silent assumptions" policy enforced on the coding agent was applied to the product itself)
 
 
-## PHASE 4: The Founding Bet — and the Root-Cause Reckoning
+### PHASE 4: The Founding Bet — and the Root-Cause Reckoning
 
 With the data structured, the next decision shaped everything downstream: the entire training-analysis-prediction exercise would be conditioned on a classification of the war itself. Across the 7-month period, the conflict kept recurring in recognizably similar phases — full-scale war, complete ceasefire with deal, ceasefire without deal, naval blockade with escalation flashpoints — so the period was carved into 12 war phases (P1–P12) built from geopolitical reality. The bet was deliberate: if war behavior is repetitive, then a phase label is a legitimate conditioning variable, and every pattern mined "within Phase 5" inherits that repetition.
 
@@ -72,7 +84,7 @@ The bet carried the system for a long time — and then became its deepest flaw.
 Competency: navigating ambiguity (imposing structure on a market with no labels at all); decisions under uncertainty (a falsifiable bet made explicit, not hidden); and the rarest one — root-cause diagnosis against one's own investment: after months of building atop the phase taxonomy, correctly indicting the taxonomy itself rather than patching symptoms downstream.
 
 
-## PHASE 5: Re-Founding the Classification on Price Itself
+### PHASE 5: Re-Founding the Classification on Price Itself
 
 The fix was to make the market classify itself. Phases would no longer be continuous news date-ranges but non-continuous clubs of days that actually look alike: if Sept 21 and Oct 15 both print "strong climb, low volatility, marubozu-type candles," they belong to the same phase — even months apart. Consecutive days with different price action land in different clusters, no matter what the news said.
 
@@ -83,7 +95,7 @@ The new cluster_id was then threaded through every downstream engine — primiti
 Competency: root-cause-driven re-architecture (rebuilding the foundation, not the facade); experiment isolation (parallel branch, zero destruction of working state); granular trade-off judgment (3 vs 7 clusters, 1:1 vs many-to-many — each argued from accuracy, not aesthetics); and auditing AI's own work rather than accepting it (catching the contaminated labels the agent had happily inherited).
 
 
-## PHASE 6: The Window-Granularity Problem — and the Discipline of Not Breaking Things
+### PHASE 6: The Window-Granularity Problem — and the Discipline of Not Breaking Things
 
 One prediction-quality issue survived all of this: session windows like us_open aggregate two to five hours of price action into a single "%UP/%DOWN" line in the daily plan, so the window-to-window movement prediction stayed coarse no matter how sophisticated everything upstream was. The obvious fix — re-label the windows into finer slices — was caught before it was executed: session-window labels are baked into clean_master at ingestion time, so relabeling would split history into two incompatible regimes — seven months trained under old labels, new dates arriving under new ones, every grouped analysis comparing apples to oranges.
 
@@ -93,14 +105,14 @@ Competency: skepticism toward one's own first solution (catching a data-lineage 
 honest trade-off accounting (smaller n acknowledged and mitigated, not obscured).
 
 
-## PHASE 7: Closing the Loop — Making the Model Auditable and Fast Without Making It Wrong
+### PHASE 7: Closing the Loop — Making the Model Auditable and Fast Without Making It Wrong
 
 Once the pipeline could emit predictions, the uncomfortable question surfaced: nothing ever went back and checked them. Signals were emitted daily, but yesterday's entry/stop/target was never compared against what price actually did — the scorecard sat at 0 resolved rows. That admission restructured the daily workflow around three tickets. First, a forward signal resolution loop: every emitted signal is appended to an append-only history, and each new run resolves all pending ones against realized prices before emitting fresh signals — hit/miss, actual return, growing operational track record. Second, the "backtester" was honestly re-diagnosed as in-sample fit dressed as walk-forward — it tested dates against a playbook mined from all dates, including the ones being tested. The fix was a purged, embargoed rebuild: at every test date, the playbook is rebuilt using only observations that precede it. Third, calibration: when the system announces "44% DOWN," Brier score now checks whether DOWN actually happened ~44% of the time. Alongside came a per-pattern freshness check (the last N live occurrences of each pattern, with an edge-decay flag when live hit rate falls below the playbook's claim) and volatility-regime-conditional sizing that shrinks positions in the highest-ATR phases automatically.
 
 Competency mapping: closing the evaluation loop end-to-end (signal → resolve → history → metrics — owning the outcome, not just the output); intellectual honesty as engineering (naming the in-sample illusion before fixing it); and speed-vs-correctness judgment — refusing an optimization where correctness would silently degrade, and finding speed in caching and incrementality instead.
 
 
-## PHASE 8: The Rigor Upgrade — Honest Labels, a Panel of Scores, and Explicit Refusals
+### PHASE 8: The Rigor Upgrade — Honest Labels, a Panel of Scores, and Explicit Refusals
 
 The next pass (execution_prompt3) was a deliberate philosophy shift: from "does it work?" to "can it prove it works, and does it admit what it doesn't know?" The backtester's embargo stopped being arbitrary — it was derived from the data's own autocorrelation structure (the AR(1) half-life computed by the conformity engine), rather than picked from a textbook. And the report now carries both numbers side by side, explicitly labeled IN_SAMPLE vs OUT_OF_SAMPLE, so the honesty gap between them is permanently visible instead of buried — the OOS numbers dropped, and that drop was treated as the correct outcome, not a regression.
 
@@ -109,14 +121,14 @@ A single "credibility score" was rejected as the wrong framing and replaced with
 Competency mapping: measurement design (rejecting a single vanity metric for a panel that can catch different failure modes); data-driven parameterization (embargo from AR(1) half-life, not folklore); and designing for honesty — making refusal a first-class, logged behavior rather than a failure mode.
 
 
-## PHASE 9: Learning From Its Own Mistakes — Three Fears, Three Design Answers
+### PHASE 9: Learning From Its Own Mistakes — Three Fears, Three Design Answers
 
 The provision for the model to learn from its own errors started by naming three fears explicitly and refusing to wave any of them away. Fear 1 — news is the critical driver and we can't feed it live: resolved by reframing — news tells you which rulebook to use, not the price path. A headline flips the regime; what you trade is the phase-conditional statistical distribution built from months of data. The tractable problem is detecting regime change fast (the regime classifier + news-event engine), not predicting headlines. Fear 2 — future news is unknowable and there's manipulation anyway: resolved by the system's core identity — it is a conditional-probability, risk-managed engine, not a point forecaster. It never says "price will go X"; it says "in this phase, on this day-type, in this window, the next window went UP 100% (n=3) — LOW CONFIDENCE." That framing survives manipulation: the path gets distorted, but the conditional distribution re-learns as data accumulates — and even "absurd" manipulative moves get captured as repeatable archetypes (whipsaw, late-session decisive, range-bound are precisely manipulation signatures). Fear 3 — old patterns keep breaking, so what's the point: named as regime drift, and answered structurally — every pattern is a decaying prior, not a law (posterior = f(prior, new data), re-fit on every append), weighted by recency and phase relevance, with the honest admission that error-learning was so far only implicit (re-runs absorb deviations) and therefore needed the explicit prediction-vs-actual resolution loop of point 12 to become real.
 
 Competency mapping: adversarial self-questioning as a design tool (fears turned into architecture, not optimism); concept clarity (regime drift, calibration, decaying priors — borrowed from quant practice and implemented, not name-dropped); and knowing the difference between implicit learning and an actual feedback loop.
 
 
-## PHASE 10: The Daily Report Card — Translating Sophistication Into One Readable Page
+### PHASE 10: The Daily Report Card — Translating Sophistication Into One Readable Page
 
 All of the statistical machinery funnels into a single, deliberately humble artifact: the daily report card, organized so a non-quant can act on it in minutes. The card teaches its own reading rules on its face — n is how many historical days match this exact situation (n=5 is OK, n=20+ is solid); 67% UP doesn't mean "67% chance," it means "in 12 of 18 comparable sessions, the next window closed up"; a LOW-CONFIDENCE badge fires at n<5; and phase context matters most — a 67% pattern in war-phase means nothing in a post-ceasefire phase. Just as prominent is what the card insists it is not: not a prediction ("the future is not the past"), not a position size ("you'd still need stops and targets"), not a complete signal ("combine with current news to know which phase you're in today"). The usage flow is a six-step walk: identify the current phase → find today's day-type → look up the Decision Helper → cross-check the window's historical mix → apply cross-factor overlays (EIA Wednesday, Monday, OPEC day) → apply your own risk management. The distilled form of every pattern is a sentence like: IF it's 8pm IST, the day has been an all-day trend, and we're in Phase 1 (war) — THEN historically the mcx_tail window closed UP 67% of the time. Decision-helper cards like these are the most actionable artifact in the project — the point where Dirichlet posteriors and FDR corrections become "if today looks like that, lean long."
 
