@@ -1,0 +1,211 @@
+| Project / Problem | Approach | Key Decisions | Build / Iteration | Outcome | FDE/APM Signal |
+|---|---|---|---|---|---|
+| Canteen billing data model & API (Airtable vs Supabase) | Compared Airtable linked records, API filtering, and hosted SQL backends; debugged SQL through concrete errors | Selected Supabase for PostgreSQL + auto-generated REST API; password hashing + unique email; constraints as business rules | Drafted Airtable schema; wrote parameterized/quoted SQL for Supabase; explored bulk inserts, deletion, defaults | Schema and SQL specified; no deployed endpoint or live app demonstrated | Moderate technical learning/debugging; no validated E2E result |
+| Windows dev environment & Figma-to-React Native setup | Installed Node/npm/Git; diagnosed PowerShell path/execution-policy issues; inspected monorepo package.json | Rejected paid Bravo Studio; chose free kat-tax/figma-to-react-native; adopted pnpm workspace over npx CLI assumptions | Configured VS Code, PowerShell quoting, Git install, cloned repo, created .env with Figma PAT, ran pnpm install (903 packages) | Tooling installed; Figma conversion blocked by module-resolution/build issues; no imported screen | Strong learning-by-doing/env troubleshooting; incomplete outcome |
+| pnpm monorepo repair + Figma API fetch + Android toolchain | Systematic workspace repair → Figma API script → component generation → Android env → Gradle memory tuning | Created pnpm-workspace.yaml; used Node 22 native fetch; JDK 17; reduced Gradle/Kotlin heap to 1GB | Fixed workspace detection, ESM/CommonJS, fetched figma-design.json, wrote responsive Screen1.js, set JAVA_HOME/ANDROID_HOME, created AVD | JSON fetched; component written; Android build fails at Kotlin daemon OOM; app not running | Strong problem solving/systems/technical judgment; moderate 0→1 execution |
+| React Native Android C++ native linking (NDK r27, libc++) | Captured full linker error output; analyzed undefined symbols | No verified fix selected; explored NDK downgrade, ANDROID_STL=c++_shared, RTTI/exceptions flags | Proposed CMakeLists.txt/build.gradle changes; clean/rebuild cycle | Build remains broken; no resolution demonstrated | Weak-moderate; error capture strong, independent diagnosis not shown |
+| Figma renderer debugging + PWA pivot + local env | Traced nested undefined-property errors as dependency chain; inspected Figma source; adapted React Native code to React DOM/PWA | Prioritized fixing Figma hierarchy before code guards; scoped import to node 1-2; moved to React DOM + PWA files | Wrote import-screen1.js (unverified isolation), proposed src/index.js, public/index.html, manifest.json; attempted npm start | Conceptual model established; PWA not running; npm/PATH unresolved; renderer errors not proven fixed | Strong systems thinking & learning; moderate problem solving/technical/product judgment |
+
+---
+
+## Problem
+
+The user was engaged in a multi-workstream effort to convert a Figma design—the “TASL Canteen Software” file (roughly 10–11 screens, file ID `XEXcrSYyHhKXVLDLbRVnJg`)—into a functional application, while simultaneously exploring a data backend for canteen billing (employee, order, and payment records). The work was not a single linear task but a set of interleaved technical and product problems:
+
+1. **Data/API layer.** The user needed to relate Airtable employee, order, and payment records, retrieve employee-specific records through an API, and find a free SQL database with an API-hosting path. A central ambiguity was whether relationships should be handled by Airtable’s linked-record model, direct API filtering (`FILTER_BY_FORMULA`), or a separate hosted SQL backend.
+
+2. **Frontend tooling on Windows.** The user wanted to turn Figma UI designs into deployable application code without relying on paid export features. Constraints included Windows/PowerShell/VS Code, free tooling only, and a target that evolved from web/PWA considerations toward React Native. The environment initially lacked or failed to recognize Node.js/npm, Git, and the correct working directory.
+
+3. **Monorepo and codegen.** The user selected the `kat-tax/figma-to-react-native` repository, which turned out to be a seven-project pnpm monorepo rather than a standalone npm CLI. The goal was to fetch a Figma file via REST API, save the JSON, transform it into responsive React Native components, and run the app on Android.
+
+4. **Android native build.** During `app:buildCMakeDebug[arm64-v8a]`, the linker (`ld.lld`) could not resolve fundamental C++ standard library symbols (`std::__ndk1::basic_string`, `operator new/delete`, `__cxa_*` exception-handling symbols, RTTI vtables, `__gxx_personality_v0`). The build used NDK r27.1.12297006 and React Native’s `OnLoad.cpp` (TurboModule registration) on a Windows host. The emulator also failed to launch.
+
+5. **Renderer and PWA pivot.** The generated project contained a large Figma-derived JSON file, a JSX renderer, `service-worker.js`, `index.css`, and `app.jsx`. The renderer encountered nested undefined-property errors (`data.layers`, `layers`, `frame`, `absoluteBoundingBox`). The user eventually recognized that the project was browser-targeted rather than native React Native, because `App.jsx` imported `SafeAreaView`, `StatusBar`, and `StyleSheet`—incompatible with a browser runtime.
+
+---
+
+## Approach
+
+The user’s reasoning moved from broad tool evaluation to increasingly concrete, error-driven debugging across the workstreams.
+
+### Data and API exploration
+The user first compared three ways to relate Airtable data: `FILTER_BY_FORMULA` in API requests, linked records plus Lookup/Rollup fields, and filtered views for manual inspection. The conversation then shifted toward a standalone SQL-backed service, comparing Supabase (PostgreSQL with an auto-generated REST API), Railway or Render (custom backend requiring a separately deployed service), and db4free (database-only MySQL). SQL behavior was investigated progressively through concrete errors rather than as a single configuration task: unquoted table names containing spaces caused PostgreSQL syntax errors; a missing required `Payment Amount` exposed a `NOT NULL` constraint; multi-column `ALTER COLUMN` behavior exposed PostgreSQL/MySQL syntax differences. The user then explored bulk inserts, random test records, deletion by employee ID, and signup storage.
+
+### Windows environment and Figma-to-React Native setup
+The user assessed paid/no-code tools (Bravo Studio, Locofy, Anima, TeleportHQ, Penpot, manual conversion) and rejected paid code-export because Bravo Studio’s free tier did not provide the desired code export or PWA publishing. After selecting `kat-tax/figma-to-react-native`, the user worked from source-control setup to monorepo configuration: installed Node/npm and Git, cloned the repository, created a `.env` file with a Figma PAT, inspected `package.json`, recognized the pnpm workspace scripts, and ran `pnpm install`. The user consistently supplied exact terminal errors, enabling diagnosis based on the actual environment rather than generic instructions.
+
+### Monorepo repair and Figma API integration
+The user diagnosed a broken workspace: `pnpm-workspace.yaml` was missing, the `figma-to-react-native` package folder was missing, and the root `package.json` had no `workspaces` field. The repair involved creating `pnpm-workspace.yaml` with `packages: ["packages/*"]`, adding `workspaces` to the root `package.json`, and initializing the missing package with `pnpm init`. PowerShell `@` splatting required quoted `--filter` arguments; when that failed, the user used `-w` (workspace root) and then `cd` into the package directory for direct `pnpm add`.
+
+For the Figma API script, the user wrote `import-figma.js` using Node 22’s native `fetch`, fixed ES module syntax (`import fs from 'fs'`, added `"type": "module"`), and removed `node-fetch` to avoid ESM/CommonJS friction. After verifying the token and file ID, the script successfully authenticated and saved `figma-design.json`.
+
+For component generation, the user designed `Screen1.js` to map `TEXT`, `IMAGE`, and `BUTTON` layers from `figma-design.json` to React Native primitives, using `Dimensions` for responsive scaling against a 375×812 baseline.
+
+For Android, the user installed JDK 17 (selected over 21 for React Native/Android Gradle Plugin LTS support), set `JAVA_HOME` and `PATH`, installed Android Studio/SDK, created an AVD via the Device Manager GUI, fixed `ANDROID_HOME`/`ANDROID_SDK_ROOT`, and added `platform-tools`, `emulator`, and `cmdline-tools` to `PATH`. Gradle memory was tuned downward: `org.gradle.jvmargs=-Xmx1024m` and `kotlin.daemon.jvmargs=-Xmx1024m`, because the machine could not reserve a 2 GB contiguous heap.
+
+### Android C++ linker failure
+The user presented the complete linker error output in chunks. No independent diagnosis or fix was shown in the record; the user was sharing error information for external help. The error pattern indicated a C++ runtime linkage issue, but the user had not yet isolated or tested a hypothesis.
+
+### Renderer debugging and PWA pivot
+The user supplied four related runtime errors and asked for a connected root-cause analysis rather than treating them as independent bugs. The user temporarily moved into Figma to verify frame dimensions (1920×1080), hyperlinks, and text strokes, reasoning that a malformed design hierarchy would continue producing layout and undefined-property failures even if downstream code guards merely hid the crashes. The user inspected the renderer’s image-scaling code and corrected the assistant when the assistant misunderstood file identity: `screen1` was a Figma tab name, not the React Native file or JSON payload.
+
+The user then asked for an explicit explanation of the project artifacts—the large JSON, JSX renderer, service worker, CSS, and app entry file—showing deliberate system discovery. The user identified the source repository and requested an import script that fetches only one Figma screen using the `/nodes?ids=1-2` endpoint rather than the whole-file endpoint. A later implementation still saved the full API response envelope under `screen1.json`, so the intended isolation was not guaranteed.
+
+Finally, the user reassessed the runtime target: because `App.jsx` used React Native primitives and lacked a browser bootstrap, the user chose React DOM/PWA over direct React Native rendering. This meant replacing `SafeAreaView`, `StatusBar`, and `StyleSheet` with DOM/CSS, mounting into `<div id="root">`, and adding `src/index.js`, `public/index.html`, and `public/manifest.json`. The user attempted `npm start`, but npm was not recognized; troubleshooting narrowed the cause to Node not being installed, missing PATH configuration, or a stale terminal environment.
+
+---
+
+## Decisions
+
+**Data layer.** Supabase was identified as the lowest-code backend because it combines PostgreSQL with an auto-generated REST API. Railway and Render were recognized as better for a custom API but requiring more operational work. Airtable linked records were preferred when Airtable itself needed to maintain employee–order–payment relationships. API filtering was distinguished from relational modeling: `FILTER_BY_FORMULA` suited dynamic retrieval, while Lookup/Rollup fields suited dependency-free aggregation. Passwords were not to be stored in plaintext; the proposed signup schema used `password_hash` with bcrypt/Werkzeug-style hashing and a unique email constraint. Database constraints were treated as business rules: supply the required value, permit `NULL`, or define a default. Bulk row insertion was preferred over repeated inserts, including a possible `INSERT ... SELECT` workflow for importing employee IDs.
+
+**Frontend tooling.** Paid code-export tools were rejected in favor of a free workflow. Bravo Studio was insufficient because its free tier lacked code export and PWA publishing. React/Next.js was selected as the more scalable choice for authentication, APIs, state, and dashboard-like interfaces; plain HTML/CSS/JS remained the lightweight alternative. The `kat-tax/figma-to-react-native` repository became the selected implementation path. The user adopted a pnpm-based setup after inspecting `package.json`, rather than continuing with earlier `npx` assumptions. The Figma PAT was intended to remain in a project-root `.env` file.
+
+**Monorepo and Android.** A pnpm monorepo with `packages/*` was chosen to keep `figma-ui`, `figma-build`, and app code co-located. `"type": "module"` was added because Node 22 defaults to ES modules. Native `fetch` was chosen over `node-fetch` to remove an extra dependency and ESM/CommonJS friction. JDK 17 was selected over 21. Gradle heap was reduced to 1 GB rather than increased, because the machine could not reserve 2 GB contiguous heap. The Kotlin daemon was also capped at 1 GB. An AVD was created via Android Studio’s GUI to ensure correct system image and hardware profile.
+
+**Android C++.** The user explored (but did not verify) downgrading NDK 27 to 25/26 for fbjni compatibility, setting `ANDROID_STL=c++_shared`, enabling C++17 with `-D_GLIBCXX_USE_CXX11_ABI=1`, and adding `-frtti -fexceptions`.
+
+**Renderer and PWA.** The four undefined-property errors were treated as one dependency chain: missing `data` → missing/unassigned `layers` → missing layer `frame` → missing `absoluteBoundingBox`. The user prioritized fixing the upstream Figma structure before accumulating runtime guards. Responsive scaling was implemented via `width / 375` and `height / 812`. Raw design data was separated from executable behavior. The Figma API import was scoped to node `1-2` to reduce payload. The architecture was moved from React Native to React DOM/PWA for browser execution, with standard browser mounting files created.
+
+---
+
+## Build / Iteration
+
+### Data/API implementation
+The user drafted an Airtable structure linking `Customers - Detail` to `List of Orders` and `List of Payments`, with Lookup fields and a Rollup field to aggregate payment amounts. SQL examples addressed quoted identifiers:
+```sql
+INSERT INTO "Canteen Bill Management" ("Employee ID")
+VALUES ('900454');
+```
+A required-value failure was fixed by including the column:
+```sql
+INSERT INTO "Canteen_Bill_Management" ("Employee ID", "Payment Amount")
+VALUES ('900100', 100);
+```
+Defaults were considered:
+```sql
+ALTER TABLE "Canteen_Bill_Management"
+ALTER COLUMN "Payment Amount" SET DEFAULT 0;
+```
+MySQL was contrasted with PostgreSQL for renaming:
+```sql
+ALTER TABLE `Canteen_Bill_Management`
+RENAME COLUMN `Employee ID` TO `Emp_ID`;
+```
+Bulk inserts used repeated `VALUES` tuples; a separate approach used `INSERT INTO ... SELECT`. Random test data included multiple payment states and nullable fields. The schema was revised from `Payment Method` to `Payment ID`. Deletion was addressed with:
+```sql
+DELETE FROM Canteen_Bill_Management
+WHERE "Employee ID" IN (...);
+```
+No deployed endpoint or working application resulted from this workstream.
+
+### Windows and monorepo setup
+The initial `npx` failure was traced to Node.js/npm not being recognized. A path containing spaces caused PowerShell parsing issues, fixed by quoting:
+```powershell
+cd "D:\My Docs\Product Management\P1"
+```
+PowerShell execution-policy restrictions were isolated with:
+```powershell
+Get-ExecutionPolicy -List
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+A Group Policy override prevented changing the `CurrentUser` scope; the user settled on a temporary process-scope bypass. Git was installed with bundled OpenSSH, OpenSSL HTTPS backend, Windows checkout/Unix commit line endings, MinTTY, default pull behavior, Git Credential Manager, and file-system caching.
+
+The repository was cloned into `D:\My Docs\Product Management\P1\figma-to-react-native`. Figma identifiers were extracted from the design URL (file ID `XEXcrSYyHhKXVLDLbRVnJg`, example node ID `1-2`). The repository’s `package.json` revealed a pnpm monorepo with seven workspace projects and scripts such as `pnpm --filter ./plugins/figma run dev`. `pnpm install` completed after downloading 903 packages but emitted a missing `figma-build` binary link and an ignored `esbuild` build script warning. Running the Figma development process surfaced a Windows ESM absolute-path error involving the `d:` protocol, TypeScript errors stating `Cannot find module 'figma-ui'`, missing generated `schema.json` and `validator` modules, and a `backgroundColor` type error involving `unknown`. Attempts to add `figma-ui` ran into a nonexistent `packages/figma-to-react-native` path and pnpm’s `ERR_PNPM_ADDING_TO_ROOT` warning. The conversation ended with the need to list actual workspace directories before determining the correct package and build command.
+
+### Monorepo repair and Figma fetch
+After creating `pnpm-workspace.yaml` and the missing package folder, the workspace detected the package. `import-figma.js` successfully authenticated to the Figma API and wrote `figma-design.json`. `Screen1.js` was written to dynamically render TEXT, IMAGE, and BUTTON layers with responsive scaling.
+
+### Android toolchain
+Java 17, Android SDK, `ANDROID_HOME`, `adb`, and `emulator` commands were all working. The Gradle daemon started with a 1 GB heap. However, the Android build failed with a Kotlin daemon out-of-memory error even at 1 GB heap. No APK was generated, and the emulator was not running during the build.
+
+### Android C++ linking
+Only the error log was presented. No implementation of the proposed CMake/build.gradle changes was shown, and no build result followed.
+
+### Renderer and PWA
+The renderer imported `designData` from `./figma-design.json`, mapped over `designData.layers`, branched on `TEXT`, `IMAGE`, and `BUTTON`, and applied dynamic image and font scaling. No runtime logs or device output were included, so successful parsing was not independently demonstrated. Figma inspection produced operational guidance (confirming 1920×1080 frames, linking text, adding text-box strokes) but did not directly validate the renderer.
+
+The single-screen import script was prepared using the `/nodes?ids=1-2` endpoint, but the later implementation saved the full API response wrapper rather than clearly extracting `data.nodes[NODE_ID]`. No generated file was inspected.
+
+For the PWA, `src/index.js`, `src/App.jsx`, `src/index.css`, `public/index.html`, and `public/manifest.json` were proposed. A discrepancy remained around styles (`index.css` vs `App.css` vs generated Create React App files). The app was not successfully run.
+
+### Local environment
+`npm start` failed because npm was not recognized. Suggested verification commands were `node -v`, `npm -v`, `where node`, and `where npm`. The final environment state was not shown.
+
+---
+
+## Outcome
+
+**Achieved:**
+- A workable design for Airtable relationships and a Supabase-based API path, with SQL examples covering schema, constraints, bulk data, deletion, and authentication concerns.
+- A working Windows development environment: Node/npm, Git, PowerShell execution policy, and VS Code tooling.
+- The `figma-to-react-native` repository cloned, its pnpm workspace recognized, and 903 dependencies installed.
+- A functional `import-figma.js` script that authenticates to the Figma REST API and writes `figma-design.json`.
+- A responsive `Screen1.js` component mapping Figma layers to React Native primitives using `Dimensions` scaling.
+- Java 17, Android SDK, `ANDROID_HOME`, `adb`, and `emulator` configured; Gradle daemon starts at 1 GB heap.
+- A coherent conceptual model of the pipeline: Figma/API → JSON design data → renderer → React components → browser app/PWA.
+- Correct identification that React Native primitives were incompatible with the browser target, and a reorientation to React DOM/PWA.
+- The correct Figma single-node API endpoint strategy for scoped imports.
+
+**Not achieved:**
+- No deployed endpoint, live Supabase/Airtable API, or executed SQL migration.
+- No successful Figma screen import, React Native build, deployed app, or PWA.
+- The Android app was not installed or running; the Kotlin daemon OOM persisted at 1 GB heap.
+- The C++ linker failure remained unresolved; no fix was implemented or validated.
+- None of the four renderer undefined-property errors was proven fixed.
+- The single-screen JSON output was not inspected; the intended isolation was not guaranteed.
+- The PWA did not demonstrably compile or start.
+- Node/npm availability was not confirmed after troubleshooting.
+- No user validation, usability testing, performance result, adoption metric, or business impact was established.
+
+---
+
+## FDE / APM Signal
+
+### Problem Solving — Strong (with limitations)
+The user supplied exact terminal errors at each failure point, allowing troubleshooting to progress from symptoms to causes: missing runtime → Node installation; path parsing → PowerShell quoting; script blocking → execution-policy scopes; missing module/build artifacts → monorepo workspace inspection. The strongest example was recognizing that the repository’s `package.json` used pnpm workspace filters rather than the previously assumed standalone CLI. The user also connected four renderer errors as one dependency chain. Limitation: the C++ linker failure was only an error dump with no user diagnosis; the final monorepo build and Android build remained unresolved.
+
+### Systems Thinking — Strong
+The user connected design, source control, package management, environment variables, API credentials, build scripts, TypeScript module resolution, and app execution. The user understood the monorepo dependency graph (`--filter`, `-w`, `pnpm -r`), the build pipeline (Metro → Gradle → Kotlin daemon → JVM), and the environment-variable chain (`JAVA_HOME` → `PATH` → `ANDROID_HOME` → `local.products`). The user reasoned that fixing code while leaving a malformed Figma hierarchy in place would likely preserve the errors, so they changed priorities to repair the design source first. Limitation: the user did not map the exact workspace package graph needed to resolve `figma-ui` and generated schema artifacts, and the component-level architecture was still evolving.
+
+### Product Judgment — Moderate
+The user constrained the solution around free tooling and compared no-code/PWA, web, and mobile paths based on project needs. Selecting a React Native converter rather than a design-preview tool indicates intent to obtain editable, runnable code. The user prioritized upstream Figma correctness, single-screen scoping, and local browser validation before deployment. Limitation: little evidence of end-user research, prioritization criteria beyond free tooling, usability validation, or commercial outcomes.
+
+### Technical Judgment — Strong
+The user investigated trade-offs among Airtable relationships, direct API queries, Supabase, custom API hosting, and SQL database-only services. The user chose Node 22 native `fetch` over `node-fetch`, JDK 17 over 21, reduced Gradle heap instead of blindly increasing it, and used the `Dimensions` API for responsiveness without extra dependencies. Limitation: the C++ linker fix was not validated, and some earlier assumptions about repository structure were incorrect.
+
+### 0→1 Execution — Moderate
+The user moved from requirements and tool selection to installing a full Windows development environment, cloning a repository, creating configuration files, installing a monorepo, writing a Figma API script, generating a component, and setting up the Android toolchain. Limitation: the highest-value steps—successful Figma-to-React Native conversion, a running UI, and a deployed app—were not reached.
+
+### Learning & Resourcefulness — Strong
+The user learned Node/npm, Git, PowerShell execution policies, React project organization, Figma identifiers/PATs, pnpm workspaces, monorepo build scripts, TypeScript module resolution, Gradle/JVM tuning, and Android SDK manual setup through direct experimentation. The user repeatedly adapted after failures rather than abandoning the goal, and compared several free design-to-code alternatives before committing to an open-source repository. Limitation: much of the work was guided troubleshooting rather than fully autonomous tool selection.
+
+### Outcomes & Communication — Moderate
+The user communicated errors with relevant context, including full command lines, paths, `package.json`, and build logs. The user asked for slow, stepwise explanations and explicitly corrected the assistant’s file-assumption errors. Limitation: no deployed product, working feature, validated user workflow, or business impact was shown.
+
+---
+
+## Portfolio Evidence
+
+### Potential case-study evidence
+- Designing a canteen employee-payment data model across Airtable linked records and a Supabase REST-backed SQL alternative, including constraint handling and secure signup schema.
+- Taking the TASL Canteen Figma design through free-tool evaluation, Windows environment provisioning, Git/pnpm monorepo setup, and troubleshooting of a failed monorepo build.
+- Repairing a broken pnpm workspace (missing `pnpm-workspace.yaml`, missing package folder, filter syntax), migrating a CommonJS script to ES modules, fetching the Figma REST API with Node 22 native `fetch`, and generating a responsive `Screen1.js` component.
+- Diagnosing a React Native Android C++ libc++ linker failure involving NDK r27, fbjni, `ANDROID_STL`, RTTI, and exception-handling symbols.
+- Pivoting React Native-oriented Figma code to a React DOM/PWA architecture, scoping a Figma API import to a single node, and prioritizing Figma source corrections over runtime guards.
+
+### Resume evidence
+- “Configured a pnpm monorepo for Figma-to-React-Native codegen; fixed workspace detection, ESM/CommonJS interop, and Gradle/JVM memory constraints. Built a script that fetches the Figma REST API using Node 22 native `fetch` and transforms JSON into responsive React Native components using the `Dimensions` API. Set up the Android toolchain (JDK 17, SDK, AVD) and tuned Gradle/Kotlin daemon memory for low-RAM environments.”
+- “Diagnosed environment-level blockers across Windows, VS Code, PowerShell, Node/npm, and Git; installed a 903-package pnpm monorepo and progressed from a missing-CLI assumption to build-level module-resolution analysis.”
+- “Explored backend patterns for Airtable-linked records, Supabase REST APIs, SQL constraints, bulk operations, and secure signup storage.”
+- “Adapted a React Native-style application for browser execution by identifying incompatible native components and introducing a React DOM entry point, HTML root, manifest, and CSS-based styling.”
+
+### Unproven claims
+- No completed Figma screen import, React Native build, deployed app, or PWA is demonstrated.
+- No live Supabase/Airtable API, authentication flow, or SQL migration is shown as executed.
+- The Android C++ linker failure was not resolved; the app does not run on an emulator or device.
+- The four renderer errors were not proven fixed, and the single-screen JSON output was not verified.
+- No deployed, user-tested, installable, or offline-capable PWA is established.
+- No business impact, adoption metric, or productivity improvement is demonstrated.
+- The evidence does not independently establish advanced expertise; much of the work was guided through environment setup and troubleshooting.
+- A Figma API token appeared in plaintext in a `.env` file; it should be revoked or rotated and moved to environment variables before any reuse.

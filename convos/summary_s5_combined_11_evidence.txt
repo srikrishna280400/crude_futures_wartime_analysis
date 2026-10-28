@@ -1,0 +1,316 @@
+# Output 1 — Evidence Dossier: My Software-Building Journey
+
+## Scope, Source Traceability, and Evidence Posture
+
+**Available source material in this thread:** six supplied evidence summaries, all visibly labeled around `evidence_s5_summary_s5_*` in the pasted excerpts. The prompt references an 11-source collection, but only these six were provided. I cannot truthfully populate the full S1–S11 chain from the current material, so this dossier uses the available sources and avoids inventing missing episodes.
+
+**Chronology posture:** The sources are not chronological. The dossier therefore organizes findings by theme and flags where chronology is uncertain.
+
+**Evidence posture:**
+- **Verified:** user-reported or user-confirmed outcomes, e.g., Vite running, CRA compiling, module warning resolved, mobile tunnel working.
+- **Attempted/Unresolved:** user actions or assistant suggestions not validated, e.g., Android linker fix, Tailwind setup, production deployment, backend execution.
+- **Assistant suggestions vs. user action:** where the user followed AI guidance, the dossier notes exposure/autonomy; where the user asked questions, diagnosed, chose, or iterated, it notes user reasoning.
+
+---
+
+# 1. Project and Learning Overview
+
+## What I was trying to achieve
+
+The evident goal was to convert a Figma-designed canteen billing/ordering product — initially framed around TASL canteen bill management and mobile payment flow — into a working software artifact, while also addressing backend data/API needs.
+
+The broader project arc included:
+- Converting Figma exports into frontend code.
+- Handling Figma JSON structure, styling, text, images, positioning.
+- Choosing frontend stack: React Native, Vite+React PWA, CRA+React PWA, React+Tailwind.
+- Setting up backend/data options: Airtable, Supabase, custom API/SQL.
+- Debugging Windows/Node/PowerShell environment.
+- Building a renderer that could map Figma design data to UI.
+- Exposing app for mobile testing via tunnel.
+- Considering PWA vs native mobile.
+
+## Unfamiliar challenges encountered
+
+The user repeatedly encountered unfamiliar territory:
+- Figma JSON was deeply nested: `document → children → CANVAS → FRAME → elements`, using `absoluteBoundingBox`, `fills`, `strokes`, `characters`, `imageRef`.
+- No responsive layout hints; absolute coordinates only.
+- Image fills required separate Figma API calls.
+- Interaction states not present in JSON.
+- Initial React Native attempt incompatible with browser runtime.
+- Node/npm not recognized on Windows.
+- Module system ambiguity: CommonJS vs ESM.
+- Backend choice ambiguity: Airtable vs Supabase vs custom SQL/API.
+- Mobile access: localhost not reachable from physical device.
+
+## How capability developed through the work
+
+The evidence suggests a learning trajectory:
+- From **no working app / no clear starting point** → to **running Vite PWA / CRA PWA**.
+- From **JSX SyntaxError** → to **recursive renderer built**.
+- From **Figma JSON mismatch** → to **renderer mapping fixed**.
+- From **MODULE_TYPELESS_PACKAGE_JSON confusion** → to **user deciding on `"type": "module"`**.
+- From **backend ambiguity** → to **Supabase/PostgreSQL/SQL design decisions**.
+- From **AI-following in some sessions** → to **user-driven diagnosis in later sessions**.
+
+But this is not a story of seamless mastery. It is a story of progressive clarity through confusion, testing, failure, and correction.
+
+---
+
+# 2. Strongest Engineering Episodes
+
+## Episode 1: From “App.js should run” to verified frontend rendering
+
+**Sources:** S5-1, S5-3, S5-4, S5-6
+
+**User’s goal:** Run a Figma-derived app.
+
+**Unfamiliar problem:** User attempted to run `App.js` directly with Node.js and hit `SyntaxError: Unexpected token '<'`. This indicated JSX was not being transpiled.
+
+**User’s actions/decisions:**
+- Accepted pivot from React Native to Vite+React PWA for faster visual iteration.
+- Built `FigmaRenderer.jsx` through versions:
+  1. Basic TEXT/RECTANGLE.
+  2. Recursive `absoluteBoundingBox` positioning.
+  3. Defensive defaults + RGBA conversion.
+  4. Image placeholder.
+- Fixed `designData.map is not a function` by diagnosing nested-object vs flat-array mismatch.
+- Corrected extraction path to `document.children[0].children[0].children`.
+- Rewrote recursive renderer mapping `fills→backgroundColor`, `strokes→border`, `absoluteBoundingBox→absolute positioning`.
+
+**Verified outcome:**
+- Vite+React PWA ran at `localhost:5173`.
+- First frame rendered logo rectangle, “Profile” text, hamburger frame, rounded button.
+- CRA PWA compiled successfully at `localhost:3002`.
+- React app rendered frames, rectangles, text with positioning/colors.
+
+**Why this is strong:** Root-cause debugging, recursive algorithm design, defensive rendering.
+
+## Episode 2: Build-error cascade and module-system clarity
+
+**Sources:** S5-1, S5-5
+
+**User’s goal:** Get Node script running and understand module behavior.
+
+**Unfamiliar problem:** Multiple build errors:
+- Missing `start` script.
+- CSS-in-JS Babel error.
+- React 17 vs 18 API mismatch.
+- ESM extension requirements.
+- Dynamic JSON import failure.
+
+Then later:
+- `MODULE_TYPELESS_PACKAGE_JSON` warning.
+- User asked whether `"type": "module"` was permanent or temporary.
+- User asked about `.mjs`/`.cjs` dual-module strategy.
+- User chose simpler permanent config first.
+
+**User’s reasoning/actions:**
+- Systematically fixed five compilation errors.
+- Investigated module warning rather than ignoring it.
+- Shared `package.json` contents for precise diagnosis.
+- Learned CommonJS vs ESM distinction.
+
+**Verified outcome:** `MODULE_TYPELESS_PACKAGE_JSON` warning resolved after adding `"type": "module"`.
+
+**Why this is strong:** Technical judgment, patience, willingness to understand before choosing.
+
+## Episode 3: Backend/data-model decision-making
+
+**Sources:** S5-2, S5-4
+
+**User’s goal:** Support canteen billing data/API.
+
+**Unfamiliar problem:** How to model employee, order, payment relationships.
+
+**Options considered:**
+- Airtable linked records + Lookup/Rollup.
+- Direct API filtering via `FILTER_BY_FORMULA`.
+- Standalone SQL backend: Supabase PostgreSQL with auto-generated REST API; custom API on Railway/Render/db4free.
+
+**User’s decision:** Selected Supabase for PostgreSQL + auto-generated REST API as lowest-code backend option. Kept Airtable linked records as alternative.
+
+**User’s technical actions:**
+- Drafted Airtable schema.
+- Wrote parameterized SQL for Supabase.
+- Addressed NOT NULL constraints.
+- Defined defaults.
+- Explored bulk inserts, random test data, deletion by employee ID.
+
+**Verified outcome:** Partially achieved — backend decisions and SQL examples done; backend execution not fully completed.
+
+**Why this is strong:** Product + technical judgment in scoping backend approach.
+
+## Episode 4: Mobile access, PWA, and debugging deployment-adjacent setup
+
+**Sources:** S5-3, S5-4, S5-6
+
+**User’s goal:** Access Vite app from physical Android device.
+
+**Unfamiliar problem:** Vite dev server on localhost not reachable from phone; HMR WebSocket failure; LAN timeout.
+
+**User’s actions:**
+- Verified Vite bound to localhost only.
+- Tested LAN addresses.
+- Tried ngrok (failed), LocalTunnel (succeeded).
+- Updated `vite.config.ts` with `allowedHosts: ['.loca.lt']`.
+- Used LocalTunnel script: `lt --port 3001 --subdomain my-canteen-app`.
+- Validated mobile access by opening URL on Android device.
+
+**PWA work:**
+- CRA + `react-scripts`; `react-native-svg`; manifest; service worker.
+- SWC plugin over Babel.
+- Minimal PWA config.
+- Global CSS modernization: variables, dark mode, `@layer`, safe-area insets, OKLCH with fallbacks.
+
+**Verified outcome:** Mobile access achieved via LocalTunnel; app loaded on Android. PWA compilation partially verified.
+
+**Unresolved:** Production deployment, full PWA installability/offline, final visual validation.
+
+## Episode 5: Android native build struggles
+
+**Source:** S5-2
+
+**User’s goal:** Build React Native app on Android emulator.
+
+**Unfamiliar problem:** NDK r27.1.12297006, React Native TurboModule registration, Kotlin daemon OOM, C++ linker errors.
+
+**User’s actions:**
+- Installed JDK 17, Android Studio/SDK, AVD.
+- Fixed `ANDROID_HOME`, `ANDROID_SDK_ROOT`, PATH.
+- Tuned Gradle memory to 1 GB, Kotlin daemon to 1 GB.
+
+**Outcome:** Toolchain configured; Android build not successful; C++ linker error unresolved.
+
+**Why it matters:** Strong systems thinking and environment debugging, but unresolved.
+
+---
+
+# 3. Technical Learning Inventory
+
+| Concept / Tool | Evidence | Stage |
+|---|---|---|
+| JSX / transpilation | `SyntaxError: Unexpected token '<'`; Vite/CRA pivot; React 17 vs 18 | Exposure → Understanding → Application → Verified |
+| ESM / CommonJS | `MODULE_TYPELESS_PACKAGE_JSON`; `"type": "module"`; `.mjs`/`.cjs` | Understanding → Application → Verified |
+| Node/npm/PowerShell/Windows | Path spaces, execution policy, Node version, nvm-windows, clean-slate | Understanding → Application → Verified |
+| Figma JSON schema | Nested tree, `absoluteBoundingBox`, `fills`, `strokes`, `characters`, `imageRef`; `designData.map` fix | Understanding → Application → Partial verified |
+| Recursive renderer | FRAME/GROUP containers, TEXT/RECTANGLE/ELLIPSE/LINE/VECTOR/INSTANCE | Application → Verified partially |
+| Responsive scaling | Absolute positioning, 402×874 reference, viewport scaling, wrapper | Decision → Application → Partial verified |
+| PWA | Vite/CRA, manifest, service worker, SWC, Tailwind, safe-area, OKLCH | Application → Partial verified |
+| Backend | Supabase, PostgreSQL, SQL constraints, integer cents, transactions, parameterized queries | Understanding → Decision → Not fully executed |
+| AI-assisted development | User followed AI in some sessions; later independently diagnosed module/renderer issues | Mixed |
+
+**Key distinction:** Exposure is not mastery. The user sometimes asked AI to “check and tell if it needs fixes” without independent decomposition. Later, the user investigated module type, renderer structure, and backend choices more independently.
+
+---
+
+# 4. Competency Map
+
+| Competency | Evidence | Level | Relevance |
+|---|---|---|---|
+| Problem-solving | Sequential fixes: JSX, five build errors, JSON mismatch, module warning, environment | Strong | FDE, technical product, engineering |
+| Systems thinking | Figma → JSON → renderer → React → PWA → backend; HMR chain | Strong | FDE, technical product, product-building |
+| Technical judgment | Vite vs CRA, ESM vs dual, Supabase vs MERN, integer cents, absolute vs flex, SWC vs Babel | Strong | FDE, APM, technical product |
+| Product judgment | Scoped MVP, excluded public analytics, chose PWA/RN, accepted bottom-height variance | Moderate–Strong | APM, product-building |
+| Execution | Built renderer, PWA, mobile tunnel; no production/tests/CI | Moderate | Product-building, FDE |
+| Self-directed learning | Environment, renderer, backend decisions; some AI-following | Strong–Moderate | APM, FDE, technical product |
+| AI-assisted development | Mixed autonomy; user followed AI, later diagnosed independently | Mixed | Applied AI, product-building |
+| Communication/outcomes | Shared errors, console logs, diagnostics, copy-paste files | Moderate | Team/product contexts |
+
+**Mapping to target roles:**
+- **FDE:** Strongest overlap in debugging, full-stack prototype, ambiguity navigation, backend decision, environment troubleshooting. Gaps: production auth, monitoring, deployment.
+- **APM:** Product scoping, MVP exclusions, user flows, backend data model. Gaps: user research, metrics, validation.
+- **Technical product:** Design system/renderer reasoning, MVP scope, technical trade-offs. Gaps: stakeholder collaboration evidence.
+- **Product-building:** End-to-end learning from ambiguity to working prototype. Gaps: testing, deployment, polish.
+
+---
+
+# 5. Portfolio Priorities
+
+## Ranked strongest potential stories
+
+1. **From ambiguous Figma JSON to working recursive PWA renderer**
+   - Evidence: Figma JSON mismatch, recursive renderer, defensive defaults, Vite/CRA verification.
+   - Why strong: combines product ambiguity, technical execution, debugging.
+
+2. **Full-stack backend decision and data-model design for canteen billing MVP**
+   - Evidence: Airtable vs Supabase vs custom; SQL constraints; integer cents; transactions; parameterized queries.
+   - Why strong: technical + product judgment, though backend not fully executed.
+
+3. **Mobile access and PWA debugging**
+   - Evidence: Vite localhost, LAN, LocalTunnel, `allowedHosts`, mobile validation, service worker, Tailwind fix.
+   - Why strong: execution under ambiguity.
+
+4. **AI-assisted development autonomy gradient**
+   - Evidence: user followed AI in some sessions; later independently diagnosed module/renderer issues.
+   - Why strong for FDE/APM/AI product roles.
+
+5. **Android native toolchain troubleshooting**
+   - Evidence: JDK, SDK, Gradle, Kotlin OOM, C++ linker.
+   - Why strong: systems thinking, unresolved gaps.
+
+## Resume-worthy evidence and keywords
+
+- Figma JSON: `absoluteBoundingBox`, `fills`, `strokes`, `characters`, `imageRef`, recursive renderer.
+- Frontend: React, Vite, CRA, ReactDOM, Tailwind, PostCSS, SWC, service worker, PWA manifest.
+- Modules: ESM, CommonJS, `"type": "module"`, `.mjs`, `.cjs`, `MODULE_TYPELESS_PACKAGE_JSON`.
+- Environment: Node, npm, pnpm, PowerShell, Windows PATH, nvm-windows, execution policy.
+- Backend: Supabase, PostgreSQL, SQL, parameterized queries, integer cents, transactions, Airtable.
+- Mobile: Android SDK, JDK 17, Gradle, Kotlin daemon, NDK, emulator, C++ linker.
+- Access: LocalTunnel, Cloudflare Tunnel, Vite `allowedHosts`, mobile browser validation.
+
+## Gaps requiring verification
+
+- No production deployment.
+- No automated tests/CI/CD.
+- No accessibility/i18n.
+- No real payment gateway integration.
+- No user testing/metrics.
+- No backend execution.
+- No real image rendering from Figma API.
+- No interaction states.
+- No full responsive fidelity.
+
+---
+
+# 6. Final Synthesis: From Ambiguity to Clarity/Mastery and What It Demonstrates
+
+The journey reflected in the sources shows a user moving from a state of **ambiguity, ignorance, uncertainty, and no clear idea of the basics/jargon** toward **clarity, understanding, and partial mastery** through software-building work.
+
+Initial state:
+- No working app.
+- Unclear Node/JSX/module setup.
+- Unclear Figma JSON structure.
+- Unclear backend approach.
+
+Later state:
+- Verified Vite/CRA frontend rendering.
+- Fixed module warning.
+- Built recursive renderer.
+- Chose backend approach.
+- Debugged mobile access.
+- Began modern CSS/PWA work.
+
+The final dossier should express the user’s intent clearly: **the purpose of this project was to demonstrate the ability to learn, understand, think, and apply the basics and jargon of software development, product management, and applied AI.**
+
+This intent is visible in:
+- Asking whether `"type": "module"` was permanent.
+- Asking AI to check Figma JSON.
+- Investigating environment issues.
+- Choosing Supabase.
+- Choosing absolute positioning.
+- Investigating HMR.
+- Iterating on renderer.
+
+At the end of the provided evidence, the user had not mastered everything. The journey was partial but real: from not knowing basics to debugging, building, deciding, and learning. The final synthesis for recruiters in FDE, APM, technical product, and product-building roles should emphasize:
+- Ability to start from ambiguity.
+- Self-directed learning.
+- Technical debugging.
+- Product scoping.
+- AI-assisted development with evolving autonomy.
+- Execution from idea to prototype.
+
+**Recruit-facing phrasing should avoid overclaiming.** It should say something like:
+
+> “I moved from not knowing how to run a Figma-to-code conversion, through environment and module debugging, to building and verifying a recursive Figma renderer, choosing a backend approach, and debugging mobile access. Along the way, I learned JavaScript module systems, React rendering, PWA setup, backend data modeling, and AI-assisted development. The strongest evidence is not that I knew everything, but that I turned ambiguity into implemented learning.”
+
+This is the core story to carry forward for FDE/APM/technical product/product-building roles: **the person behind the build demonstrated learning, reasoning, and iterative execution under uncertainty.**

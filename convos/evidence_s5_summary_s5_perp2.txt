@@ -1,0 +1,119 @@
+# Evidence Extraction: TASL Canteen Application
+
+## 1. Problem Statement & Goal
+
+**Problem:** The TASL Canteen application required a consistent multi-screen React frontend (CreateBillScreen, Dashboard/Calculator, OrderHistoryScreen, PaymentsListScreen) with unified navigation, drawer behavior, branding, and card layouts. Multiple screens exhibited layout drift, inconsistent drawer positioning, prop-shadowing bugs, and TypeScript type conflicts that prevented proper rendering and navigation.
+
+**Goal:** Establish a coherent, cross-screen UI standard where all screens share:
+- Fixed-position Sheet/drawer trigger at top-left (`top: 12px, left: 12px`)
+- Consistent header structure (logo + centered title + cart button)
+- Standardized card components with spacing, shadows, and borders
+- Uniform menu item ordering (first item = "Create a Bill")
+- Centralized navigation logic across screens
+
+**Ambiguities:**
+- Screen-specific requirements varied (e.g., OrderHistoryScreen needed 3 bill cards with status badges; PaymentsListScreen needed a "All Payments" header card)
+- Some inconsistencies remained between screens (e.g., menu item ordering differed between CreateBillScreen and OrderHistoryScreen)
+- The application lacked persistent storage for bills (state-only, lost on refresh)
+
+## 2. User Reasoning & Actions
+
+The user progressively requested specific fixes and refinements across episodes:
+
+- **Episode 1 (Baseline):** Provided reference screens (registration, login, dashboard/calculator) as immutable visual contracts. Decision: do not alter referenced designs without explicit authorization.
+- **Episode 2 (CreateBillScreen/Dashboard Alignment):** Modified menu positioning (fixed at top-left) and changed first menu item from "Create a Bill" to match other screens.
+- **Episode 3 (Logo Overlap & Cart Redirect):** Shifted logo right by 3.5rem to resolve overlap; added conditional redirect when cart empties after deletion.
+- **Episode 4 (Cart Accumulation & Navigation):** Implemented cart value accumulation when adding calculator values; added "Calculate" drawer redirect to dashboard; changed "Create a Bill" button to green "Pay Now."
+- **Episode 5 (Prop Shadowing):** Identified local `const foodItems` shadowing parent prop; advised removing local constant and relying on parent-passed `foodItems`.
+- **Episode 6 (Floating Cart Button):** Iteratively fixed cart button positioning—first tried inline `bottom: "5rem"` (failed), then aggressive positioning with `position: fixed`, `zIndex: 99999`, followed by centered implementation with `left: 50%`, `transform: translateX(-50%)`.
+- **Episode 7 (OrderHistoryScreen):** Built from scratch using design specifications; resolved header-to-cards gap, card spacing (`gap-1` + `mt-1`), menu item ordering, and empty-state logic.
+- **Episode 8 (UI Consistency):** Cross-referenced all screens to standardize header/menu/card layout; partially achieved consistency but noted remaining inconsistencies.
+- **Episode 9 (Sheet/Drawer Trigger):** Moved `<Sheet>` outside the header flex container to match working pattern on other screens.
+- **Episode 10 (Type Conflict Resolution):** Removed duplicate `Bill` type definition; used only imported `Bill` type; typed sample data as `Bill[]` to satisfy props.
+- **Episode 11 (PaymentsListScreen):** Extracted UI patterns from existing screens; rewrote component to mirror previous five screens with consistent spacing, card structure, and navigation.
+
+## 3. Tools, Technologies, & Implementation Attempts
+
+| Technology | Role | Evidence |
+|------------|------|----------|
+| **React + TypeScript** | Core framework for all screens | Used throughout; `App.tsx` manages state, `UseState` for sheet visibility |
+| **Tailwind CSS** | Styling system | Classes like `max-w-2xl mx-auto`, `gap-5`, `mt-8`, `border-blue-100`, `shadow`, `rounded-lg` appear in multiple screens |
+| **shadcn/ui** | Component library | `Sheet`, `SheetTrigger`, `SheetContent`, `Card`, `Button`, `Badge`, `IconButton` used consistently |
+| **Radix UI** | Portal-based modal/drawer | `Sheet` component wrapped with `SheetTrigger asChild` pattern |
+| **Lucide React** | Icon set | `FileText`, `Building2` icons referenced in menu and header elements |
+| **TypeScript** | Type safety | Shared `Bill` type exported from `App.tsx`; sample data typed as `Bill[]`; `UserType` interface defined |
+
+**Implementation Iterations:**
+1. **Initial baseline** (Episode 1): Established three-screen reference (registration, login, dashboard) as immutable design contract.
+2. **Alignment fixes** (Episode 2): Fixed menu positioning and first menu item name.
+3. **Logo & redirect** (Episode 3): Adjusted logo offset and added cart-empty redirect logic.
+4. **Cart behavior** (Episode 4): Implemented cart accumulation and "Calculate" drawer redirect.
+5. **Prop shadowing** (Episode 5): Resolved local `const foodItems` shadowing parent prop.
+6. **Floating cart** (Episode 6): Iterated positioning from inline `bottom` to fixed-position with z-index and centering.
+7. **OrderHistoryScreen** (Episode 7): Complete rebuild with header, menu, cards, and empty-state logic.
+8. **Consistency audit** (Episode 8): Cross-screen comparison identified remaining inconsistencies.
+9. **Sheet trigger fix** (Episode 9): Moved Sheet outside header to match other screens.
+10. **Type conflict resolution** (Episode 10): Eliminated duplicate `Bill` type; enforced single source of truth.
+11. **PaymentsListScreen** (Episode 11): New screen implementing full pattern from existing screens.
+
+## 4. Debugging, Experiments, & Root Causes
+
+**Root Cause 1: Prop Shadowing (Episode 5)**
+- *Symptom:* Only one food item rendered despite a 15-item `foodItems` array.
+- *Diagnosis:* Local `const foodItems: FoodItem[] = [...]` declared inside component shadowed the parent-provided `foodItems` prop due to lexical scoping.
+- *Fix:* Remove local constant; rely exclusively on parent-passed prop; add debug logs to confirm prop flow.
+
+**Root Cause 2: Floating Cart Button Positioning (Episode 6)**
+- *Symptom:* Initial `bottom="5rem"` prop was invalid; inline CSS change removed error but didn't achieve desired position.
+- *Experimentation:* Aggressive override with `position: fixed`, `zIndex: 99999`, `pointerEvents: "auto"`, transparent background, optional red border; then refined to centered implementation with `left: 50%`, `transform: translateX(-50%)`, `width: 100%`, `maxWidth: 480px`.
+- *Verification:* User confirmed both aggressive and centered versions worked.
+
+**Root Cause 3: TypeScript Type Conflicts (Episode 10)**
+- *Symptom:* Duplicate `Bill` type re-declaration caused red-line errors, breaking drawer interaction in `OrderHistoryScreen7`.
+- *Experimentation:* Removed local `Bill` type entirely; used only imported `Bill`; typed sample data as `Bill[]`; verified no TS errors after fix.
+
+**Root Cause 4: Inconsistent Menu Ordering (Episode 8)**
+- *Symptom:* Different screens had different first menu items (e.g., "Create a Bill" vs. "Calculate").
+- *Resolution:* Standardized all screens to use "Create a Bill" as the first menu item.
+
+## 5. Verified Outcomes vs. Intended/Untested Work
+
+| Screen | Status | Verified Outcome |
+|--------|--------|------------------|
+| **CreateBillScreen** | ✅ Partially achieved | Baseline established; menu fixed at top-left; drawer first option "Calculate"; cart button present; no implementation evidence of authoring/testing/deploying |
+| **Dashboard/Calculator** | ✅ Partially achieved | Menu fixed at top-left; drawer first option "Calculate"; calculator grid and bill/payment actions preserved; no live test evidence |
+| **OrderHistoryScreen** | ✅ Fully implemented | Header with centered "Order History" title; left menu icon opens left-side drawer with 6 items (first = "Create a Bill"); 3 bill cards with status badges (green paid, orange pending); formatted timestamps; empty-state only when `bills` prop is empty array; ready for integration with real `bills` array |
+| **PaymentsListScreen6** | ✅ Fully implemented | Mirrors previous five screens; fixed drawer trigger; header with logo and "Payment History" title; card layout with blue background "All Payments" header; paginated payment list; no runtime errors; ready for integration |
+| **Floating Cart Button** | ✅ Verified | User confirmed both aggressive positioning and centered implementation worked |
+| **Prop Shadowing Fix** | ✅ Resolved | Local `const foodItems` removed; parent-provided `foodItems` now flows correctly; no more shadowing |
+| **Type Conflict Resolution** | ✅ Resolved | Single source of truth for `Bill` type; no TypeScript errors in `OrderHistoryScreen` |
+
+**Unverified/Unresolved:**
+- Full runtime validation of all changes (no build/test results shown for most screens)
+- Backend integration and persistent storage (bills held only in component state, lost on refresh)
+- Mobile responsiveness testing
+- Accessibility compliance (ARIA attributes, keyboard navigation)
+- Performance optimization (lazy loading, bundle size)
+- End-to-end workflow validation (calculator → bill creation → order history → payment listing)
+
+## 6. FDE/APM Signals
+
+| Category | Signal Strength | Details |
+|----------|----------------|---------|
+| **Product Judgment** | Moderate | Clear articulation of UI requirements with precise measurements; strong emphasis on consistency across screens; moderate awareness of trade-offs (e.g., keeping sample data for demo vs. real data) |
+| **Technical Judgment** | Strong | Correct identification of prop-shadowing; accurate CSS positioning decisions; solid type management strategy; proper use of shadcn/ui and React patterns |
+| **Systems Thinking** | Moderate | Understanding of cross-screen dependencies (navigation, drawer, state); recognized that menu ordering affects navigation flow; aware of data flow from parent to child components |
+| **0→1 Execution** | Weak | Many changes were implemented by the assistant rather than independently by the user; no evidence of the user authoring code in multiple episodes |
+| **Learning & Resourcefulness** | Moderate | User provided full code on request for debugging; assistant demonstrated effective learning from code review; some gaps in independent problem-solving (e.g., initial floating cart positioning attempt) |
+| **Potential FDE Risks** | Moderate | - Partial UI consistency across screens (remaining minor differences)<br>- State-only bill persistence (data loss on refresh)<br>- No accessibility testing visible<br>- No end-to-end validation of workflows |
+
+## 7. Key Dependencies & Trade-offs
+
+- **Dependency:** All screens depend on a shared `Bill` type exported from `App.tsx`. Any change to this type propagates to all screens.
+- **Trade-off:** Using sample data (`sampleBills` constant) for demo purposes simplifies development but prevents real-world data integration. The `bills` prop allows switching to real data later.
+- **Constraint:** The application uses a single-page architecture with no global drawer at `App` level; each screen manages its own `Sheet` component with fixed positioning.
+- **Design Decision:** "Create a Bill" must be the first menu item across all screens for consistency, even though some screens originally had different orderings.
+
+## 8. Summary
+
+This evidence collection documents a multi-episode effort to build a coherent TASL Canteen React application. The project progressed from establishing a baseline (Episode 1) through iterative alignment (Episode 2-4), bug fixing (prop shadowing, floating cart positioning, type conflicts), and final screen implementation (OrderHistoryScreen, PaymentsListScreen6). While most screens are now consistent and functional, the codebase lacks full runtime validation, persistent data storage, and comprehensive accessibility/performance testing. The strongest signals are in technical correctness (correct prop handling, stable positioning, type safety) and product consistency (unified UI across screens). Remaining gaps include end-to-end workflow validation and production-readiness concerns (state-only bill persistence, lack of mobile responsiveness testing).

@@ -1,0 +1,718 @@
+# Comprehensive Evidence Summary: Figma-to-Code Conversion & Environment Setup Journey
+
+## Executive Overview
+
+This document synthesizes evidence from multiple conversation sessions spanning a user's efforts to convert Figma design files into functional frontend applications. The work centers on a **TASL Canteen Bill Management Software** interface (branded with Tata Advanced Systems) and a mobile payment flow, with repeated attempts across different tech stacks: React Native, Vite+React PWA, Create React App (react-scripts), and React+Tailwind. The timeline reveals a practitioner navigating environment friction, JSON schema complexity, and iterative renderer development—demonstrating strong problem-solving and technical judgment, but with notable gaps in product judgment, outcomes validation, and independent execution without assistant guidance.
+
+---
+
+## Session 1: Initial Figma-to-React Native Attempt & Pivot to Vite+React PWA
+
+### Problem Context
+The user began with a `package.json` containing `figma-build`, `figma-ui`, and `react-native` dependencies but no working application. The Figma design was exported as JSON via `figma-build`/`figma-ui` tools. The JSON structure was complex: nested frames, rectangles with image fills, text nodes, vectors, groups, and instances. Key structural characteristics included:
+- `document.children[0].children` = pages → frames (screens)
+- Each frame has `children` array of nodes
+- Node types: `FRAME`, `RECTANGLE`, `TEXT`, `VECTOR`, `GROUP`, `INSTANCE`, `ELLIPSE`
+- Positioning via `absoluteBoundingBox` (x, y, width, height)
+- Styling via `fills` array: `SOLID` with `color` (r,g,b,a in 0-1 range) or `IMAGE` with `imageRef` hashes
+- Text content in `characters`, style in `style` object
+
+### Initial Failure & Diagnosis
+The user attempted to run `App.js` directly with Node.js, producing `SyntaxError: Unexpected token '<'`—JSX not transpiled. No Android emulator was running (`adb devices` empty). The assistant diagnosed that JSX requires Metro/Babel bundler and guided the user toward `npx react-native start` + `run-android` with emulator.
+
+### Pivot Decision
+When emulator setup stalled, the user accepted the suggestion to build a PWA with Vite+React for faster visual feedback: `npm create vite@latest figma-pwa -- --template react`. This was a significant **technical judgment** decision: trading native mobile capabilities for 10x faster iteration cycles.
+
+### Iterative Renderer Development
+The user built `FigmaRenderer.jsx` in four progressive versions:
+
+| Version | Capability Added | Key Technical Detail |
+|---------|------------------|---------------------|
+| v1 | Basic `TEXT`/`RECTANGLE` only, simple position mapping | Direct coordinate mapping |
+| v2 | `absoluteBoundingBox` positioning, recursive children rendering, frame extraction | `renderNode` recursive function handling arbitrary nesting |
+| v3 | Defensive defaults for missing data, RGBA color conversion (Figma 0-1 → CSS 0-255) | `Math.round(color.r * 255)` etc. |
+| v4 | Placeholder for image fills | `backgroundImage: url('data:image/png;base64,PLACEHOLDER_IMAGE')` |
+
+**Critical debugging loop**: Each render attempt revealed new gaps:
+- Random placement → fixed with `absoluteBoundingBox.x/y` → CSS `left/top`
+- Missing images → `imageRef` hashes require separate Figma API call → placeholder
+- Default Vite page showing → fixed `App.jsx` import to use `FigmaRenderer`
+
+### Configuration Decisions
+- Added `"type": "module"` to `package.json` for ES module imports (required `.cjs` for CommonJS interop)
+- Used CSS absolute positioning as direct Figma coordinate mapping (fixed-position layout, not responsive)
+- Rendered only first screen (`screens[0]`) to reduce complexity
+
+### Outcome
+Vite+React PWA runs at `http://localhost:5173`. First frame ("iPhone 16 Pro - 9") renders with:
+- Logo rectangle (positioned, sized, placeholder image)
+- "Profile" text (Inter Bold 24px, positioned)
+- Hamburger menu frame with vector icon
+- Rounded rectangle button (positioned, colored)
+
+Second frame ("iPhone 16 Pro - 8") not rendered. Checkmark ellipse + vector, "Dues Settled!" button on second frame not visible. Images and instances remain placeholders.
+
+### Demonstrated Competencies (Session 1)
+- **Problem Solving (Strong)**: Root-caused JSX transpilation error independently; diagnosed JSON structure mismatches by inspecting actual data; iterated renderer to handle missing `absoluteBoundingBox`, optional `fills`, nested `children`
+- **Technical Judgment (Strong)**: Chose `"type": "module"`; pivoted to Vite+React when RN toolchain blocked progress; designed recursive renderer matching Figma's tree structure
+- **Learning & Resourcefulness (Strong)**: Built mental model of Figma JSON schema from raw data (no docs); self-corrected import paths, terminal commands, file locations; adapted code to actual JSON structure
+- **0→1 Execution (Moderate)**: Created working PWA from scratch in ~1 hour; rendered real design data; but image resolution, responsiveness, multi-screen deferred
+- **Systems Thinking (Moderate)**: Understood Figma node hierarchy; recognized `absoluteBoundingBox` as source of truth; identified `imageRef` as external dependency
+- **Product Judgment (Moderate)**: Good call pivoting to web for speed; but no explicit success criteria, user stories, or scope definition
+- **Outcomes & Communication (Weak)**: No documentation of renderer API, JSON schema assumptions, or known limitations
+
+---
+
+## Session 2: Static Figma Design File Analysis
+
+### Problem
+Separate session analyzing the same Figma design file exported as JSON, specifically examining a mobile payment interface for iPhone 16 Pro. Goal: understand design system, component hierarchy, and styling specifications.
+
+### Approach
+Methodical parsing through JSON structure examining:
+- Frame hierarchies and nested components
+- Styling properties (colors, fonts, blend modes)
+- Layout constraints and positioning
+- Component types (RECTANGLE, TEXT, FRAME, VECTOR, GROUP)
+
+### Key Design Specifications Extracted
+- **Color System**: RGB with alpha (light gray background: r:0.884, g:0.914, b:0.939)
+- **Typography**: Inter font family, Bold 700 for headers, Regular 400 for body
+- **Layout**: Absolute positioning with TOP/LEFT constraints
+- **Component Organization**: Logical grouping with named elements ("Outstanding Amount", "Scan Here To Pay")
+
+### UI Components Identified
+- Tata Advanced Systems logo placement
+- "Outstanding Amount" header text
+- Navigation bar with vector icon
+- Payment card container with rounded corners (15px radius)
+- "Scan Here To Pay" call-to-action text
+- Consistent spacing and alignment patterns
+
+### Outcome
+Comprehensive design specifications documented: exact color values, font families/sizes/weights, component dimensions/positioning, layout constraints, hierarchical structure.
+
+### Competencies
+- **Technical Judgment (Moderate)**: Parsed complex JSON to extract meaningful design information
+- **Systems Thinking (Moderate)**: Recognized component hierarchy and relationships; identified consistent styling patterns
+- **Limitation**: No evidence of actual implementation or code generation; limited context on usage intent
+
+---
+
+## Session 3: Figma JSON to React PWA (Create React App + react-scripts)
+
+### Problem
+Transform Figma design export (`figma-design.json`) into runnable React PWA with offline capabilities. JSON contained frames, text, rectangles, vector elements requiring correct positioning, styling, and PWA features.
+
+### Approach
+Deliberate sequence:
+1. Set up React project structure with `src/` and `public/`
+2. Install dependencies including `react-native-svg` and `react-scripts`
+3. Configure PWA essentials: `manifest.json`, service worker registration, CSS for offline states
+4. Build recursive `FigmaRenderer` component mapping Figma JSON nodes to styled `div` elements
+5. Debug compilation errors one by one
+
+### Key Technical Decisions
+
+| Decision | Rationale | Trade-off |
+|----------|-----------|-----------|
+| React 17 `ReactDOM.render()` over React 18 `createRoot` | Matched installed React version | Older API, but compatible |
+| Static JSON import (`import designData from './figma-design.json'`) | Avoided bundler issues with dynamic `import()` | Less flexible, but reliable |
+| Explicit `.jsx` extensions on imports | `package.json` had `"type": "module"` requiring strict ESM | Verbose but compliant |
+| CSS/JS separation into `index.css` | Fixed Babel parse error from CSS-in-JS | Cleaner separation |
+| Custom `service-worker.js` with install/fetch/activate handlers | Full control over offline caching strategy | More maintenance than CRA default |
+
+### Build Iteration: Five Distinct Compilation Errors Resolved
+
+| Error | Root Cause | Fix |
+|-------|------------|-----|
+| Missing `start` script | `package.json` scripts incomplete | Added `"start": "react-scripts start"` |
+| CSS in `.js` file | Babel syntax error | Moved all styles to `src/index.css`, imported in `index.js` |
+| `react-dom/client` module not found | React version < 18 | Switched to `import ReactDOM from 'react-dom'` + `ReactDOM.render()` |
+| ESM import extension errors | `"type": "module"` requires explicit extensions | Added `.jsx` to all relative imports |
+| Dynamic JSON import failure | Bundler doesn't support dynamic JSON imports | Static top-level `import designData from './figma-design.json'` |
+
+### Implementation Details
+- **Project scaffold**: `public/index.html` with root mount, `src/index.js` entry, `src/App.jsx` main component, `src/FigmaRenderer.jsx` recursive renderer
+- **FigmaRenderer**: Iterates `figmaData.document.children[0].children`, recursively renders nodes as absolutely-positioned `div`s with background colors from `fills`, text from `node.characters`, children nested in parent containers
+- **PWA config**: Custom `service-worker.js` with cache strategies, `manifest.json` with app metadata/icons, service worker registration in `App.jsx` `useEffect`
+
+### Outcome
+Terminal reported "Compiled successfully!" at `http://localhost:3002`. Figma design renders from JSON into graphical UI. Service worker registered and configured for offline caching. Project builds without errors.
+
+### Competencies
+- **0→1 Execution (Strong)**: Raw Figma JSON → functional PWA through multiple iterations; created project structure, recursive renderer, service worker, manifest; systematically fixed 5 build errors
+- **Learning & Resourcefulness (Strong)**: Rapidly absorbed ESM extension rules, React 17 vs 18 API differences, service worker lifecycle, Figma JSON structure
+- **Technical Judgment (Moderate)**: Practical trade-offs aligned with toolchain; static import over dynamic; custom service worker over CRA default
+- **Problem Solving (Moderate)**: Systematically debugged build failures by isolating root causes
+- **Product Judgment (Weak)**: No user need research, feature prioritization, MVP scoping, usability testing
+- **Systems Thinking (Weak but present)**: Understood file/dependency/build tool interconnections
+- **Outcomes & Communication (Moderate)**: Verified working build via terminal and browser; no user testing or metrics
+
+---
+
+## Session 4: Figma JSON Data Structure Mismatch Debugging
+
+### Problem
+Render Figma design JSON into React app. Core challenge: structural mismatch—Figma API returns deeply nested object (`document > children > CANVAS > FRAME > elements`), but initial code assumed `designData` was a flat array, causing `designData.map is not a function`. Additionally, `data.json` initially contained invalid JSON (prefixed with `Extracted Text Nodes:`).
+
+### Approach
+1. **Diagnose Data Structure**: Inspected actual structure via `console.log`, revealing nested object not array
+2. **Fix JSON Format**: Removed invalid prefix from `data.json`
+3. **Extract Correct Nodes**: Updated `App.jsx` to navigate hierarchy: `document.children[0].children[0].children` (Page 1 > First Frame > Elements)
+4. **Recursive Rendering**: Rewrote `FigmaRenderer.jsx` with recursive `renderNode` for nested Figma layers
+
+### Key Decisions
+- **Data Extraction Path**: `document.children[0].children[0].children` as renderable array (standard Figma structure assumption)
+- **Recursive Renderer**: Handles frames within frames for accurate layout replication
+- **Styling Mapping**: Figma `fills` → CSS `backgroundColor`, `strokes` → `border`, `absoluteBoundingBox` → `position: absolute`
+
+### Build Iteration
+1. Initial failure: `designData.map is not a function`
+2. JSON fix: Removed `Extracted Text Nodes:` prefix
+3. `App.jsx` update: Added extraction logic for FRAME children
+4. `FigmaRenderer` rewrite:
+   - `renderFills`: Figma color fills → CSS `backgroundColor`
+   - `renderText`: Font styles (size, family, weight, alignment)
+   - Recursive rendering for FRAME/GROUP nodes
+   - Handled RECTANGLE, ELLIPSE, LINE, TEXT with appropriate CSS
+5. Validation: `console.log` to inspect structure and confirm extraction
+
+### Outcome
+React app successfully renders Figma elements (frames, rectangles, text) with correct positioning, colors, basic styling. Recursive renderer handles nested layers. Working pipeline: Figma API → JSON → React rendering.
+
+### Competencies
+- **Problem Solving (Strong)**: Diagnosed root cause (data structure mismatch), iteratively fixed JSON format, adjusted rendering logic
+- **Learning & Resourcefulness (Strong)**: Self-taught Figma API integration, JSON parsing, recursive React rendering
+- **0→1 Execution (Moderate)**: Functional Figma-to-React renderer from scratch; styling fidelity (images, vectors) remains basic
+- **Limitation**: No responsive design, advanced styling (shadows, gradients), or live Figma updates integration
+
+---
+
+## Session 5: Assistant-Driven Figma JSON Analysis & Code Generation
+
+### Problem
+User shared complex Figma JSON structure (200+ nodes across multiple iPhone 16 Pro frames with logos, text, rectangles, groups, instances) and asked "check and tell if it needs fixes." Minimal context beyond JSON dump. Second share added more frames without clear user-driven decisions.
+
+### Approach
+User offloaded analysis to assistant: shared JSON, requested feedback. No problem decomposition, hypothesis testing, or independent investigation. No explanation of what was tried, what broke, or target output.
+
+### Assistant Actions
+- Identified structural issues: large JSON size, overlapping bounds, unused `styleOverrideTable`, empty interactions, invisible layers
+- Generated React+Tailwind code converting design to PWA screen with assumptions about assets, responsive layout (430px width), static image hosting
+
+### User Role
+Only observable actions: sharing JSON twice. No evaluation, adaptation, or building on assistant's suggestions. No integration, debugging, deployment, or testing.
+
+### Outcome
+No functional outcome from user actions. Conversation ends with more JSON shared and assistant code generated, but no evidence user integrated, tested, or achieved measurable results.
+
+### Competencies (All Weak)
+- **Problem Solving**: No root-cause analysis or hypothesis testing by user
+- **Systems Thinking**: No end-to-end workflow analysis
+- **Product Judgment**: No feature prioritization or scope decisions
+- **Technical Judgment**: No architecture/tool decisions by user
+- **0→1 Execution**: No implementation, testing, or deployment
+- **Learning & Resourcefulness**: No self-directed learning or tinkering
+- **Outcomes & Communication**: No functional results or validation
+
+**Critical limitation**: Provided text is only assistant's response. User's prompts, constraints, corrections, validation steps absent—most competencies cannot be attributed to user.
+
+---
+
+## Session 6: Figma Design File Export Summary (Static Documentation)
+
+### Content
+Figma design file export (JSON) dated April 30, 2025, for business application with payment/order management features, branded with Tata Advanced Systems logo.
+
+### Key Elements
+- Multiple iPhone 16 Pro screen mockups arranged horizontally
+- Navigation bar with hamburger menu ("bars-solid")
+- Tata Advanced Systems logo in header
+- Main content screens: "List of Orders", "List of Payments", "Outstanding Amount", "Profile", "Click Here After Payment" CTA
+- Inter font family (Regular/Bold), light blue/gray backgrounds (RGB ~0.88, 0.91, 0.94)
+- Text at 22-24px for headings
+- Absolute positioning with specific bounding boxes
+- Multiple frame layers representing different screen states
+
+### Notable Features
+- Payment workflow with post-payment action button
+- Order and payment listing interfaces
+- User profile section
+- Consistent navigation across screens
+- Mobile-first, iPhone 16 Pro dimensions
+
+### Nature
+UI/UX design specification—blueprint for developers, not functional code.
+
+---
+
+## Session 7: Payment-Flow Button Component (Part 3 of Multi-Part Design)
+
+### Problem
+Converting Figma design (JSON) into React components piece by piece. Part 3: payment-confirmation button—black pill-shaped rectangle (269×83px, 25px radius) with centered label "Click Here After Payment" in Inter 22px regular. Ambiguities: exact spacing, font loading, responsive behavior, interaction states (hover, focus, disabled) not in JSON.
+
+### Approach
+Assistant parsed two nodes (RECTANGLE + TEXT), mapped absolute positions/sizes to CSS, proposed minimal React+Tailwind component. No evidence of user questioning specs, requesting variants, or defining acceptance criteria.
+
+### Decisions (Assistant-Made)
+- **Component granularity**: Single self-contained `<button>` (no wrapper, no separate text component)
+- **Styling**: Tailwind arbitrary values (`w-[269px]`, `h-[83px]`, `rounded-[25px]`) for pixel-perfect match
+- **Font**: Assumed Inter available globally; no `@font-face` shown
+- **Accessibility**: No `aria-label`, `type="button"`, or focus-visible styles
+
+### Outcome
+One pixel-faithful button component code block delivered. Conversion pipeline established for subsequent parts.
+
+### Competencies
+- **Technical Judgment (Moderate)**: Assistant made reasonable mapping decisions; user's judgment not observable
+- **0→1 Execution (Weak)**: Only assistant output visible; no evidence user ran, tested, or integrated
+- **Learning & Resourcefulness (Weak)**: No user-driven exploration visible
+- **Other competencies**: Not demonstrated by user
+
+**Key limitation**: Only assistant's response provided. User's prompts, constraints, corrections absent.
+
+---
+
+## Session 8: TASL Canteen Bill Management Software UI Design (Figma Design System)
+
+### Problem
+Design mobile UI for TASL Canteen Bill Management Software—capture bill amounts, present selectable items, provide logout path.
+
+### Approach
+Applied Figma design system (layoutVersion 4) on iPhone 16 Pro frame; component-based grouping, systematic styling (text alignment, line-height, letter-spacing).
+
+### Key Design Decisions
+- **Typography**: Title Inter-Bold 24pt centered; input placeholder left-aligned 20pt center-vertical
+- **Color/Opacity**: Logout button solid blue (`#003354`); item rectangles light-green (0.9375, 1.0, 0.85) with 0.5 opacity
+- **Component Reuse**: Power icon as instance of component 11:221; consistent 1pt stroke, 15px corner radius
+- **Layout Coordinates**: Input at (924, 414); item containers at (924, 627) and (924, 694); logout at (1560, 782)
+- **Interaction State**: Empty `interactions` array—static layout focus
+
+### Build Iteration
+- **layoutVersion 4** shows multiple refinements; earlier versions likely lacked logout/power icons
+- **Group 9** bundles input and item sections for maintainability
+- **Group 11 → Group 4** encapsulates item grid for bulk styling (opacity, background)
+- Logout/power icons added post-initial layout (post-design requirement addition)
+- Consistent `scrollBehavior: "SCROLLS"` for mobile scrolling
+
+### Outcome
+Pixel-perfect UI mockup ready for hand-off: prominent title, clear input with placeholder, distinct item grid, prominent logout/power controls. Captures core user flow (enter bill → select items → logout).
+
+### Competencies
+- **Technical Judgment (Strong)**: layoutVersion 4, component instances, precise styling show systematic decisions
+- **Product Judgment (Strong)**: Clear separation of input vs. item selection reflects user-flow understanding
+- **0→1 Execution (Moderate)**: Full UI design from concept to hand-off
+- **Problem Solving (Moderate)**: Organized complex screen into nested groups
+- **Systems Thinking (Moderate)**: UI structure shows data flow and component dependencies
+- **Learning & Resourcefulness (Weak)**: Relies on existing design system
+- **Outcomes & Communication (Weak)**: No measurable impact data; documentation limited to visual specs
+
+---
+
+## Session 9: Figma JSON to React Native (TASL Canteen) - Incremental Sharing
+
+### Problem
+User working with Figma JSON data to convert UI design into React Native components for "TASL Canteen Bill Management Software."
+
+### Key Visual Components Extracted
+- **Logo**: Tata_Advanced_Systems_Logo at top (x:469, y:46, 380×127.5)
+- **Title**: "TASL Canteen Bill Management Software" bold 24px centered
+- **Login Interface**: "Log In" button (dark blue, 20px bold), "Sign Up" (14px), input fields for "Enter Employee ID" and "Enter Password", rectangular input boxes with 15px radius
+- **Styling**: Multiple rectangles with light yellow-green fills, 0.5 opacity; Inter font family various weights; image elements with scaling/positioning; grouped elements in frames with absolute positioning
+
+### Approach
+User methodically sharing portions of Figma JSON incrementally, focused on extracting design properties (position, size, colors, fonts) for React Native implementation.
+
+### Assistant Response
+Breakdown of UI components with sample React implementation using inline styles, suggested next steps.
+
+### Context
+Design-to-code conversion task translating Figma spec into functional React Native components for canteen billing management system.
+
+---
+
+## Session 10: TASL Canteen Bill Management Software - Detailed Figma Design Analysis
+
+### Problem
+Figma file documents UI design for TASL Canteen Bill Management Software—canteen billing operations system. Complete onboarding/login flow across four sequential screens.
+
+### Core Problem Space
+- **User onboarding**: Collecting identity info (name, employee ID, password) before core billing access
+- **Authentication**: Secure password entry and confirmation
+- **Device context**: iPhone 16 Pro mockup
+- **Branding**: Tata Advanced Systems logo integration
+- Last modified: 2025-03-03 (active development/iteration)
+
+### Approach: Four-Step Onboarding Flow
+1. **Name input** - Establishes user identity
+2. **Employee ID** - Organizational identification
+3. **Password entry** - Authentication credentials
+4. **Password confirmation** - Validates consistency
+
+### Design Patterns
+- **Consistent visual language**: All input groups identical rectangle styling (15px corner radius, light-blue fill RGB: 0.884, 0.914, 0.939)
+- **Constraint-based layout**: Every element uses `constraints: {vertical: "TOP", horizontal: "LEFT"}` (LTR, TTB flow)
+- **Inter typography system**: Inter font family, weight variants (Regular 400, Bold 700), size progression (14-24pt)
+- **Background layering**: Cartoon-sticker lunchbox imagery beneath form groups, with clipping
+- **Component hierarchy**: Groups encapsulate label+input pairs; rectangles as input backgrounds
+
+### Significant Design Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Four-step onboarding vs. single sign-up | Sequential data collection; canteen identity setup prerequisite before bill management |
+| iPhone 16 Pro device frame | Target platform iOS; black titanium preset = premium positioning |
+| Tata logo top-left (x:27, y:46, 380px wide) | Brand authority early in user journey |
+| Light color scheme (cool grays/blues) | Accessibility-conscious; sufficient contrast; calming for workplace context |
+| Password fields use masked rectangles | Visual masking convention implies password treatment (not explicitly marked) |
+| Background sticker imagery beneath forms | Layering: background → form groups → device frame; decorative without obscuring UI |
+| Sign Up/Log In as text labels, not buttons | Same styling as input groups; may indicate text-based CTAs or pending button components |
+
+### Build Iteration (Layer Sequence Bottom-to-Top)
+1. Background color (transparent)
+2. Background image (cartoon-stickers-lunchbox)
+3. Background rectangle (solid light-blue, 402px wide)
+4. iPhone 16 Pro frame (353×764px containing all UI)
+5. Tata logo (image fill, 380×127.5px)
+6. Product title (24pt bold)
+7. Onboarding groups (Name, Employee ID, Password, Confirm Password)
+8. Sign Up / Log In CTAs at bottom
+9. Component definitions (Check, Power Size=48 variants)
+
+### Technical Details
+- All rectangles: `cornerRadius: 15.0`, `cornerSmoothing: 0.0`
+- `strokeAlign: "INSIDE"` on all rectangles (crisp 1px stroke)
+- `blendMode: "PASS_THROUGH"` dominant (no composite effects)
+- `effects: []` on every element (no shadows, gradients)
+- Image transforms only for background sticker and logo (only raster elements)
+- Component sets reference remote URLs (`"remote": true`)—design system integration in progress
+- File version `2212304466992529930`, last-modified `2025-03-03T14:49:47Z`
+
+### Outcome
+Complete onboarding specification: four functional screens ready for dev hand-off; visual consistency across 20+ elements; clear information architecture; device context for iOS; component definitions for Check/Power Size=48; export config for PNG at 1x.
+
+### Competencies
+- **Problem Solving (Strong)**: Decomposed onboarding into four logical steps; identified prerequisite information before bill management access
+- **Product Judgment (Strong)**: Framed onboarding as gatekeeper; chose sequential over single-step; prioritized brand visibility early
+- **Technical Judgment (Moderate)**: Consistent constraints (TOP/LEFT); uniform corner radius/stroke alignment; recognized remote component integration need
+- **0→1 Execution (Strong)**: Complete UI spec from zero: onboarding flow, device framing, background, typography, component definitions
+- **Systems Thinking (Moderate)**: Understood z-order relationships; recognized constraint patterns; noted remote component references
+- **Outcomes & Communication (Strong)**: Clear visual hierarchy; descriptive component naming; export settings documented; version tracking
+
+**Limitations**: Static Figma file snapshot. No code, interaction behavior, user testing. Password field treatment inferred from styling, not explicit accessibility attributes. Functional requirements, business logic, user validation not documented.
+
+---
+
+## Session 11: React + Tailwind CSS Environment Setup (ENOSPC Error)
+
+### Problem
+Setting up React + Tailwind CSS environment for PWA replicating Figma UI design. `tailwind` command not recognized in PowerShell. Subsequent debugging revealed PATH configuration issues, missing CLI executable files, and ultimately `ENOSPC` (no space left on device) during package installation.
+
+### Approach
+User followed step-by-step AI instructions: create React app, install Tailwind, write components. When `tailwind` failed, systematically tested solutions:
+- Install Tailwind globally (`npm install -g tailwindcss`)
+- Check global package list (`npm list -g --depth=0`)
+- Temporarily add npm directory to PATH (`$env:Path += ...`)
+- Run CLI executable directly
+- Switch to local install (`npm uninstall -g tailwindcss` then `npm install tailwindcss --save-dev`) → hit disk space error
+
+### Decisions
+- Adapted Unix `rm -rf` to PowerShell `Remove-Item` when original failed
+- Chose local install + `npx` over global install to avoid PATH conflicts (per AI recommendation)
+- Proceeded despite `EBADENGINE` warnings (Node version mismatches), prioritizing working environment over strict version alignment
+
+### Build Iteration
+Multiple environment setup attempts: project creation, Tailwind config generation, CLI troubleshooting. Each iteration surfaced new error (command not found, path not found, disk full), reported back for refined next steps.
+
+### Outcome
+Environment setup incomplete at conversation end—blocked by `ENOSPC` error during local Tailwind install.
+
+### Competencies
+- **Problem Solving (Moderate)**: Systematic testing of multiple solutions; clear error reporting
+- **Technical Judgment (Moderate)**: Adapted commands for PowerShell; chose local install strategy
+- **Learning & Resourcefulness (Moderate)**: Learned PATH management, npx vs global install through guided iteration
+- **0→1 Execution (Weak)**: Final build not confirmed; instruction-following rather than autonomous prototyping
+
+---
+
+## Session 12: User Safety Classification
+- **Classification**: Safe
+- No additional technical content.
+
+---
+
+## Session 13: Node.js Version Mismatch Resolution for `figma-build`
+
+### Problem
+Installing dependencies for project depending on `figma-build@0.0.2-0` on Windows. Environment had Node.js 22.14.0 / npm 10.9.2, but package required Node 18.15.0 and pnpm 8.1.0.
+
+### Observed Failures
+- `npm WARN EBADENGINE` (engine mismatch)
+- Numerous deprecated dependency warnings (`inflight`, `node-sass`, `rimraf`, `request`, `svgo`, etc.)
+- `npm ERR! code 1` and git dependency preparation failure (native package builds like `node-sass`)
+- `EPERM: operation not permitted` when deleting/modifying folders
+- `node-gyp` rebuild failures tied to version mismatch or missing dependencies
+
+### Approach
+Assistant-driven, step-by-step remediation:
+1. Confirmed `nvm` absent via PowerShell (`CommandNotFoundException`)
+2. Downloaded `nvm-setup.exe` from nvm-windows GitHub releases (multiple navigational corrections)
+3. Distinguished terminal contexts: PowerShell vs. CMD vs. VS Code integrated terminal
+4. Investigated environment variable/PATH configuration after nvm not recognized in VS Code
+5. Diagnosed path-parsing error where `D:\Downloaded` treated as command (spaces/misconfigured PATH)
+6. Planned reinstall to `D:\nvm` (no spaces) with System PATH edits (`D:\nvm`, `D:\nvm\nodejs`)
+
+### Decisions
+- **Node version**: Downgrade to 18.15.0 via nvm-windows (side-by-side version management)
+- **Terminal**: Use CMD (Admin) for nvm commands over PowerShell (recognition issues)
+- **Installation path**: Avoid spaces; move from `D:\Downloaded` to `D:\nvm` (keep on D: drive per preference)
+- **Clean slate**: Delete `node_modules` and `package-lock.json`, clear npm cache, then `npm install` after Node switch
+
+### Build Iteration
+- Attempt 1: `nvm install 18.15.0` in PowerShell → failed; `nvm` not recognized
+- Attempt 2: Installed nvm-windows
+- Attempt 3: nvm in VS Code terminal → not recognized; missing PATH/session issue
+- Attempt 4: Path error referencing `D:\Downloaded`; decided to reinstall to `D:\nvm` and update System PATH
+- Planned next: `nvm use 18.15.0`, verify `node -v`, then `npm install`
+
+### Outcome
+- nvm for Windows installed (confirmed by assistant)
+- Node 18.15.0 installation targeted
+- Transcript ends before `node -v` verification or successful `npm install`
+- Environment setup (PATH, terminal sessions, drive location) still actively debugging
+
+### Competencies
+- **Problem Solving (Weak–Moderate)**: Reported specific errors; followed diagnostic steps; assistant drove root-cause analysis
+- **Systems Thinking (Weak)**: Navigated terminal contexts and PATH/session interactions
+- **Product Judgment (None)**: Purely environment setup
+- **Technical Judgment (Moderate)**: Expressed drive preference; recognized path-spacing issues; distinguished CMD vs PowerShell
+- **0→1 Execution (Moderate)**: Executed nvm installation, terminal retries, PATH edits across environments
+- **Learning & Resourcefulness (Moderate)**: Learned nvm-windows, Windows PATH management, terminal session differences
+- **Outcomes & Communication (Weak)**: No final working state, documentation, or stakeholder communication
+
+---
+
+## Cross-Session Synthesis: Thematic Patterns & Evolution
+
+### 1. Recurring Technical Challenge: Figma JSON Schema Complexity
+Across Sessions 1, 3, 4, 5, 9, 10, the user repeatedly encounters the same fundamental challenge: **Figma's exported JSON is a deeply nested, verbose tree structure** (`document → children → CANVAS → FRAME → elements`) with:
+- `absoluteBoundingBox` as canonical positioning source
+- `fills` array with `SOLID` (color) or `IMAGE` (imageRef hash) types
+- Text in `characters` with styling in `style` object
+- Component instances referencing remote component keys
+- No explicit responsive layout hints—absolute coordinates only
+
+The user independently builds mental models of this schema (Sessions 1, 3, 4) but also has sessions where they simply dump JSON for assistant analysis (Session 5), suggesting **variable autonomy** depending on context.
+
+### 2. Tech Stack Churn: Searching for the Right Abstraction Level
+| Session | Stack | Outcome |
+|---------|-------|---------|
+| 1 | React Native → **Vite+React PWA** | Working renderer, fast iteration |
+| 3 | **Create React App + react-scripts** | Working PWA with service worker |
+| 4 | React (unspecified bundler) | Working renderer with recursive traversal |
+| 5 | React+Tailwind (assistant-generated) | No user execution |
+| 7 | React+Tailwind (assistant-generated) | No user execution |
+| 9 | React Native (incremental) | In progress, component extraction |
+| 11 | React+Tailwind (environment setup) | Blocked by ENOSPC |
+| 13 | `figma-build` legacy (Node 18.15.0) | Environment setup in progress |
+
+**Pattern**: The user achieves working renderers with **Vite+React (Session 1)** and **CRA+react-scripts (Session 3)**—both modern, opinionated toolchains that handle JSX transpilation and dev server out of the box. The React Native attempts (Sessions 1 initial, 9) stall on emulator/toolchain friction. The Tailwind attempts (Sessions 5, 7, 11) either remain at assistant-generated-code stage or hit environment issues. The `figma-build` legacy path (Session 13) is blocked by native dependency hell (`node-sass`, `node-gyp`).
+
+**Technical Judgment Evidence**: The pivot to Vite+React (Session 1) and successful CRA execution (Session 3) show good toolchain selection for the *goal of visual validation*. The persistence with `figma-build` (Session 13) despite known native dependency issues suggests either a hard requirement or insufficient evaluation of alternatives.
+
+### 3. Renderer Architecture Convergence
+Across Sessions 1, 3, 4, the user independently converges on the same architectural pattern:
+- **Recursive `renderNode` function** handling arbitrary nesting depth
+- **Absolute positioning** via `absoluteBoundingBox` → CSS `position: absolute; left: x; top: y; width: w; height: h`
+- **Defensive parsing** for optional fields (`fills`, `absoluteBoundingBox`, `children`, `characters`, `style`)
+- **Color space conversion**: Figma 0-1 RGBA → CSS 0-255 rgba()
+- **Node type handling**: FRAME/GROUP (containers), RECTANGLE/ELLIPSE/LINE (shapes), TEXT (typography), VECTOR (paths), INSTANCE (component refs)
+
+This convergence across independent sessions is strong evidence of **systems thinking**—the user has internalized Figma's data model and the natural mapping to DOM/CSS.
+
+### 4. Image Handling: The Persistent Gap
+Every session that reaches rendering identifies the same blocker: **Figma `IMAGE` fills use `imageRef` hashes, not URLs**. Resolving these requires:
+- Figma API token
+- Separate image export API call (`GET /v1/images/:file_key`)
+- Mapping hash → URL → actual image data
+
+Sessions 1, 3, 4 all implement placeholders. Session 10 notes image transforms only for logo and background sticker. **No session achieves real image rendering**—this remains the critical path to production fidelity.
+
+### 5. Environment & Toolchain Friction as Major Time Sink
+Sessions 1 (React Native emulator), 3 (5 compilation errors), 11 (Tailwind PATH + ENOSPC), 13 (Node version + nvm + native deps) show that **environment configuration consumes disproportionate effort**. The user demonstrates:
+- Willingness to pivot toolchains when blocked (Session 1: RN → Vite)
+- Systematic debugging of build errors (Session 3: 5 errors resolved sequentially)
+- Windows-specific friction: PATH management, terminal context (PowerShell vs CMD vs VS Code), spaces in paths, `EPERM` errors, disk space
+- Guided dependency resolution (Session 13: nvm-windows installation)
+
+This is **real-world 0→1 execution**: the ability to unblock oneself through persistent, methodical environment debugging.
+
+### 6. Design System Consistency (Sessions 2, 6, 8, 9, 10)
+The TASL Canteen design reveals a **coherent design system**:
+- **Color palette**: Light blue/gray (0.884, 0.914, 0.939), dark blue (`#003354`), light green (0.9375, 1.0, 0.85) with 0.5 opacity for items
+- **Typography**: Inter family, 14-24pt, weights 400/700, line-height 29.045px, letter-spacing 0
+- **Spacing/Radii**: 15px corner radius universal, 1px stroke INSIDE alignment
+- **Constraints**: Universal TOP/LEFT (absolute positioning)
+- **Component instances**: Check and Power (Size=48) as remote components
+- **Layout versioning**: `layoutVersion: 4` indicates iterative refinement
+
+The user (or designer) shows **strong product judgment** in the onboarding flow design (Session 10): four-step sequential collection (Name → Employee ID → Password → Confirm Password) as prerequisite gatekeeper before core billing functionality—logical information architecture.
+
+### 7. Autonomy Spectrum: From Independent Building to Assistant-Dependent
+| High Autonomy (User Drives) | Low Autonomy (Assistant Drives) |
+|------------------------------|--------------------------------|
+| Session 1: Pivot decision, renderer v1-v4, debugging | Session 5: JSON dump → assistant analysis/code |
+| Session 3: Project setup, 5 error fixes, PWA config | Session 7: Assistant generates button component |
+| Session 4: JSON structure diagnosis, recursive renderer | Session 11: Step-by-step env setup per AI instructions |
+| Session 13: nvm installation, PATH edits, terminal switching | — |
+
+**Critical insight**: The user demonstrates **strong capabilities when owning the problem end-to-end** (Sessions 1, 3, 4) but **reverts to passive recipient mode when the framing is "here's JSON, fix it"** (Sessions 5, 7). This suggests the *problem framing* significantly affects demonstrated competency.
+
+---
+
+## Consolidated Competency Assessment
+
+### Problem Solving: **Strong**
+- **Session 1**: Root-caused JSX transpilation error independently; diagnosed JSON structure mismatches by inspecting actual data; iterated renderer through 4 versions fixing classes of failures
+- **Session 3**: Systematically resolved 5 distinct compilation errors by isolating root causes (missing script, CSS/JS confusion, React version mismatch, ESM extensions, dynamic import)
+- **Session 4**: Diagnosed `designData.map is not a function` as structure mismatch; fixed invalid JSON; rewrote extraction logic and renderer
+- **Session 13**: Reported specific errors (`CommandNotFoundException`, `EPERM`, path parsing); followed diagnostic steps across terminal contexts
+- **Limitation**: Sessions 5, 7, 11 show reactive debugging guided by assistant; independent hypothesis generation not consistently demonstrated
+
+### Technical Judgment: **Strong**
+- **Session 1**: `"type": "module"` for ES imports; pivot to Vite+React for iteration speed; recursive renderer matching Figma tree; CSS absolute positioning as direct coordinate mapping
+- **Session 3**: React 17 API choice matching installed version; static JSON import for bundler compatibility; explicit `.jsx` extensions for ESM compliance; CSS/JS separation; custom service worker for cache control
+- **Session 4**: Recursive renderer for nested frames; styling mapping (fills→backgroundColor, strokes→border, absoluteBoundingBox→absolute positioning)
+- **Session 8**: layoutVersion 4, component instances, precise styling (15px radius, stroke alignment, opacity)
+- **Session 10**: Consistent constraints (TOP/LEFT); uniform corner radius/stroke alignment across 20+ elements; remote component references
+- **Session 13**: nvm-windows for side-by-side Node versions; CMD over PowerShell for nvm; path-spacing avoidance; clean slate strategy
+- **Limitation**: Some decisions (Session 3, 11, 13) made within assistant-guided constraints; limited evidence of evaluating alternatives independently
+
+### Learning & Resourcefulness: **Strong**
+- **Session 1**: Built mental model of Figma JSON schema from raw data (no docs); self-corrected import paths, terminal commands, file locations; adapted to 0-1 color range
+- **Session 3**: Rapidly absorbed ESM extension rules, React 17 vs 18 APIs, service worker lifecycle, Figma JSON structure
+- **Session 4**: Self-taught Figma API integration, JSON parsing, recursive React rendering
+- **Session 10**: Inferred design system from static file (color palette, typography, constraints, component hierarchy)
+- **Session 13**: Learned nvm-windows, Windows PATH management, terminal session differences through guided iteration
+- **Limitation**: Sessions 5, 7 show no self-directed learning; Session 11 learning supported by detailed instructions
+
+### 0→1 Execution: **Moderate**
+- **Session 1**: Working PWA from scratch in ~1 hour; rendered real design data; but image resolution, responsiveness, multi-screen deferred
+- **Session 3**: Raw Figma JSON → functional PWA through multiple iterations; created project structure, recursive renderer, service worker, manifest; fixed 5 build errors
+- **Session 4**: Functional Figma-to-React renderer from scratch; styling fidelity basic
+- **Session 8**: Full UI design from concept to hand-off (design-first, not code)
+- **Session 10**: Complete UI spec from zero: onboarding flow, device framing, background, typography, component definitions
+- **Session 13**: nvm installation, terminal retries, PATH edits executed; but final `npm install` not confirmed
+- **Limitation**: No session shows complete vertical slice through deployment, testing, user validation; Sessions 5, 7, 11 show incomplete execution
+
+### Systems Thinking: **Moderate**
+- **Session 1**: Understood Figma node hierarchy (document→page→frame→children); `absoluteBoundingBox` as layout source of truth; `imageRef` as external dependency
+- **Session 3**: Recognized project files, dependencies, build tools interconnection; `package.json` scripts, React version, ESM module type all affect imports
+- **Session 4**: Understood nested Figma structure requires recursive traversal; data flow from JSON → extraction → rendering
+- **Session 8**: UI structure shows data flow (input→items→logout) and component dependencies (Group 9→Group 1+Group 11→Group 4)
+- **Session 10**: Understood z-order relationships (background→frame→forms); constraint patterns across file; remote component references as integration points
+- **Session 13**: Navigated terminal contexts (PowerShell, CMD, VS Code) and PATH/session interactions
+- **Limitation**: No session models failure propagation, state management, scalability, or cross-system integration boundaries beyond the renderer
+
+### Product Judgment: **Moderate**
+- **Session 1**: Good pivot to web for speed; but no explicit success criteria, user stories, scope definition
+- **Session 3**: No user need research, feature prioritization, MVP scoping, usability testing
+- **Session 8**: Clear separation of input vs. item selection reflects user-flow understanding; logout/power controls for security/user control
+- **Session 10**: Framed onboarding as gatekeeper to core functionality; chose sequential over single-step; prioritized brand visibility early; logical prerequisite sequencing
+- **Session 5, 7, 11**: No product decisions observable
+- **Strength**: Session 10 shows genuine product thinking—onboarding as prerequisite, information architecture, user journey
+- **Gap**: No evidence of user research, metrics definition, A/B testing, stakeholder negotiation, or roadmap planning
+
+### Outcomes & Communication: **Weak–Moderate**
+- **Session 1**: No documentation of renderer API, JSON schema assumptions, known limitations; no validation beyond "what do you see?"
+- **Session 3**: Verified working build via terminal/browser; no user testing, performance metrics, stakeholder communication
+- **Session 4**: Working pipeline demonstrated; no documentation or handoff artifacts
+- **Session 8**: No measurable impact data; documentation limited to visual specs
+- **Session 10**: Clear visual hierarchy; descriptive component naming; export settings documented; version tracking present
+- **Session 13**: No final working state, documentation, or stakeholder communication
+- **Overall**: Functional results achieved in multiple sessions but **no validation criteria, success metrics, user feedback loops, or handoff documentation**—critical for FDE/APM roles
+
+---
+
+## Portfolio Evidence: Strongest Reusable Facts
+
+### Potential Case-Study Evidence
+
+1. **Figma-to-Web Renderer Pipeline** (Sessions 1, 3, 4)
+   - **Problem**: Convert Figma design JSON (nested frames, absolute positioning, image refs, text styles) into working frontend without manual component writing
+   - **Technical Challenge**: Figma JSON uses absolute coordinates, image ref hashes, nested frames—not component props
+   - **Solution**: Recursive renderer mapping `absoluteBoundingBox` → CSS absolute positioning; defensive parsing for optional fields; color space conversion (0-1 → 0-255)
+   - **Pivot**: React Native → Vite+React PWA for 10x faster visual iteration
+   - **Iteration Trace**: 4 renderer versions in 30 minutes (Session 1); 5 compilation error fixes in sequence (Session 3); recursive rewrite after structure diagnosis (Session 4)
+
+2. **Complete Onboarding UI Specification** (Sessions 8, 10)
+   - **Problem**: Design mobile-first canteen billing UI with bill capture, item selection, logout
+   - **Solution**: Four-step sequential onboarding (Name → Employee ID → Password → Confirm Password) using layoutVersion 4 design system
+   - **Design System**: Inter typography, 15px universal radius, light blue/gray palette, TOP/LEFT constraints, remote component instances (Check, Power Size=48)
+   - **Iteration**: layoutVersion 4 shows progressive refinement; Group 9/11/4 nesting for maintainability; post-design addition of logout/power icons
+
+3. **Legacy Build Environment Recovery** (Session 13)
+   - **Problem**: `figma-build@0.0.2-0` requires Node 18.15.0/pnpm 8.1.0 on Windows with Node 22.14.0
+   - **Challenge**: `node-sass`/`node-gyp` native failures; `EPERM` errors; PATH/terminal context issues; spaces in paths
+   - **Resolution Path**: nvm-windows installation → CMD terminal context → `D:\nvm` no-spaces path → System PATH edits → clean slate (`node_modules`, `package-lock.json`, npm cache)
+
+### Resume Evidence (Defensible Actions + Context + Results)
+
+| Action | Technical/Product Context | Actual Result |
+|--------|---------------------------|---------------|
+| Built Figma-to-web renderer parsing raw Figma JSON (frames, rectangles, text, vectors, images, groups) into pixel-accurate HTML/CSS using `absoluteBoundingBox` coordinates | React + Vite PWA; recursive tree traversal; defensive defaults for optional Figma node properties; color space conversion | First screen renders with positioned elements (logo, text, hamburger menu, button); images as placeholders; layout respects Figma coordinates |
+| Diagnosed and fixed JSX transpilation, module configuration, and JSON schema mismatches independently | `SyntaxError: Unexpected token '<'` → Metro/Vite bundler; `"type": "module"` + `.cjs` interop; `designData.map is not a function` → nested object extraction | Working renderer in multiple toolchains (Vite, CRA); identified Figma JSON structure: `document.children[0].children[0].children` |
+| Pivoted tech stack mid-project (React Native → Vite+React) to unblock visual validation | RN emulator setup friction; needed immediate browser feedback | 10x faster iteration; working PWA at `localhost:5173` in ~1 hour |
+| Configured PWA with service worker caching and app manifest for installability | Custom `service-worker.js` (install/fetch/activate); `manifest.json` with metadata/icons; registration in `useEffect` | Offline-capable PWA served at `localhost:3002`; "Compiled successfully!" |
+| Resolved 5 distinct compilation errors through systematic debugging and file reorganization | Missing `start` script; CSS-in-JS Babel error; React 17 vs 18 API; ESM extension requirements; dynamic JSON import | Clean build; each error isolated to root cause and fixed with minimal change |
+| Designed complete onboarding UI specification (4-screen flow) with consistent design system | iPhone 16 Pro frame; Inter typography; 15px radius; light blue palette; TOP/LEFT constraints; remote component instances | Production-ready Figma spec with version tracking (`layoutVersion: 4`), export config, component definitions |
+| Diagnosed and began resolving Node.js version mismatch (22.14.0 → 18.15.0) and `npm install` failures for legacy `figma-build` dependency | `EBADENGINE` warnings; `node-sass`/`node-gyp` native failures; `EPERM`; PATH/terminal context issues | nvm-windows installed; Node 18.15.0 targeted; PATH configured; clean slate prepared (final `npm install` pending) |
+
+### Unproven Claims (Cannot Be Established from This Evidence)
+
+1. **"Built a Figma-to-React Native pipeline"** — Only reached PWA prototypes (Sessions 1, 3); RN app never ran (Sessions 1 initial, 9 incomplete)
+2. **"Automated design-to-code workflow"** — Manual JSON placement in all sessions; no CI/CD, no Figma API integration, no watch/rebuild on design change
+3. **"Production-ready component library"** — Renderer is monolithic component (Sessions 1, 3, 4); no extraction, theming, testing, Storybook, or versioning
+4. **"Full-stack product delivery"** — No backend, auth, data layer, deployment, user validation, or analytics in any session
+5. **"Independent product decision-making"** — Sessions 5, 7, 11 show assistant-driven work; product judgment only visible in design analysis (Sessions 8, 10) not execution
+6. **"Performance at scale"** — No evidence handling 1000+ nodes, virtualization, memoization, or bundle size optimization
+7. **"Cross-browser/device compatibility"** — Only tested on localhost in single browser; no responsive design implemented (fixed absolute positioning)
+8. **"Accessibility/internationalization"** — No ARIA, focus management, RTL, or i18n in any renderer
+9. **"Team collaboration/stakeholder communication"** — No PRs, code reviews, design handoff docs, or stakeholder updates
+10. **"User-centered validation"** — No usability testing, conversion metrics, or user feedback loops
+
+---
+
+## Unresolved Questions & Critical Path Forward
+
+### Technical Debt to Resolve
+1. **Image Resolution**: All renderers use placeholders. Need Figma API token + image export integration → actual `backgroundImage` URLs
+2. **Responsive Layout**: Absolute positioning breaks on non-iPhone-16-Pro viewports. Need constraint-solving or flex/grid conversion
+3. **Component Extraction**: Monolithic `FigmaRenderer` → reusable component library with props interface
+4. **Design Token Sync**: No mechanism for Figma design updates → code sync (manual JSON replacement currently)
+5. **Interaction States**: Hover, focus, disabled, loading states not in Figma JSON; need design-system-defined patterns
+
+### Environment Stabilization
+1. **Session 11**: `ENOSPC` disk space error blocks Tailwind setup — need disk cleanup or cloud dev environment
+2. **Session 13**: `figma-build` legacy path requires `npm install` completion on Node 18.15.0 — native deps (`node-sass`) may still fail
+3. **Toolchain Consolidation**: 4+ different setups (RN, Vite, CRA, Tailwind) — pick one and invest in maturity
+
+### Product Gaps
+1. **Success Criteria**: No definition of "done" for renderer (pixel-perfect? functional parity? component coverage?)
+2. **User Validation**: No evidence the rendered output meets actual user needs for canteen billing or payment flow
+3. **Scope Boundaries**: Is this a renderer tool, a design system bridge, a specific app implementation, or a learning exercise?
+4. **Maintenance Model**: How will design changes propagate? Manual re-export? Webhook? Figma plugin?
+
+---
+
+## Conclusion
+
+This body of evidence portrays a **technically capable practitioner** who:
+- **Excels at** problem decomposition, root-cause analysis, recursive algorithm design, environment debugging, and rapid mental-model formation for unfamiliar data schemas (Figma JSON)
+- **Demonstrates strong technical judgment** in toolchain selection (Vite, CRA), module configuration, and architecture matching data structure to rendering strategy
+- **Shows genuine product thinking** in design analysis sessions (onboarding flow, information architecture, design system consistency)
+- **Struggles with** autonomous product decision-making when framed as "assistant, fix this," environment friction consuming disproportionate time, and completing vertical slices through to validated outcomes
+- **Has not yet demonstrated** production hardening, user validation, team collaboration, or stakeholder communication
+
+The **strongest portfolio narrative** emerges from Sessions 1, 3, 4, and 10: a developer who can take a complex design export, reverse-engineer its schema, build a working renderer through systematic iteration, and articulate the design system's logic—while being honest about the gaps (images, responsiveness, automation, validation) that separate a prototype from a product.

@@ -1,0 +1,76 @@
+**Evidence Extraction Summary – “Employee Bill System & No‑Code Exploration”**
+
+| Project / Problem | Approach | Key Decisions | Build / Iteration | Outcome | FDE / APM Signal |
+|---|---|---|---|---|---|
+| **Employee Bill Management System** – need a login‑first screen (employee code + ID card scan), a calculator‑style screen for manual bill entry, side‑navigation menus (Orders, Payments, Total Pending, Last Paid) that query/update per‑user data. | Iterative exploration of data‑store options (Firebase Realtime DB → MySQL → hosted MySQL), local dev stack (XAMPP/phpMyAdmin), and no‑code app builders (Thunkable, Adalo, Kodular, Bravo Studio, Bubble). | 1️⃣ Use Firebase for Thunkable login validation (cloud variable “employees”). 2️⃣ When real‑time sync proved unnecessary, pivot to MySQL and host it online (AWS RDS / DigitalOcean). 3️⃣ Use XAMPP for local phpMyAdmin access; fix Apache port conflicts and phpMyAdmin permission errors. 4️⃣ Choose Thunkable for native Android prototype (free plan) despite 10‑screen limit. 5️⃣ Evaluate Adalo’s free PWA vs. Thunkable/Kodular native APK options. 6️⃣ Select Bravo Studio to turn Figma designs into functional mobile apps. | **Thunkable prototype** – designed first‑screen UI, added Cloud Variable “employees”, built login blocks (validate employee code, scanner for ID, navigate to Screen2). **MySQL hosting** – exported local DB, created online MySQL instance, imported schema, configured remote access, tested connection via phpMyAdmin. **XAMPP troubleshooting** – identified port‑80 conflict, changed Apache listen port to 8080, edited httpd‑xampp.conf to grant “Require all granted”, restarted services, verified phpMyAdmin access. **No‑code platform research** – compared screen limits (Thunkable 10, Kodular none, Bravo Studio none), free‑vs‑paid features, native vs. PWA outcomes. **Design‑to‑code workflow** – prepared Figma frames with Bravo tags, installed Bravo Studio plugin, imported screens, linked API collections (Airtable/Firebase) for dynamic data, previewed with Bravo Vision. | **Knowledge & Platform Evaluation** – user now understands how to implement login/authentication in Thunkable, how to host a MySQL DB with real‑time updates via API/WebSocket, how to debug XAMPP/phpMyAdmin permission issues, and how to convert a Figma design into a functional PWA/native app using Bravo Studio. No functional app was shipped; the effort yielded a reusable set of step‑by‑step guides and a decision matrix for future development. | **Problem Solving** – Strong (debugged Apache shutdown, fixed phpMyAdmin 403 errors). **Systems Thinking** – Moderate (mapped end‑to‑end data flow from login → calculator → side‑nav → DB). **Product Judgment** – Moderate (weighed native‑app vs. PWA, considered screen limits, chose appropriate stack for MVP). **Technical Judgment** – Moderate (selected Firebase → MySQL → XAMPP, configured remote MySQL, set up API‑driven real‑time updates). **0→1 Execution** – Weak (only designed Thunkable screens, no deployed build). **Learning & Resourcefulness** – Strong (self‑directed learning of XAMPP, phpMyAdmin, MySQL hosting, no‑code platforms, Figma‑to‑code pipelines). **Outcomes & Communication** – Moderate (produced detailed step‑by‑step guides, documented decisions, asked clarifying questions). |
+
+---
+
+### Problem
+- Desired a full‑stack employee bill system with role‑based login, manual bill entry, side navigation to Orders/Payments/Pending/Last Paid, and real‑time data sync.
+- Ambiguity around which backend (Firebase vs. MySQL) and hosting approach would meet real‑time needs.
+- Need to validate both employee code and scanned ID card against a secure data store.
+- Required a mobile‑friendly UI with navigation and dynamic data retrieval per user.
+
+### Approach
+- **Phase 1 – Thunkable + Firebase**: Designed first‑screen UI, added Cloud Variable “employees”, built validation blocks (code check → scanner → navigate). Explored Firebase Realtime DB structure (`employees/{EMP001}/{name,id,...}`).
+- **Phase 2 – MySQL Pivot**: Recognized MySQL could serve real‑time updates via API/WebSocket, decided to host MySQL online. Exported local DB, chose a cloud provider (AWS RDS/DigitalOcean), imported schema, configured remote access.
+- **Phase 3 – Local Dev Stack**: Installed XAMPP, attempted phpMyAdmin access. Encountered Apache shutdown due to port conflict; changed Apache listen port to 8080, edited `httpd‑xampp.conf` to grant access, restarted services.
+- **Phase 4 – No‑Code Platform Evaluation**: Compared Thunkable (native APK, 10‑screen free limit), Adalo (PWA only free), Kodular (Android‑only, no screen limit), Bravo Studio (Figma‑to‑app, free plan no screen limit), Bubble (web‑only, requires wrapper). Documented trade‑offs (branding, publishing constraints, native features).
+- **Phase 5 – Design‑to‑Code Workflow**: Prepared Figma frames with Bravo tags (`#NavBar`, `#Button`, `#Input`). Installed Bravo Studio plugin, imported screens, linked API collections (Airtable/Firebase) for CRUD, previewed with Bravo Vision mobile app.
+
+### Decisions
+- **Backend Choice**: Started with Firebase for rapid Thunkable integration; later pivoted to MySQL for relational flexibility and control over real‑time updates via custom API.
+- **Hosting**: Chose a managed MySQL service (AWS RDS/DigitalOcean) over self‑hosted VPS to simplify maintenance and scaling.
+- **Local Development**: Adopted XAMPP as the unified Apache/MySQL/phpMyAdmin stack for offline work and quick testing.
+- **App Platform**: Selected Thunkable for a quick native Android prototype (despite screen limit) to validate UI/UX before committing to a full‑scale solution.
+- **Design‑to‑Code Pipeline**: Opted for Bravo Studio to convert Figma designs into functional mobile apps, leveraging its built‑in API connectors and Bravo Vision testing.
+- **Free‑Tier Strategy**: Accepted Adalo’s PWA limitation for early prototyping, while reserving Thunkable/Kodular for downloadable APKs when needed.
+
+### Build / Iteration
+- **Thunkable Login Flow**: Added Text Input for employee code, Scanner component for ID card, Cloud Variable “employees”, validation blocks, navigation to Screen2 on success.
+- **MySQL Hosting Steps**: Exported local `.sql` via phpMyAdmin, created online MySQL instance, imported schema, granted remote user privileges, tested connection via MySQL Workbench.
+- **XAMPP Debugging**: Identified port‑80 conflict, edited `httpd.conf` (`Listen 8080`), modified `httpd‑xampp.conf` (`Require all granted`), restarted Apache, verified phpMyAdmin at `http://localhost:8080/phpmyadmin`.
+- **No‑Code Platform Comparison**: Created a decision matrix (screen limits, native vs. PWA, branding, publishing constraints) and documented each platform’s free‑plan capabilities.
+- **Bravo Studio Integration**: Installed Figma plugin, imported frames, added Bravo tags, linked API collections (e.g., Airtable “Employees” table), configured navigation between screens, previewed via Bravo Vision.
+
+### Outcome
+- **Technical Knowledge Gained**: 
+  - End‑to‑end Thunkable login/authentication with Firebase Cloud Variable.
+  - Hosting a MySQL database online, configuring remote access, and using API/WebSocket for real‑time updates.
+  - Troubleshooting XAMPP Apache shutdown and phpMyAdmin 403 errors.
+  - Evaluating no‑code platforms for native vs. PWA delivery, understanding screen limits and free‑plan constraints.
+  - Converting a Figma design into a functional mobile app using Bravo Studio’s design‑to‑code pipeline.
+- **Decision Framework**: A reusable matrix for selecting backend (Firebase vs. MySQL), hosting provider, and app builder based on requirements (real‑time sync, native features, screen count, branding).
+- **Unresolved Questions**: 
+  - Exact workflow for publishing a Bubble‑based web app as a native APK using third‑party wrappers (Nativator, Thunkable WebView) – no concrete steps were provided.
+  - Whether Airtable can serve as a direct publishing platform for a full app (the assistant clarified it can only be a backend).
+  - Detailed configuration for real‑time MySQL updates (WebSocket implementation) – only high‑level concepts were discussed.
+- **Limitations**: No functional app was shipped; all work remained at design/prototype stage. Many “how‑to” queries were answered with guidance rather than executed implementations.
+
+### FDE / APM Signal
+- **Problem Solving (Strong)** – Debugged Apache shutdown, resolved phpMyAdmin 403, identified port conflicts, and fixed permission settings.
+- **Systems Thinking (Moderate)** – Mapped user flow (login → calculator → side‑nav → DB), identified data dependencies, and considered real‑time sync architecture.
+- **Product Judgment (Moderate)** – Compared native vs. PWA, evaluated screen limits, chose appropriate stack for MVP, documented trade‑offs.
+- **Technical Judgment (Moderate)** – Selected Firebase → MySQL → XAMPP, configured remote MySQL, set up API connections for real‑time updates.
+- **0→1 Execution (Weak)** – Designed Thunkable UI and validation blocks; no deployed build or user testing performed.
+- **Learning & Resourcefulness (Strong)** – Independently researched XAMPP, phpMyAdmin, MySQL hosting, no‑code platforms, Figma‑to‑code pipelines, and documented each step.
+- **Outcomes & Communication (Moderate)** – Produced detailed step‑by‑step guides, clarified platform constraints, and asked focused questions to narrow options.
+
+---
+
+## Portfolio Evidence
+
+### Potential Case‑Study Evidence
+- **Employee Bill System Prototype** – End‑to‑end design of a Thunkable app with Firebase authentication, calculator UI, side navigation, and per‑user data queries; pivot to MySQL hosting with remote API for real‑time updates; debugging of XAMPP/phpMyAdmin permission issues.
+- **Design‑to‑Code Pipeline** – Converting a Figma design (with Bravo tags) into a functional mobile app using Bravo Studio, linking Airtable/Firebase APIs, and testing via Bravo Vision.
+
+### Resume Evidence
+- **Full‑Stack No‑Code Exploration** – Designed login/authentication flows in Thunkable, configured Firebase Cloud Variable, hosted MySQL database online, resolved Apache/phpMyAdmin conflicts, evaluated and selected no‑code platforms for native vs. PWA delivery.
+- **Systems Integration** – Mapped end‑to‑end data flow from user input through side‑navigation to backend storage, implemented API connections for real‑time updates, and documented decision matrices for platform selection.
+- **Problem Solving & Debugging** – Identified and fixed Apache port conflicts, corrected phpMyAdmin permission errors, and troubleshooted XAMPP shutdown issues.
+
+### Unproven Claims
+- Ability to publish a Bubble‑based web app directly as a native Android APK using third‑party wrappers (no concrete steps were provided).
+- Direct publishing of a full application from Airtable (Airtable can only serve as a backend, not a publishing platform).
+- Detailed WebSocket‑based real‑time synchronization for MySQL (only high‑level concepts were discussed).
