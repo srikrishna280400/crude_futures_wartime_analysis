@@ -1,6 +1,6 @@
 # CRUDE PRICES VOLATALITY ANALYSIS DURING THE IRAN WAR/HORMUZ CRISS OF 2026 
 
-1. The First Principles — Framing the Problem Before Touching Data
+## The First Principles — Framing the Problem Before Touching Data
 
 The thinking, before any code: future price action is nothing but a repetition of patterns, and AI's real edge isn't chat — it's ingesting massive data, finding patterns, and telling the big-picture data story. So instead of asking a chatbot "will price go up?", the question was reframed: why not train a model on the price data itself, and let it fish for patterns? That single reframe set the entire project's shape — and the basis on which any later model would predict (which ideologies, which data points) was settled deliberately, through clarifying questions, not assumptions.
 
