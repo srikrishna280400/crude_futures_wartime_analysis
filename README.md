@@ -90,7 +90,7 @@ The first execution was deliberately primitive — A minimum viable approach to 
 Attempted MCX CRUDEOILM from 5 sources — Upstox, Fyers, Dhan, ICICI Breeze, AngelOne, Databento. Also dropped: USD→INR live conversion, MCX data entirely, live RSS news feeds. Pivoted to WTI/Brent via yfinance (no keys); 7-day chunked requests to bypass Yahoo limits; synthetic MCX built from WTI × USD/INR (labeled honestly as synthetic). FRED/EIA keys for FX and inventory. Hardcoded end dates pulling 1987 spot data → dynamic date bounds.
 
 
-## PHASE 3: Turning a Trader's Vocabulary into Executable Python
+### PHASE 3: Turning a Trader's Vocabulary into Executable Python
 
 The hardest part of the build was never the code — it was that every input started as a subjective phrase. "Psychological warfare is suppressing prices." "Contracts near expiry act weird." "Wednesday inventory days matter." None of these are columns in any API response. Each one had to be decomposed into a measurable primitive, given an explicit threshold, and implemented as a deterministic function — so that the entire qualitative worldview of the market became a computable data structure, and the model's pattern-fishing was shaped by exactly the factors a discretionary trader would reason about.
 
