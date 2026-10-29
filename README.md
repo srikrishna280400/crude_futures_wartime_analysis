@@ -25,8 +25,6 @@ One section, because for this project the architecture and the operational story
 
 ## Quant Methodology & Statistical Rigor
 
-The "why you can trust the numbers" section. Planned contents, each with the one-line honest rationale:
-
 - Regime-relative magnitude tiers (per-phase percentiles, not fixed %)
 - Dirichlet(1,1,1) Bayesian posteriors + 95% HDI
 - Benjamini-Hochberg FDR per (stream × phase)
