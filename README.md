@@ -5,7 +5,7 @@
 - Data: yfinance, FRED, EIA, Databento (dead end), GDELT/NewsAPI, Al Jazeera/CNN/Hormuz Letter RSS
 - Py libs: pandas, numpy, scipy, statsmodels, scikit-learn, pyarrow, joblib, openpyxl, yfinance, requests, matplotlib, ruptures (optional)
 - ML/quant: RandomForest, isotonic calibration, GMM, PCA, HDBSCAN, KMeans, SHAP
-- MCP servers (9): context7, filesystem, fetch, brave-search, playwright, sqlite/postgres, e2b sandbox, github, remember (context persistence)
+- MCP servers: context7, filesystem, fetch, brave-search, playwright, sqlite/postgres, e2b sandbox, github, remember (context persistence)
 - Agentic tools: Claude Code, Codex, Antigravity, OpenRouter (model swapping), MCPM Manager, Wispr Flow, Whisper (CUDA) for lecture transcription
 - Infra/UI: Vercel, GitHub, Cloudflare Tunnel, Vite/React, Chart.js, Ubuntu/WSL
 
