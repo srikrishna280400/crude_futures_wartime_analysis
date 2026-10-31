@@ -6,8 +6,7 @@ Broken into the anatomy a PM would actually write:
 
 - User: a solo self-directed trader (the user themselves — a real user with real money at stake, not a persona)
 - From-state → to-state: from "every morning re-deriving context from news headlines, gut feel, and scattered charts — decisions with zero statistical memory" → to "one page: today's situation matched against history, with an honest confidence label on every call"
-- Why this is the right outcome (the strategic call): P&L can't be promised — markets are partly manipulated. So the outcome is defined on the controllable layer: decision quality infrastructure. The bet: consistently better-informed decisions compound into better
-  P&L; the product doesn't need to own the P&L to own the value.
+- Why this is the right outcome (the strategic call): P&L can't be promised — markets are partly manipulated. So the outcome is defined on the controllable layer: decision quality infrastructure. 
 - Measurable conditions of success:
   a. Every daily decision is backed by a matched historical situation with a stated hit-rate — not a vibe
   b. The advice stream has a public, growing track record (every past call scored against what actually happened)
@@ -80,7 +79,7 @@ Every feature above was specced backwards from the questions the user must never
 - As the trader, when I open the brief I want to know "what kind of day is today, historically?" — so my first scroll gives me the match, not a data dump.
 - "Which session window drives today, in which direction, under this news state?" — so I know when to be present and when to stay flat.
 - "When the usual pattern fails, what takes over?" — so a broken pattern isn't a surprise, it's a mapped branch.
-- "If P happened this morning, what followed it last time?" — so sequences, not single candles, drive my read.
+- "If X happened this morning, what followed it last time?" — so sequences, not single candles, drive my read.
 - "How far does price usually travel on a day like this?" — so my targets and stops are regime-sized, not round-numbered.
 - "Which windows are safest to enter, and which are stop-hunt traps?" — so danger zones are pre-labeled.
 - "Do manipulative moves have a signature?" — so hostile price action is a recognizable archetype, not a shock.
@@ -129,7 +128,7 @@ Wave 2 — "Can we trust the headline numbers?" → the metrics got worse, and t
 Wave 3 — "What should the product do when it doesn't know?" → making refusal a measurabl
 - A brand-new situation arrived with almost no history. Old behavior: silently borrow a wrong situation's advice and present it with fake confidence — even though the system's own published self-assessment said it was unreliable (the signal existed; nobody consumed
   it).
-- Fix: a three-gate gatekeeping rule — too little evidence, too little confidence, or toroduct explicitly says "don't rely on me today" and logs why. Refusal became a designedbehavior — and a metric (#5 on the panel): abstention rate is tracked and cross-checked
+- Fix: a three-gate gatekeeping rule — too little evidence, too little confidence, explicitly says "don't rely on me today" and logs why. Refusal became a designedbehavior — and a metric (#5 on the panel): abstention rate is tracked and cross-checked
   against the losses it prevented.
 - Plus: per-pattern freshness tracking — when a specific pattern's live performance decays well below its historical claim, it's flagged and demoted automatically. Patterns have a shelf life; the product now notices expiry.
 
@@ -144,7 +143,7 @@ Where the metrics landed (the outcomes they ultimately reported): ~290 validated
 
 ### 5. Systems Thinking & Level-Shifting — the deepest product skill in the project
 
-i. Level-shift 1 — "Is my classification right?" → "What level should classification even happen at?"
+Level-shift - "Is my classification right?" → "What level should classification even happen at?"
 
 The founding decision — carving 7 chaotic months into 12 war-phase states and conditioning all advice on them — was a system-level bet. Iterations made everything downstream smarter, but the honest diagnosis that finally landed: the flaw wasn't anywhere in the machinery — it was at the level of what the system was keying on. 
 
@@ -152,7 +151,9 @@ Two structural tells, readable from the product's own failures:
 a. consecutive days sharing a phase label behaved nothing alike (the label was too coarse to predict), and 
 b. similar days landed in different phases because a calendar line said so (the label was discriminating on the wrong axis). 
 
-The response was a re-founding at the level of behavior instead of narrative — and the deliberate choice of method for that re-founding was clustering. If the goal is "days that behave alike belong together," then the grouping must be discovered from the data, not decreed by a human calendar: each day was converted into a measurable behavior profile (how big its body was, where its wicks sat, how it moved relative to recent days, its volatility character), and a statistical clustering method was let loose to find the natural groupings — with the number of groups not guessed in advance but derived from the data itself by testing which count best explains the structure. The results: days months apart that genuinely look alike now sit in the same group (the grouping became non-continuous by design), consecutive dissimilar days stopped being forced together, and the grouping comes with a descriptive label of its actual character ("strong downtrend," "whipsaw-dominant") instead of a geopolitical name.
+The response was a re-founding at the level of behavior instead of narrative — and the deliberate choice of method for that re-founding was clustering. If the goal is "days that behave alike belong together," then the grouping must be discovered from the data, not decreed by a human calendar: each day was converted into a measurable behavior profile (how big its body was, where its wicks sat, how it moved relative to recent days, its volatility character), and a statistical clustering method was let loose to find the natural groupings — with the number of groups not guessed in advance but derived from the data itself by testing which count best explains the structure. 
+
+The results: days months apart that genuinely look alike now sit in the same group (the grouping became non-continuous by design), consecutive dissimilar days stopped being forced together, and the grouping comes with a descriptive label of its actual character ("strong downtrend," "whipsaw-dominant") instead of a geopolitical name.
 
 Three further judgment calls rounded out the approach, each with its reasoning:
 - First pass came out too coarse (3 groups for 146 days — the data collapsed most days into one "normal" bucket). Rather than accept it, the profiles were enriched with the day-shape classifications, and the data re-declared its structure: 7 groups, a better
@@ -165,9 +166,3 @@ Three further judgment calls rounded out the approach, each with its reasoning:
 
 The second-order outcome: every classification, prediction, and accuracy claim downstream now rests on objective ground truth instead of subjective news judgment.
 
-
-ii. Level-shift 2 — "My granularity is wrong" → "Do I relabel, or do I add a layer?"
-
-A prediction-quality problem surfaced in how coarse the time-slices were — hours of price action collapsed into one window meant violent moves inside it were structurally invisible. The obvious fix (re-cutting the time windows) was caught before execution as a systems-level trap: time labels are baked into every historical record at ingest, so relabeling would split the product's own history into two incompatible eras — everything learned under old labels vs. everything decided under new ones, apples-to-oranges forever.
-
-The resolution was an architectural judgment about where change should live: instead of mutating the shared foundation, add a resolution layer on top — finer sub-slices computed from data that already existed, run identically across all of history and all future dates, so no era-break ever forms. Existing metrics stay valid; the brief simply gains a sharper lens beneath the aggregate. The trade-off (smaller samples per sub-slice) was handled with the same evidence-hygiene rules as everything else, not ignored.
