@@ -20,7 +20,7 @@ Broken into the anatomy a PM would actually write:
 
 Before deciding what to build, I enumerated what the product has to survive. Two classes of constraints — one external (the market's forces), one self-imposed (the rules I bound my own solution with):
 
-# i. External constraints — the forces the advice must make sense of:
+i. External constraints — the forces the advice must make sense of:
 
 - The situation itself is repetitive but shapeshifting — the war didn't stay one crisis; it cycled through recognizably distinct states (full-scale war → ceasefire-with-deal → ceasefire-without-deal → naval blockade with escalation flashpoints…). So the market's
   "rulebook" changed repeatedly over 7 months. Constraint accepted as the founding design decision: every piece of advice must be conditioned on which state the situation is in — the same day-type means different things in a war phase vs a ceasefire phase. This was
