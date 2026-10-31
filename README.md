@@ -20,7 +20,7 @@ Broken into the anatomy a PM would actually write:
 
 Before deciding what to build, I enumerated what the product has to survive. Two classes of constraints — one external (the market's forces), one self-imposed (the rules I bound my own solution with):
 
-## i. External constraints — the forces the advice must make sense of:
+# i. External constraints — the forces the advice must make sense of:
 
 - The situation itself is repetitive but shapeshifting — the war didn't stay one crisis; it cycled through recognizably distinct states (full-scale war → ceasefire-with-deal → ceasefire-without-deal → naval blockade with escalation flashpoints…). So the market's
   "rulebook" changed repeatedly over 7 months. Constraint accepted as the founding design decision: every piece of advice must be conditioned on which state the situation is in — the same day-type means different things in a war phase vs a ceasefire phase. This was
@@ -32,7 +32,7 @@ Before deciding what to build, I enumerated what the product has to survive. Two
 - The meta-constraint: volatility wasn't random — it was the sum of all of the above. So the opportunity wasn't "predict the market," it was map which force is dominating today
 
 
-## ii. Self-imposed constraints — the rules I bound my own solution with (quality-of-evidence guardrails):
+# ii. Self-imposed constraints — the rules I bound my own solution with (quality-of-evidence guardrails):
 
 - No claim without historical evidence — every call must be grounded in matched past situations (Bayesian-Dirichlet style inference)
 - No false discoveries — with hundreds of possible patterns, some will look real by chance; an explicit filter (Benjamini–Hochberg-style FDR) to not fool myself
@@ -62,7 +62,7 @@ The outcome demanded that one page per morning be true — so the solution mappe
 - Processing: turning that data into "situations" that can be matched and scored
 - Delivery: a daily brief a non-technical reader can act on
 
-## ii. Features defined (each traceable to an outcome condition):
+# ii. Features defined (each traceable to an outcome condition):
 
 - Feature: Universal situation grammar — every day classified by movement-type (trending, whipsaw, gap-and-hold, range-bound…), so any day can be compared to any other day. Serves: "decisions backed by matched history."
 - Feature: Time-of-day lens — the day split into market-session windows, so advice can say "in the US session, this day-type usually does X." Serves: precision of the advice, not just direction.
@@ -73,7 +73,7 @@ The outcome demanded that one page per morning be true — so the solution mappe
 - Feature: Live classification — every morning, today is automatically matched to a situation-state and day-type. Serves: zero-effort for the user.
 - Feature: The daily brief — the one page where it all lands, in plain English. Serves: 5-minute time-to-decision.
 
-## iii. User stories — the actual PRD behind the pipeline (the "questions" list was, in effect, my acceptance criteria):
+# iii. User stories — the actual PRD behind the pipeline (the "questions" list was, in effect, my acceptance criteria):
 
 Every feature above was specced backwards from the questions the user must never have to ask twice — these read like user stories with acceptance criteria attached:
 
@@ -87,17 +87,17 @@ Every feature above was specced backwards from the questions the user must never
 - Every claim in the brief must show its evidence grade — n, confidence label, and when it's too thin, the brief says "don't rely on this."
 
 
-## iv. Shipping — the part where the analysis project becomes a product
+# iv. Shipping — the part where the analysis project becomes a product
 
 Three shipping decisions made that real:
 
-# a. One feature, one engine, one output — the component contract.
+a. One feature, one engine, one output — the component contract.
 Every feature from the solution map was shipped as an independent, self-contained program: takes inputs in, performs exactly its one job, writes versioned outputs to disk, exits. No engine reaches into another's internals; they communicate only through their published outputs. This is a product decision, not a code preference — it means any feature can be re-tested in isolation when something looks wrong, swapped without collateral damage, or re-run after a fix without re-running the world. It's the same discipline as keeping features independently shippable behind stable interfaces.
 
-# b. One orchestrator — the daily operating rhythm.
+b. One orchestrator — the daily operating rhythm.
 A single master run-file chains all engines in strict dependency order — data comes in fresh, gets validated, classified, matched, graded, and lands as the daily brief — in one command. The daily operation became: append today's date, run the command, read the brief. That's a product cadence, not a developer task: the user's morning routine is one step, and the product's reliability is the predictability of that step.
 
-# c. Incremental by design — shipping for the long run, not the demo.
+c. Incremental by design — shipping for the long run, not the demo.
 Recomputing everything from scratch every day doesn't scale as an operating model, so the run was built to detect what changed since last time and only reprocess that. Full rebuilds happen when needed (minutes); routine daily updates complete in seconds. The shipping principle: a product that runs daily must be engineered for day 100, not day 1 — the demo being fast is worthless if the routine decays into a 2-hour chore nobody keeps up.
 
 
@@ -105,7 +105,7 @@ Recomputing everything from scratch every day doesn't scale as an operating mode
 
 After the first version shipped, the work shifted from "build it" to "make it trustworthy and durable." Iteration and metric-definition happened together — every wave below was triggered by a question the current metrics couldn't answer:
 
-## Wave 0 — "What would 'working' even mean?" → defining the metric system before optimizing anything
+# Wave 0 — "What would 'working' even mean?" → defining the metric system before optimizing anything
 - The founding metric decision: a single "credibility score" was rejected as the wrong instrument. One number can't catch different failure modes — a product can be directionally right, confidently wrong, economically useless, or falsely humble, and one blended score
   hides all four.
 - Instead, a panel of complementary metrics was defined, each answering one distinct product question:
@@ -116,24 +116,24 @@ After the first version shipped, the work shifted from "build it" to "make it tr
   e. Is it appropriately humble? — how often it declines to answer when evidence is thin, and whether declining saved the user from bad calls
 - Design rule applied throughout: every metric must be measured on data the product never learned from. Metrics on data the product studied are a self-review, not a grade.
 
-## Wave 1 — "Is the advice actually good?" → discovering nothing was keeping score
+# Wave 1 — "Is the advice actually good?" → discovering nothing was keeping score
 - Interrogating my own claim exposed that the product was grading its own homework (patterns validated on the same data they came from) and that yesterday's recommendations were never checked against what actually happened — zero resolved checks, zero track record. A
   feedback fiction, not a feedback loop.
 - Fix: installed the missing loop — every recommendation is now automatically scored against reality the next day, building a growing, public track record. This loop also became the data source for every metric in the panel: no track record, no trustworthy numbers.
 
-## Wave 2 — "Can we trust the headline numbers?" → the metrics got worse, and that was the win
+# Wave 2 — "Can we trust the headline numbers?" → the metrics got worse, and that was the win
 - Measured honestly for the first time, the success rate dropped (from the flattering self-graded figure to a materially lower but real one). Treated as the fix working: before, marketing metrics; after, reality metrics.
 - The report now permanently shows both numbers side by side — the self-graded figure and the honestly-measured one — so the gap between "how good it claims" and "how good it is" stays visible forever instead of being quietly buried.
 - Grading fairness was tightened too: the boundary between "data the product studied" and "data it's being judged on" was derived from the data's own behavior, so near-neighbor information can't leak across the line.
 
-## Wave 3 — "What should the product do when it doesn't know?" → making refusal a measurabl
+# Wave 3 — "What should the product do when it doesn't know?" → making refusal a measurabl
 - A brand-new situation arrived with almost no history. Old behavior: silently borrow a wrong situation's advice and present it with fake confidence — even though the system's own published self-assessment said it was unreliable (the signal existed; nobody consumed
   it).
 - Fix: a three-gate gatekeeping rule — too little evidence, too little confidence, or toroduct explicitly says "don't rely on me today" and logs why. Refusal became a designedbehavior — and a metric (#5 on the panel): abstention rate is tracked and cross-checked
   against the losses it prevented.
 - Plus: per-pattern freshness tracking — when a specific pattern's live performance decays well below its historical claim, it's flagged and demoted automatically. Patterns have a shelf life; the product now notices expiry.
 
-## Wave 4 — "How does it learn from its own mistakes?" → designing the learning loop
+# Wave 4 — "How does it learn from its own mistakes?" → designing the learning loop
 - Three existential doubts, each resolved with design rather than hope: news can't be fed live → news only needs to say which rulebook applies, not predict headlines; the market is manipulated anyway → the product deals in probabilities-with-context, not promises, so
   manipulation shows up as mapped behavior, not broken predictions; patterns keep breaking → regimes drift, so every pattern is a decaying belief updated with every new day, not a permanent law.
 - The honest self-audit: "does it learn from deviations today?" — answer: only implicitling from Wave 1 is what turned that hope into a mechanism.
@@ -144,7 +144,7 @@ Where the metrics landed (the outcomes they ultimately reported): ~290 validated
 
 ### 5. Systems Thinking & Level-Shifting — the deepest product skill in the project
 
-## i. Level-shift 1 — "Is my classification right?" → "What level should classification even happen at?"
+# i. Level-shift 1 — "Is my classification right?" → "What level should classification even happen at?"
 
 The founding decision — carving 7 chaotic months into 12 war-phase states and conditioning all advice on them — was a system-level bet. Iterations made everything downstream smarter, but the honest diagnosis that finally landed: the flaw wasn't anywhere in the machinery — it was at the level of what the system was keying on. 
 
@@ -166,7 +166,7 @@ Three further judgment calls rounded out the approach, each with its reasoning:
 The second-order outcome: every classification, prediction, and accuracy claim downstream now rests on objective ground truth instead of subjective news judgment.
 
 
-## ii. Level-shift 2 — "My granularity is wrong" → "Do I relabel, or do I add a layer?"
+# ii. Level-shift 2 — "My granularity is wrong" → "Do I relabel, or do I add a layer?"
 
 A prediction-quality problem surfaced in how coarse the time-slices were — hours of price action collapsed into one window meant violent moves inside it were structurally invisible. The obvious fix (re-cutting the time windows) was caught before execution as a systems-level trap: time labels are baked into every historical record at ingest, so relabeling would split the product's own history into two incompatible eras — everything learned under old labels vs. everything decided under new ones, apples-to-oranges forever.
 
