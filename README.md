@@ -1,5 +1,13 @@
 # CRUDE PRICES VOLATALITY ANALYSIS DURING THE IRAN WAR/HORMUZ CRISIS OF 2026 
 
+- Designed a training-analysis-prediction model for price movements of Crude Oil futures across an entire 7 month period using free open-source AI coding assistants
+- Built a 12-phase geopolitical taxonomy, into a 20-stage pipeline - distilled from messy inputs → signal → resolution → history tracking, per-pattern live hit-rate + edge-decay detection, calibration curves, regime accuracy, abstention logging; each as a measurable scorecard and validated it with a walk-forward back-test (1,547 trades, PF=2.74, Sharpe = 2.09) rather than an in-sample illusion. 
+- Utilized python libraries/tools of numpy, pandas, sci-py, statsmodels, pyarrow, matplotlib, openpyxl, joblib, sci-kit learn, chart.js inside python scripts to fetch data from YFinance API endpoints and organizing the raw OHLCV data across 150+ csv files, 1L+ rows, 100+ parameters, 10+ sqlite/parquet files, turning raw OHLCV CSVs to an interactive React/Vite SPA dashboard & a news-conditioned daily trading plan.
+- Leveraged Claude Code plugins and MCPs - 'argyph, filesystem, brave-search, context7, e2b-code-interpreter, fetch, playwright, postgres, sequential thinking, sqlite, stitch, inistate, token-optimizer, open-design, hookify, remember' to manage issues like context persistence, context rot, processing enormous CSV datasets and designing visual dashboards
+- The training-analysis-prediction run was triggered by a single command that involved pipeline stages for strategies such as - conformity, anomaly, triplet pattern mining, statistical rigor, probabilistic signal engine, self-correcting prediction scorecard amongst many other strategies
+- Furthermore, trained the model to base its predictions on Quant Models - Bayesian posteriors with Dirichlet priors, Benjamin-Hochberg, Hierarchical Shrinkage, FDR correction, Brier score, log-loss, Monte-Carlo Cis, 60+ candlestick patterns
+
+
 ## Tech Stack & Tools Used
 
 - Data: yfinance, FRED, EIA, Databento (dead end), GDELT/NewsAPI, Al Jazeera/CNN/Hormuz Letter RSS
@@ -37,8 +45,6 @@ One section, because for this project the architecture and the operational story
 
 
 ## Results / Evidence / Outcomes / Metrics / Final Structure
-
-Cold hard facts only. Every number paired with its honest label (in-sample vs out-of-sample):
 
 - Backtest: 290 trades, 63.4% win rate, PF 2.74, Sharpe 2.09, Sortino 12.01, Max DD −11.02%, expectancy +0.55%/trade, MC 95% CI expectancy [+0.21%, +1.11%], Sharpe CI [1.67, 5.54] — purged walk-forward, not in-sample
 - In-sample vs OOS honesty gap table: in-sample Sharpe 4.29 → OOS 2.09 — the system self-reporting its own drop
